@@ -103,10 +103,72 @@ export default function Product() {
     }
   };
 
+  const [isCarouselOpen, setIsCarouselOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const productImages = [
+    productHero,
+    productDisplay,
+    productClean,
+    productBathroom,
+    productHand,
+    productTexture,
+    productLifestyle,
+  ];
+
+  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % productImages.length);
+  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + productImages.length) % productImages.length);
+
   return (
     <div className="min-h-screen bg-[#FAFAF9] font-body text-dark relative selection:bg-gold/10">
       <FloatingIcons />
       
+      {/* Product Carousel Overlay */}
+      <AnimatePresence>
+        {isCarouselOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-dark/95 backdrop-blur-xl px-4"
+            onClick={() => setIsCarouselOpen(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-5xl w-full aspect-video md:aspect-[21/9] overflow-hidden rounded-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="absolute inset-0 flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+                {productImages.map((img, idx) => (
+                  <img key={idx} src={img} className="w-full h-full object-contain shrink-0" alt={`Product ${idx}`} />
+                ))}
+              </div>
+
+              <button 
+                onClick={prevSlide}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md flex items-center justify-center text-white transition-all"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button 
+                onClick={nextSlide}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md flex items-center justify-center text-white transition-all"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                {productImages.map((_, idx) => (
+                  <div key={idx} className={`w-2 h-2 rounded-full transition-all ${currentSlide === idx ? 'bg-gold w-6' : 'bg-white/30'}`} />
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FAFAF9]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
@@ -130,72 +192,37 @@ export default function Product() {
             transition={{ duration: 0.8 }}
             className="relative w-full max-w-5xl mb-16 px-4"
           >
-            <div className="relative group overflow-hidden rounded-2xl elegant-shadow border border-gold/10">
+            <div 
+              onClick={() => setIsCarouselOpen(true)}
+              className="relative group overflow-hidden rounded-2xl elegant-shadow border border-gold/10 cursor-pointer"
+            >
               <img src={productHero} alt="Product" className="w-full aspect-[21/9] object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              {/* Floating Badge */}
-              <div className="absolute top-6 right-6 bg-dark/80 backdrop-blur-md border border-gold/30 px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-gold/50 bg-dark overflow-hidden ring-4 ring-dark/50">
-                      <img 
-                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+200}&backgroundColor=000000`} 
-                        className="w-full h-full object-cover grayscale brightness-110"
-                        alt="User" 
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div className="h-4 w-px bg-gold/20 mx-1" />
-                <div className="flex flex-col">
-                  <div className="flex gap-0.5">
-                    {[1, 2, 3, 4, 5].map((s) => <Star key={s} className="w-2.5 h-2.5 text-gold fill-gold" />)}
-                  </div>
-                  <span className="text-[9px] font-bold text-gold uppercase tracking-widest leading-none mt-1">Elite Choice</span>
-                </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                <div className="bg-white/20 backdrop-blur-md border border-white/30 px-6 py-3 rounded-full text-white font-bold uppercase tracking-widest text-xs">View Gallery</div>
               </div>
             </div>
           </motion.div>
 
-          {/* Social Proof & Scarcity Hub */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl mb-20 px-4">
-            <div className="bg-white/50 backdrop-blur-sm border border-gold/10 p-6 rounded-xl flex items-center justify-between group hover:border-gold/30 transition-all duration-300">
-              <div className="flex items-center gap-5">
-                <div className="relative">
-                  <div className="w-14 h-14 rounded-full bg-gold/5 flex items-center justify-center border border-gold/10 group-hover:bg-gold/10 transition-colors">
-                    <Eye className="w-6 h-6 text-gold" />
-                  </div>
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse" />
-                </div>
-                <div>
-                  <h4 className="text-xl font-display text-dark leading-none mb-1">50 Elite Members</h4>
-                  <p className="text-[10px] text-dark/40 uppercase tracking-[0.2em] font-bold">Viewing this exclusive offer</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-dark border border-gold/20 p-6 rounded-xl flex items-center justify-between group hover:border-gold/40 transition-all duration-300 shadow-2xl">
-              <div className="flex items-center gap-5">
-                <div className="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
-                  <Clock className="w-6 h-6 text-gold animate-spin-slow" />
-                </div>
-                <div>
-                  <h4 className="text-xl font-display text-gold leading-none mb-1">Strictly Limited</h4>
-                  <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold">300 Bottles Crafted Monthly</p>
-                </div>
-              </div>
-              <div className="bg-gold/10 px-3 py-1 rounded-md border border-gold/20">
-                <span className="text-gold text-xs font-bold font-mono">24/300</span>
-              </div>
-            </div>
-          </div>
-
           <motion.div {...fadeInUp} className="relative z-10 text-center max-w-4xl px-4">
-            <div className="inline-flex items-center gap-2 mb-8 bg-gold/5 border border-gold/10 px-6 py-2 rounded-full backdrop-blur-sm">
-              <SparklesIcon className="w-4 h-4 text-gold" />
-              <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em]">Premium Artisan Formula</span>
-              <SparklesIcon className="w-4 h-4 text-gold" />
+            <div className="inline-flex items-center gap-4 mb-8 bg-dark border border-gold/30 px-6 py-3 rounded-full shadow-2xl">
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-8 h-8 rounded-full border-2 border-gold/50 bg-dark overflow-hidden ring-4 ring-dark/50">
+                    <img 
+                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+300}&backgroundColor=000000`} 
+                      className="w-full h-full object-cover grayscale brightness-110"
+                      alt="User" 
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="h-6 w-px bg-gold/20 mx-1" />
+              <div className="flex flex-col items-start">
+                <div className="flex gap-0.5">
+                  {[1, 2, 3, 4, 5].map((s) => <Star key={s} className="w-3 h-3 text-gold fill-gold" />)}
+                </div>
+                <span className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] leading-none mt-1">Elite Choice</span>
+              </div>
             </div>
             
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-dark leading-[1.1] mb-8 font-medium">
