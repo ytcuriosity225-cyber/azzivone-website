@@ -172,24 +172,34 @@ export default function Product() {
         </div>
       </section>
 
-      {/* Video Carousel */}
-      <section className="py-24 bg-[#FAFAF9] overflow-hidden relative z-10">
-        <div className="px-4 mb-16 text-center">
-          <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">Real Reactions</h2>
-          <div className="w-12 h-0.5 bg-gold mx-auto" />
-        </div>
-        
-        <div className="flex overflow-x-auto gap-4 md:gap-6 px-4 pb-8 no-scrollbar snap-x snap-mandatory">
-          {[productHand, productTexture, productLifestyle, productBathroom].map((img, i) => (
-            <div key={i} className="min-w-[280px] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] relative snap-center overflow-hidden flex-shrink-0 group elegant-shadow border border-gold/5">
-              <img src={img} className="w-full h-full object-cover" alt="Review" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-gold/90 flex items-center justify-center shadow-lg active:scale-90 transition-transform">
-                  <Play className="h-5 w-5 text-white fill-white ml-0.5" />
+      {/* Reactions Section */}
+      <section className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">Reaction from Customers</h2>
+            <div className="w-12 h-1 gold-glaze-bar mx-auto rounded-full" />
+          </div>
+
+          <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
+            {reviews.map((video, index) => (
+              <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
+                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Review" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
+                    <Play className="w-6 h-6 fill-white ml-1" />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-12">
+            {whatsappScreenshots.map((img, index) => (
+              <div key={index} className="bg-white p-2 rounded-[6px] elegant-shadow border border-gold/5">
+                <img src={img} className="w-full aspect-[3/4] object-cover rounded-[4px]" alt="Chat" />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
