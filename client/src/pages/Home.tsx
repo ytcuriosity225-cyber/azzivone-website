@@ -190,9 +190,30 @@ export default function Home() {
             <div className="w-12 h-1 gold-glaze-bar rounded-full" />
           </div>
 
-          <div className="hidden md:grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {products.map((p) => (
-              <div key={p.id} className="group bg-[#FAFAF9] p-8 rounded-[6px] flex gap-10 items-center card-hover border border-transparent hover:border-gold/5">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="hidden md:grid grid-cols-1 lg:grid-cols-2 gap-12"
+          >
+            {products.map((p, idx) => (
+              <motion.div 
+                key={p.id}
+                variants={{
+                  hidden: { opacity: 0, x: idx % 2 === 0 ? -50 : 50 },
+                  visible: { 
+                    opacity: 1, 
+                    x: 0, 
+                    transition: { 
+                      duration: 0.8, 
+                      ease: [0.25, 0.1, 0.25, 1],
+                      delay: idx * 0.2 
+                    } 
+                  }
+                }}
+                className="group bg-[#FAFAF9] p-8 rounded-[6px] flex gap-10 items-center card-hover border border-transparent hover:border-gold/5"
+              >
                 <div className="w-1/2 aspect-[4/5] rounded-[6px] overflow-hidden">
                   <img src={p.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={p.name} />
                 </div>
@@ -210,9 +231,9 @@ export default function Home() {
                     <button className="w-full gold-gradient text-white py-3 rounded-[6px] font-body text-sm font-bold hover:shadow-lg transition-all uppercase tracking-widest">View Details</button>
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Mobile Carousel */}
           <div className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 pb-4">
