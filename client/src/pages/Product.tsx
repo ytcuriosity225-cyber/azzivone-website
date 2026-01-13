@@ -363,7 +363,7 @@ export default function Product() {
           onClick={scrollToDoctors}
           className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base shadow-2xl active:scale-95 transition-transform uppercase tracking-widest"
         >
-          Order Azzivone Serum
+          Doctors Recommendations
         </button>
       </div>
 
