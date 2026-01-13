@@ -144,7 +144,9 @@ export default function Product() {
             </h1>
             
             <p className="text-lg md:text-xl text-dark/70 mb-10 leading-relaxed font-body">
-              Wake up to glass skin. Our 96% pure formula repairs damage and locks in moisture for a 24-hour natural glow.
+             Glass-Glow Skin, Engineered for High-Performance Lives.
+
+              Repair, hydration, and refinement — without slowing you down.
             </p>
 
             <div className="flex flex-col items-center gap-6">
@@ -156,7 +158,7 @@ export default function Product() {
               
               <div className="flex flex-wrap justify-center gap-6 text-xs text-dark/60 font-medium">
                 <span className="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-gold" /> Secure Payment</span>
-                <span className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-gold" /> Fast Shipping</span>
+                <span className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-gold" /> Fast Shipping 48 hrs</span>
               </div>
             </div>
           </motion.div>
@@ -246,12 +248,18 @@ export default function Product() {
             ))}
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-12">
-            {whatsappScreenshots.map((img, index) => (
-              <div key={index} className="bg-white p-2 rounded-[6px] elegant-shadow border border-gold/5">
-                <img src={img} className="w-full aspect-[3/4] object-cover rounded-[4px]" alt="Chat" />
-              </div>
-            ))}
+          <div className="mt-20">
+            <div className="text-center mb-10">
+              <h3 className="font-display text-2xl md:text-3xl text-dark">Screen shots of the customer chats</h3>
+              <div className="w-12 h-0.5 bg-gold/30 mx-auto mt-3" />
+            </div>
+            <div className="flex gap-4 overflow-x-auto pb-8 no-scrollbar snap-x snap-mandatory">
+              {whatsappScreenshots.map((img, index) => (
+                <div key={index} className="min-w-[280px] md:min-w-[320px] bg-white p-2 rounded-[6px] elegant-shadow border border-gold/5 snap-center">
+                  <img src={img} className="w-full aspect-[3/4] object-cover rounded-[4px]" alt="Chat" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
