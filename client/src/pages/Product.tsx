@@ -84,6 +84,25 @@ const FloatingIcons = () => {
 };
 
 export default function Product() {
+  const [searchParams] = useState(new URLSearchParams(window.location.search));
+  
+  useEffect(() => {
+    const section = searchParams.get('section');
+    if (section === 'reactions') {
+      const element = document.getElementById('reactions-section');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [searchParams]);
+
+  const scrollToDoctors = () => {
+    const element = document.getElementById('doctors-section');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FAFAF9] font-body text-dark relative selection:bg-gold/10">
       <FloatingIcons />
@@ -206,7 +225,7 @@ export default function Product() {
       </section>
 
       {/* Reactions Section */}
-      <section className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
+      <section id="reactions-section" className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
             <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">Reaction from Customers</h2>
@@ -268,7 +287,7 @@ export default function Product() {
       </section>
 
       {/* DOC Reactions Section */}
-      <section className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
+      <section id="doctors-section" className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
             <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">What Doctors say?</h2>
@@ -340,11 +359,12 @@ export default function Product() {
 
       {/* Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-6 left-6 right-6 z-50">
-        <Link href="/checkout">
-          <button className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base shadow-2xl active:scale-95 transition-transform uppercase tracking-widest">
-            Order Azzivone Serum
-          </button>
-        </Link>
+        <button 
+          onClick={scrollToDoctors}
+          className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base shadow-2xl active:scale-95 transition-transform uppercase tracking-widest"
+        >
+          Order Azzivone Serum
+        </button>
       </div>
 
       {/* Footer */}

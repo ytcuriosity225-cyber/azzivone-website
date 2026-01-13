@@ -221,8 +221,8 @@ export default function Home() {
                 <img src={p.image} className="w-full aspect-[4/5] object-cover rounded-[6px] mb-6" alt={p.name} />
                 <h3 className="font-display text-2xl text-dark mb-4">{p.name}</h3>
                 <p className="font-display text-xl text-gold mb-6">Rs. {p.price}</p>
-                <Link href="/product">
-                  <button className="w-full gold-gradient text-white py-3 rounded-[6px] font-body text-sm font-bold uppercase tracking-widest">Order Now</button>
+                <Link href="/product?section=reactions">
+                  <button className="w-full gold-gradient text-white py-3 rounded-[6px] font-body text-sm font-bold uppercase tracking-widest">Learn More</button>
                 </Link>
               </div>
             ))}
@@ -231,7 +231,7 @@ export default function Home() {
       </section>
 
       {/* Reactions Section */}
-      <section className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
+      <section id="reactions-section" className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
             <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">Reaction from Customers</h2>
@@ -309,7 +309,7 @@ export default function Home() {
 
       {/* Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-6 left-6 right-6 z-50">
-        <Link href="/product">
+        <Link href="/product?section=reactions">
           <button className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base shadow-2xl active:scale-95 transition-transform uppercase tracking-widest">
             Learn More
           </button>
