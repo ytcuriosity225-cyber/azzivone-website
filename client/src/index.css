@@ -168,14 +168,6 @@
   --destructive-foreground: 0 0% 100%;
   --input: 0 0% 22%;
   --ring: 28 80% 36%;
-  --shadow-2xs: 0 1px 2px rgba(0,0,0,0.3);
-  --shadow-xs: 0 1px 3px rgba(0,0,0,0.35);
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.3);
-  --shadow: 0 4px 6px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.35);
-  --shadow-md: 0 6px 12px rgba(0,0,0,0.45), 0 3px 6px rgba(0,0,0,0.4);
-  --shadow-lg: 0 10px 20px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4);
-  --shadow-xl: 0 20px 40px rgba(0,0,0,0.55), 0 8px 16px rgba(0,0,0,0.45);
-  --shadow-2xl: 0 30px 60px rgba(0,0,0,0.6);
 }
 
 @layer base {
@@ -192,73 +184,39 @@
 }
 
 @layer utilities {
-  input[type="search"]::-webkit-search-cancel-button {
-    @apply hidden;
+  .hero-video-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+    backdrop-filter: blur(1px);
   }
 
-  [contenteditable][data-placeholder]:empty::before {
-    content: attr(data-placeholder);
-    color: hsl(var(--muted-foreground));
-    pointer-events: none;
+  .gold-gradient {
+    background: linear-gradient(135deg, #C5A059 0%, #F3E5AB 50%, #C5A059 100%);
+    background-size: 200% auto;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: shine 6s linear infinite;
   }
 
-  .no-default-hover-elevate {}
-  .no-default-active-elevate {}
-
-  .toggle-elevate::before,
-  .toggle-elevate-2::before {
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    inset: 0px;
-    border-radius: inherit;
-    z-index: -1;
+  .gold-gradient:hover {
+    background-position: right center;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(197, 160, 89, 0.5);
   }
 
-  .toggle-elevate.toggle-elevated::before {
-    background-color: var(--elevate-2);
+  .gold-glaze-bar {
+    background: linear-gradient(90deg, #C5A059 0%, #F3E5AB 50%, #C5A059 100%);
+    background-size: 200% auto;
+    animation: shine 3s linear infinite;
   }
 
-  .border.toggle-elevate::before {
-    inset: -1px;
-  }
-
-  .hover-elevate:not(.no-default-hover-elevate),
-  .active-elevate:not(.no-default-active-elevate),
-  .hover-elevate-2:not(.no-default-hover-elevate),
-  .active-elevate-2:not(.no-default-active-elevate) {
-    position: relative;
-    z-index: 0;
-  }
-
-  .hover-elevate:not(.no-default-hover-elevate)::after,
-  .active-elevate:not(.no-default-active-elevate)::after,
-  .hover-elevate-2:not(.no-default-hover-elevate)::after,
-  .active-elevate-2:not(.no-default-active-elevate)::after {
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    inset: 0px;
-    border-radius: inherit;
-    z-index: 999;
-  }
-
-  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
-  .active-elevate:active:not(.no-default-active-elevate)::after {
-    background-color: var(--elevate-1);
-  }
-
-  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
-  .active-elevate-2:active:not(.no-default-active-elevate)::after {
-    background-color: var(--elevate-2);
-  }
-
-  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
-  .border.active-elevate:not(.no-active-interaction-elevate)::after,
-  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
-  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
-  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
-    inset: -1px;
+  @keyframes shine {
+    to { background-position: 200% center; }
   }
 
   .font-display {
@@ -270,15 +228,15 @@
   }
 
   .text-gold {
-    color: hsl(28 80% 36%);
+    color: #C5A059;
   }
 
   .bg-gold {
-    background-color: hsl(28 80% 36%);
+    background-color: #C5A059;
   }
 
   .border-gold {
-    border-color: hsl(28 80% 36%);
+    border-color: #C5A059;
   }
 
   .bg-cream {
@@ -288,70 +246,4 @@
   .text-dark {
     color: hsl(24 9.8% 10%);
   }
-}
-
-.hero-video-overlay {
-  background: rgba(250, 250, 249, 0.4);
-  backdrop-filter: blur(1px);
-}
-
-.gold-gradient {
-  background: hsl(28 80% 36%);
-  transition: all 0.3s ease;
-}
-
-.gold-gradient:hover {
-  background: hsl(28 80% 32%);
-  transform: scale(1.02);
-  box-shadow: 0 10px 20px -10px rgba(180, 83, 9, 0.4);
-}
-
-.gold-text-gradient {
-  color: hsl(28 80% 36%);
-}
-
-.elegant-shadow {
-  box-shadow: 0 20px 40px -15px rgba(28, 25, 23, 0.05);
-}
-
-.card-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 25px 50px -12px rgba(28, 25, 23, 0.1);
-}
-
-.testimonial-card {
-  background: white;
-  border: 1px solid rgba(180, 83, 9, 0.1);
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
-}
-
-.float-animation {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.shimmer {
-  background: linear-gradient(90deg, transparent, rgba(180, 83, 9, 0.1), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }

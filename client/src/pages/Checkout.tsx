@@ -101,7 +101,7 @@ export default function Checkout() {
       <header className="bg-[#FAFAF9]/80 backdrop-blur-md border-b border-gold/5 sticky top-0 z-50 px-4">
         <div className="max-w-7xl mx-auto py-4 flex items-center justify-between">
           <Link href="/product">
-            <button className="flex items-center gap-2 text-dark font-medium hover:text-gold transition-colors font-body text-xs uppercase tracking-widest">
+            <button className="flex items-center gap-2 text-dark font-bold hover:text-gold transition-colors font-body text-xs uppercase tracking-widest">
               <ArrowLeft className="w-4 h-4" />
               Back
             </button>
@@ -177,7 +177,7 @@ export default function Checkout() {
                   {paymentOptions.map((opt) => (
                     <label key={opt.id} className={`flex items-center gap-4 p-4 rounded-[4px] border cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-gold bg-gold/5' : 'border-gold/10 hover:border-gold/20'}`}>
                       <input type="radio" name="payment" checked={paymentMethod === opt.id} onChange={() => setPaymentMethod(opt.id)} className="hidden" />
-                      <div className={`w-10 h-10 rounded-[4px] flex items-center justify-center ${paymentMethod === opt.id ? 'bg-gold text-white' : 'bg-gold/10 text-gold'}`}>
+                      <div className={`w-10 h-10 rounded-[4px] flex items-center justify-center ${paymentMethod === opt.id ? 'gold-gradient text-white shadow-md' : 'bg-gold/10 text-gold'}`}>
                         <opt.icon className="w-5 h-5" />
                       </div>
                       <div className="flex-1">
@@ -231,7 +231,7 @@ export default function Checkout() {
                   </div>
                 </div>
 
-                <button onClick={handleSubmit} className="w-full bg-gold text-white py-4 rounded-[6px] font-body font-medium text-base hover:shadow-lg transition-all active:scale-95">
+                <button onClick={handleSubmit} className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base hover:shadow-lg transition-all active:scale-95 uppercase tracking-widest">
                   Complete Purchase
                 </button>
 

@@ -138,7 +138,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
           <img src={logo} alt="Azzivone" className="h-12 md:h-16" />
           <Link href="/product">
-            <button className="bg-gold text-white px-6 py-2.5 rounded-[6px] font-body font-medium text-sm tracking-tight hover:shadow-lg transition-all active:scale-95">
+            <button className="gold-gradient text-white px-6 py-2.5 rounded-[6px] font-body font-bold text-sm tracking-tight hover:shadow-lg transition-all active:scale-95 uppercase tracking-widest">
               Order Now
             </button>
           </Link>
@@ -146,8 +146,8 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-[85vh] md:h-screen flex items-center justify-center overflow-hidden bg-white">
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-90">
+      <section className="relative h-[85vh] md:h-screen flex items-center justify-center overflow-hidden bg-black">
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-60">
           <source src={heroVideo} type="video/mp4" />
         </video>
         <div className="absolute inset-0 hero-video-overlay" />
@@ -160,13 +160,13 @@ export default function Home() {
         >
           <motion.h1 
             variants={fadeInUp}
-            className="font-display text-4xl md:text-7xl text-dark leading-[1.1] mb-6 font-medium"
+            className="font-display text-4xl md:text-7xl text-white leading-[1.1] mb-6 font-medium drop-shadow-2xl"
           >
             Glass-Glow Skin, engineered for people who don’t slow down
           </motion.h1>
           <motion.div variants={fadeInUp}>
             <Link href="/product">
-              <button className="bg-gold text-white px-10 py-4 rounded-[6px] font-body font-medium text-lg hover:shadow-xl transition-all active:scale-95">
+              <button className="gold-gradient text-white px-10 py-4 rounded-[6px] font-body font-bold text-lg hover:shadow-xl transition-all active:scale-95 uppercase tracking-widest">
                 Order Now
               </button>
             </Link>
@@ -178,7 +178,7 @@ export default function Home() {
           transition={{ repeat: Infinity, duration: 2 }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
-          <ChevronLeft className="-rotate-90 w-5 h-5 text-dark/30" />
+          <ChevronLeft className="-rotate-90 w-5 h-5 text-white/30" />
         </motion.div>
       </section>
 
@@ -187,7 +187,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="mb-16">
             <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">The Catalogue</h2>
-            <div className="w-12 h-0.5 bg-gold" />
+            <div className="w-12 h-1 gold-glaze-bar rounded-full" />
           </div>
 
           <div className="hidden md:grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -207,7 +207,7 @@ export default function Home() {
                   </ul>
                   <p className="font-display text-2xl text-gold mb-6">Rs. {p.price}</p>
                   <Link href="/product">
-                    <button className="w-full bg-gold text-white py-3 rounded-[6px] font-body text-sm font-medium hover:shadow-lg transition-all">View Details</button>
+                    <button className="w-full gold-gradient text-white py-3 rounded-[6px] font-body text-sm font-bold hover:shadow-lg transition-all uppercase tracking-widest">View Details</button>
                   </Link>
                 </div>
               </div>
@@ -222,7 +222,7 @@ export default function Home() {
                 <h3 className="font-display text-2xl text-dark mb-4">{p.name}</h3>
                 <p className="font-display text-xl text-gold mb-6">Rs. {p.price}</p>
                 <Link href="/product">
-                  <button className="w-full bg-gold text-white py-3 rounded-[6px] font-body text-sm font-medium">Order Now</button>
+                  <button className="w-full gold-gradient text-white py-3 rounded-[6px] font-body text-sm font-bold uppercase tracking-widest">Order Now</button>
                 </Link>
               </div>
             ))}
@@ -235,7 +235,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="text-center mb-16">
             <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">Reaction from Customers</h2>
-            <div className="w-12 h-0.5 bg-gold mx-auto" />
+            <div className="w-12 h-1 gold-glaze-bar mx-auto rounded-full" />
           </div>
 
           <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
@@ -289,7 +289,7 @@ export default function Home() {
             <span className="text-gold font-medium">Only 300 bottles produced monthly.</span>
           </p>
           <Link href="/product">
-            <button className="bg-gold text-white px-12 py-4 rounded-[6px] font-body font-medium text-lg hover:shadow-xl transition-all">
+            <button className="gold-gradient text-white px-12 py-4 rounded-[6px] font-body font-bold text-lg hover:shadow-xl transition-all uppercase tracking-widest">
               Order Azzivone Serum
             </button>
           </Link>
@@ -310,7 +310,7 @@ export default function Home() {
       {/* Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-6 left-6 right-6 z-50">
         <Link href="/product">
-          <button className="w-full bg-gold text-white py-4 rounded-[6px] font-body font-medium text-base shadow-2xl active:scale-95 transition-transform">
+          <button className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base shadow-2xl active:scale-95 transition-transform uppercase tracking-widest">
             Order Azzivone Serum
           </button>
         </Link>

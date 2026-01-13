@@ -80,7 +80,7 @@ export default function Product() {
             <img src={logo} alt="Azzivone" className="h-12 md:h-16 cursor-pointer" />
           </Link>
           <Link href="/checkout">
-            <button className="bg-gold text-white px-6 py-2.5 rounded-[6px] font-body font-medium text-sm tracking-tight shadow-sm hover:shadow-lg transition-all active:scale-95">
+            <button className="gold-gradient text-white px-6 py-2.5 rounded-[6px] font-body font-bold text-sm tracking-tight shadow-sm hover:shadow-lg transition-all active:scale-95 uppercase">
               Order Now
             </button>
           </Link>
@@ -111,7 +111,7 @@ export default function Product() {
             </p>
 
             <Link href="/checkout">
-              <button className="w-full md:w-auto bg-gold text-white px-10 py-4 rounded-[6px] font-body font-medium text-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2">
+              <button className="gold-gradient text-white px-10 py-4 rounded-[6px] font-body font-bold text-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 uppercase tracking-widest">
                 Continue to Checkout <ChevronRight className="w-5 h-5" />
               </button>
             </Link>
@@ -230,7 +230,7 @@ export default function Product() {
       {/* Sticky Bottom CTA */}
       <div className="md:hidden fixed bottom-6 left-6 right-6 z-50">
         <Link href="/checkout">
-          <button className="w-full bg-gold text-white py-4 rounded-[6px] font-body font-medium text-base shadow-2xl active:scale-95 transition-transform">
+          <button className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base shadow-2xl active:scale-95 transition-transform uppercase tracking-widest">
             Order Azzivone Serum
           </button>
         </Link>
