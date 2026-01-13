@@ -91,6 +91,17 @@ export default function Home() {
     { feature: "Results Timeline", ours: "7-14 days", market: "4-6 weeks" }
   ];
 
+  const reviews = [
+    { type: 'video', url: '#', thumbnail: product1 },
+    { type: 'video', url: '#', thumbnail: product2 },
+    { type: 'video', url: '#', thumbnail: product3 },
+    { type: 'video', url: '#', thumbnail: product4 },
+  ];
+
+  const whatsappScreenshots = [
+    product1, product2, product3, product4, product5
+  ];
+
   return (
     <div className="min-h-screen bg-cream overflow-x-hidden">
       {/* Navigation */}
@@ -177,8 +188,8 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Benefits Grid Section */}
-      <section className="py-24 md:py-32 px-6 bg-cream">
+      {/* Benefits Horizontal Slider */}
+      <section className="py-24 md:py-32 px-6 bg-cream overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -196,40 +207,75 @@ export default function Home() {
             <motion.div variants={fadeInUp} className="w-20 h-0.5 bg-gold mx-auto" />
           </motion.div>
 
+          <div className="relative">
+            <motion.div 
+              className="flex gap-6 overflow-x-auto pb-8 snap-x no-scrollbar"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {benefits.map((benefit, index) => (
+                <motion.div
+                  key={index}
+                  className="min-w-[300px] md:min-w-[400px] snap-center group relative bg-white rounded-2xl overflow-hidden card-hover elegant-shadow"
+                  data-testid={`card-benefit-${index}`}
+                >
+                  <div className="aspect-[4/5] overflow-hidden">
+                    <img 
+                      src={benefit.image} 
+                      alt={benefit.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-full bg-gold/30 backdrop-blur-sm flex items-center justify-center">
+                        <benefit.icon className="w-5 h-5 text-gold" />
+                      </div>
+                      <h3 className="font-display text-xl md:text-2xl text-white">{benefit.title}</h3>
+                    </div>
+                    <p className="font-body text-white/90 text-sm md:text-base">{benefit.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Reviews Section */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true }}
             variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
+            className="text-center mb-16"
           >
-            {benefits.map((benefit, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                className="group relative bg-white rounded-2xl overflow-hidden card-hover elegant-shadow"
-                data-testid={`card-benefit-${index}`}
-              >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img 
-                    src={benefit.image} 
-                    alt={benefit.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-gold/20 backdrop-blur-sm flex items-center justify-center">
-                      <benefit.icon className="w-6 h-6 text-gold" />
-                    </div>
-                    <h3 className="font-display text-2xl text-white">{benefit.title}</h3>
-                  </div>
-                  <p className="font-body text-white/80 text-lg">{benefit.description}</p>
-                </div>
-              </motion.div>
-            ))}
+            <motion.p variants={fadeInUp} className="font-body text-gold uppercase tracking-[0.25em] text-sm mb-4">
+              Experience the Magic
+            </motion.p>
+            <motion.h2 variants={fadeInUp} className="font-display text-3xl md:text-5xl text-dark mb-6">
+              Video <span className="italic text-gold">Reviews</span>
+            </motion.h2>
+            <motion.div variants={fadeInUp} className="w-20 h-0.5 bg-gold mx-auto" />
           </motion.div>
+
+          <div className="flex gap-6 overflow-x-auto pb-8 snap-x no-scrollbar">
+            {reviews.map((video, index) => (
+              <div 
+                key={index} 
+                className="min-w-[260px] md:min-w-[320px] aspect-[9/16] bg-cream rounded-2xl overflow-hidden snap-center relative group elegant-shadow"
+              >
+                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Video Review" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-gold/80 flex items-center justify-center text-white backdrop-blur-sm transform group-hover:scale-110 transition-transform">
+                    <ChevronRight className="w-8 h-8 ml-1" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -300,7 +346,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Social Proof / Testimonials */}
+      {/* WhatsApp Proof Section */}
       <section className="py-24 bg-cream">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
@@ -311,40 +357,32 @@ export default function Home() {
             className="text-center mb-16"
           >
             <motion.p variants={fadeInUp} className="font-body text-gold uppercase tracking-[0.25em] text-sm mb-4">
-              Real Results
+              Community Love
             </motion.p>
             <motion.h2 variants={fadeInUp} className="font-display text-3xl md:text-5xl text-dark mb-6">
-              What Our Customers <span className="italic text-gold">Say</span>
+              Real <span className="italic text-gold">Conversations</span>
             </motion.h2>
             <motion.div variants={fadeInUp} className="w-20 h-0.5 bg-gold mx-auto" />
           </motion.div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {testimonials.map((testimonial, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {whatsappScreenshots.map((img, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
-                className="testimonial-card p-6 rounded-2xl card-hover"
-                data-testid={`card-testimonial-${index}`}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl overflow-hidden elegant-shadow p-2"
               >
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-gold text-gold" />
-                  ))}
-                </div>
-                <p className="font-body text-dark/80 text-lg mb-4 leading-relaxed">
-                  "{testimonial.text}"
-                </p>
-                <p className="font-body font-semibold text-gold">— {testimonial.name}</p>
+                <img 
+                  src={img} 
+                  className="w-full h-auto rounded-xl" 
+                  alt="WhatsApp Proof" 
+                  data-testid={`whatsapp-proof-${index}`}
+                />
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
