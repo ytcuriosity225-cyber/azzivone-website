@@ -167,7 +167,7 @@ export default function Home() {
           <motion.div variants={fadeInUp}>
             <Link href="/product">
               <button className="gold-gradient text-white px-10 py-4 rounded-[6px] font-body font-bold text-lg hover:shadow-xl transition-all active:scale-95 uppercase tracking-widest">
-                Order Now
+                View product
               </button>
             </Link>
           </motion.div>
@@ -311,7 +311,7 @@ export default function Home() {
       <div className="md:hidden fixed bottom-6 left-6 right-6 z-50">
         <Link href="/product">
           <button className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base shadow-2xl active:scale-95 transition-transform uppercase tracking-widest">
-            Order Azzivone Serum
+            Learn More
           </button>
         </Link>
       </div>
