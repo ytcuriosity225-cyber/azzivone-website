@@ -63,13 +63,30 @@ export default function Checkout() {
     address: "",
     city: "",
     notes: "",
-    coupon: ""
+    coupon: "",
+    courier: "daewoo",
+    bank: "",
+    jazzcashNumber: "",
+    easypaisaNumber: "",
+    cardHolder: "",
+    cardNumber: "",
+    cardExpiry: "",
+    cardCvc: "",
+    bankAccount: ""
   });
 
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const pricePerUnit = 3500;
   const total = quantity * pricePerUnit;
+
+  const pakistanDistricts = [
+    "Attock", "Bahawalnagar", "Bahawalpur", "Bhakkar", "Chakwal", "Chiniot", "Dera Ghazi Khan", "Faisalabad", "Gujranwala", "Gujrat", "Hafizabad", "Jhang", "Jhelum", "Kasur", "Khanewal", "Khushab", "Lahore", "Layyah", "Lodhran", "Mandi Bahauddin", "Mianwali", "Multan", "Muzaffargarh", "Nankana Sahib", "Narowal", "Okara", "Pakpattan", "Rahim Yar Khan", "Rajanpur", "Rawalpindi", "Sahiwal", "Sargodha", "Sheikhupura", "Sialkot", "Toba Tek Singh", "Vehari",
+    "Badin", "Dadu", "Ghotki", "Hyderabad", "Jacobabad", "Jamshoro", "Karachi Central", "Karachi East", "Karachi South", "Karachi West", "Korangi", "Malir", "Kashmore", "Khairpur", "Larkana", "Matiari", "Mirpur Khas", "Naushahro Feroze", "Qambar Shahdadkot", "Sanghar", "Shaheed Benazirabad", "Shikarpur", "Sujawal", "Sukkur", "Tando Allahyar", "Tando Muhammad Khan", "Tharparkar", "Thatta", "Umerkot",
+    "Abbottabad", "Bannu", "Battagram", "Buner", "Charsadda", "Chitral", "Dera Ismail Khan", "Hangu", "Haripur", "Karak", "Kohat", "Kohistan", "Lakki Marwat", "Lower Dir", "Malakand", "Mansehra", "Mardan", "Nowshera", "Peshawar", "Shangla", "Swabi", "Swat", "Tank", "Tor Ghar", "Upper Dir",
+    "Awaran", "Barkhan", "Chagai", "Dera Bugti", "Gwadar", "Harnai", "Jafarabad", "Jhal Magsi", "Kachhi", "Kalat", "Kech", "Kharan", "Khuzdar", "Killa Abdullah", "Killa Saifullah", "Kohlu", "Lasbela", "Loralai", "Mastung", "Musakhel", "Nasirabad", "Nushki", "Panjgur", "Pishin", "Quetta", "Sherani", "Sibi", "Sohbatpur", "Washuk", "Zhob", "Ziarat",
+    "Islamabad"
+  ].sort();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -157,12 +174,18 @@ export default function Checkout() {
                     <textarea name="address" required rows={3} className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm resize-none" placeholder="House no, Street, Area..." />
                   </div>
                   <div>
-                    <label className="font-body text-[10px] text-dark/40 font-bold mb-2 block uppercase tracking-widest">City</label>
-                    <select name="city" required className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm appearance-none">
-                      <option value="">Select City</option>
-                      <option value="karachi">Karachi</option>
-                      <option value="lahore">Lahore</option>
-                      <option value="islamabad">Islamabad</option>
+                    <label className="font-body text-[10px] text-dark/40 font-bold mb-2 block uppercase tracking-widest">City / District</label>
+                    <select 
+                      name="city" 
+                      required 
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm appearance-none"
+                    >
+                      <option value="">Select City / District</option>
+                      {pakistanDistricts.map(city => (
+                        <option key={city} value={city.toLowerCase()}>{city}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -175,16 +198,97 @@ export default function Checkout() {
                 </h3>
                 <div className="space-y-3">
                   {paymentOptions.map((opt) => (
-                    <label key={opt.id} className={`flex items-center gap-4 p-4 rounded-[4px] border cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-gold bg-gold/5' : 'border-gold/10 hover:border-gold/20'}`}>
-                      <input type="radio" name="payment" checked={paymentMethod === opt.id} onChange={() => setPaymentMethod(opt.id)} className="hidden" />
-                      <div className={`w-10 h-10 rounded-[4px] flex items-center justify-center ${paymentMethod === opt.id ? 'gold-gradient text-white shadow-md' : 'bg-gold/10 text-gold'}`}>
-                        <opt.icon className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-body font-bold text-dark text-xs">{opt.name}</p>
-                        <p className="font-body text-[10px] text-dark/40">{opt.desc}</p>
-                      </div>
-                    </label>
+                    <div key={opt.id} className="space-y-4">
+                      <label className={`flex items-center gap-4 p-4 rounded-[4px] border cursor-pointer transition-all ${paymentMethod === opt.id ? 'border-gold bg-gold/5' : 'border-gold/10 hover:border-gold/20'}`}>
+                        <input type="radio" name="payment" checked={paymentMethod === opt.id} onChange={() => setPaymentMethod(opt.id)} className="hidden" />
+                        <div className={`w-10 h-10 rounded-[4px] flex items-center justify-center ${paymentMethod === opt.id ? 'gold-gradient text-white shadow-md' : 'bg-gold/10 text-gold'}`}>
+                          <opt.icon className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-body font-bold text-dark text-xs">{opt.name}</p>
+                          <p className="font-body text-[10px] text-dark/40">{opt.desc}</p>
+                        </div>
+                      </label>
+
+                      <AnimatePresence>
+                        {paymentMethod === opt.id && (
+                          <motion.div 
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="p-4 bg-[#FAFAF9] border border-gold/5 rounded-[4px] space-y-4">
+                              {opt.id === "cod" && (
+                                <div className="space-y-4">
+                                  <label className="font-body text-[10px] text-dark/40 font-bold block uppercase tracking-widest">Select Courier Service</label>
+                                  <div className="grid grid-cols-1 gap-2">
+                                    <label className="flex items-center gap-3 p-3 bg-white border border-gold/10 rounded-[4px] cursor-pointer">
+                                      <input type="radio" name="courier" value="daewoo" checked={formData.courier === "daewoo"} onChange={handleInputChange} />
+                                      <span className="text-xs font-body text-dark">Daewoo Express (48 Hours)</span>
+                                    </label>
+                                    <label className="flex items-center gap-3 p-3 bg-white border border-gold/10 rounded-[4px] cursor-pointer">
+                                      <input type="radio" name="courier" value="tcs" checked={formData.courier === "tcs"} onChange={handleInputChange} />
+                                      <span className="text-xs font-body text-dark">TCS (2-3 Days)</span>
+                                    </label>
+                                  </div>
+                                  <p className="text-[9px] text-dark/40 italic">* Note: Delivery may take longer for minor cities.</p>
+                                </div>
+                              )}
+
+                              {opt.id === "bank" && (
+                                <div className="space-y-4">
+                                  <div>
+                                    <label className="font-body text-[10px] text-dark/40 font-bold mb-2 block uppercase tracking-widest">Select Bank</label>
+                                    <select name="bank" value={formData.bank} onChange={handleInputChange} className="w-full px-4 py-2 rounded-[4px] border border-gold/10 bg-white outline-none font-body text-xs">
+                                      <option value="">Select Bank</option>
+                                      <option value="mcb">MCB Bank</option>
+                                      <option value="hbl">HBL (Habib Bank Limited)</option>
+                                      <option value="uabl">UBL (United Bank Limited)</option>
+                                      <option value="meezan">Meezan Bank</option>
+                                      <option value="alfalah">Bank Alfalah</option>
+                                    </select>
+                                  </div>
+                                  {formData.bank && (
+                                    <div className="p-3 bg-gold/5 border border-gold/10 rounded-[4px]">
+                                      <p className="text-[10px] font-bold text-gold uppercase mb-1">Account Details</p>
+                                      <p className="text-xs font-body text-dark">Account Number: <span className="font-bold">0123 4567 8901 2345</span></p>
+                                      <p className="text-xs font-body text-dark">Title: <span className="font-bold">AZZIVONE PREMIUM</span></p>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+
+                              {(opt.id === "jazzcash" || opt.id === "easypaisa") && (
+                                <div className="space-y-4">
+                                  <label className="font-body text-[10px] text-dark/40 font-bold mb-2 block uppercase tracking-widest">{opt.name} Number</label>
+                                  <input 
+                                    type="tel" 
+                                    name={`${opt.id}Number`} 
+                                    value={opt.id === "jazzcash" ? formData.jazzcashNumber : formData.easypaisaNumber}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-2 rounded-[4px] border border-gold/10 bg-white outline-none font-body text-xs" 
+                                    placeholder="03xx-xxxxxxx" 
+                                  />
+                                </div>
+                              )}
+
+                              {opt.id === "atm" && (
+                                <div className="space-y-4">
+                                  <div className="flex gap-4 mb-2">
+                                    <div className="px-3 py-1 bg-white border border-gold/10 rounded text-[10px] font-bold text-dark/40">VISA</div>
+                                    <div className="px-3 py-1 bg-white border border-gold/10 rounded text-[10px] font-bold text-dark/40">MASTER</div>
+                                    <div className="px-3 py-1 bg-white border border-gold/10 rounded text-[10px] font-bold text-dark/40">UNIONPAY</div>
+                                  </div>
+                                  <input type="text" name="cardHolder" value={formData.cardHolder} onChange={handleInputChange} className="w-full px-4 py-2 rounded-[4px] border border-gold/10 bg-white outline-none font-body text-xs mb-2" placeholder="Card Holder Name" />
+                                  <input type="text" name="cardNumber" value={formData.cardNumber} onChange={handleInputChange} className="w-full px-4 py-2 rounded-[4px] border border-gold/10 bg-white outline-none font-body text-xs" placeholder="Card Number" />
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -225,6 +329,27 @@ export default function Checkout() {
                     <span className="text-dark/40">Shipping</span>
                     <span className="text-gold font-bold uppercase tracking-widest">Free</span>
                   </div>
+                  
+                  {/* Selected Payment Info */}
+                  <div className="pt-4 border-t border-gold/5 space-y-2">
+                    <div className="flex justify-between font-body text-[10px] uppercase tracking-widest">
+                      <span className="text-dark/40">Payment Method</span>
+                      <span className="text-gold font-bold">{paymentOptions.find(o => o.id === paymentMethod)?.name}</span>
+                    </div>
+                    {paymentMethod === "cod" && (
+                      <div className="flex justify-between font-body text-[10px] uppercase tracking-widest">
+                        <span className="text-dark/40">Courier</span>
+                        <span className="text-dark font-bold">{formData.courier === "daewoo" ? "Daewoo Express" : "TCS"}</span>
+                      </div>
+                    )}
+                    {paymentMethod === "bank" && formData.bank && (
+                      <div className="flex justify-between font-body text-[10px] uppercase tracking-widest">
+                        <span className="text-dark/40">Bank</span>
+                        <span className="text-dark font-bold">{formData.bank.toUpperCase()}</span>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="flex justify-between items-center pt-4 border-t border-gold/5">
                     <span className="font-display text-xl text-dark">Total</span>
                     <span className="font-display text-3xl text-gold">Rs. {total.toLocaleString()}</span>

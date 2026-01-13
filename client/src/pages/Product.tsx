@@ -205,6 +205,29 @@ export default function Product() {
         </div>
       </section>
 
+      {/* Reactions Section */}
+      <section className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">Reaction from Customers</h2>
+            <div className="w-12 h-1 gold-glaze-bar mx-auto rounded-full" />
+          </div>
+
+          <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
+            {reviews.map((video, index) => (
+              <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
+                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Review" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
+                    <Play className="w-6 h-6 fill-white ml-1" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Problem → Solution */}
       <section className="py-24 bg-white px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
@@ -240,29 +263,6 @@ export default function Product() {
                 Azzivone uses 96% Pure Snail Mucin to naturally stimulate collagen and heal the moisture barrier. It's a reset button for your skin.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Reactions Section */}
-      <section className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">Reaction from Customers</h2>
-            <div className="w-12 h-1 gold-glaze-bar mx-auto rounded-full" />
-          </div>
-
-          <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
-            {reviews.map((video, index) => (
-              <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
-                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Review" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
-                    <Play className="w-6 h-6 fill-white ml-1" />
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
