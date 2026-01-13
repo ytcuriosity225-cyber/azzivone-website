@@ -109,55 +109,74 @@ export default function Product() {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="relative w-full max-w-4xl mb-6"
+            className="relative w-full max-w-5xl mb-16 px-4"
           >
-            <img src={productHero} alt="Product" className="relative rounded-[6px] elegant-shadow w-full aspect-[16/9] md:aspect-[21/9] object-cover border border-gold/5" />
+            <div className="relative group overflow-hidden rounded-2xl elegant-shadow border border-gold/10">
+              <img src={productHero} alt="Product" className="w-full aspect-[21/9] object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              {/* Floating Badge */}
+              <div className="absolute top-6 right-6 bg-dark/80 backdrop-blur-md border border-gold/30 px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl">
+                <div className="flex -space-x-2">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-gold/50 bg-dark overflow-hidden ring-4 ring-dark/50">
+                      <img 
+                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+200}&backgroundColor=000000`} 
+                        className="w-full h-full object-cover grayscale brightness-110"
+                        alt="User" 
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="h-4 w-px bg-gold/20 mx-1" />
+                <div className="flex flex-col">
+                  <div className="flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map((s) => <Star key={s} className="w-2.5 h-2.5 text-gold fill-gold" />)}
+                  </div>
+                  <span className="text-[9px] font-bold text-gold uppercase tracking-widest leading-none mt-1">Elite Choice</span>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
-          <div className="flex flex-col items-center gap-6 mb-12">
-            <div className="flex flex-col items-center gap-4">
-              <div className="flex -space-x-1.5">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-10 h-10 rounded-full border-2 border-gold/50 bg-dark overflow-hidden shadow-lg shadow-gold/20 z-10">
-                    <img 
-                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+100}&backgroundColor=000000&top=shorthair,longhair&accessories=eyepatch,sunglasses`} 
-                      className="w-full h-full object-cover grayscale brightness-110 contrast-125"
-                      alt="Elite User" 
-                    />
+          {/* Social Proof & Scarcity Hub */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl mb-20 px-4">
+            <div className="bg-white/50 backdrop-blur-sm border border-gold/10 p-6 rounded-xl flex items-center justify-between group hover:border-gold/30 transition-all duration-300">
+              <div className="flex items-center gap-5">
+                <div className="relative">
+                  <div className="w-14 h-14 rounded-full bg-gold/5 flex items-center justify-center border border-gold/10 group-hover:bg-gold/10 transition-colors">
+                    <Eye className="w-6 h-6 text-gold" />
                   </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 bg-gold/5 rounded-full border border-gold/20 backdrop-blur-sm">
-                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                <span className="flex items-center gap-2 text-[10px] font-bold text-gold uppercase tracking-[0.2em]">
-                  <Eye className="w-3 h-3 text-gold" /> 50 People viewing this now
-                </span>
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-display text-dark leading-none mb-1">50 Elite Members</h4>
+                  <p className="text-[10px] text-dark/40 uppercase tracking-[0.2em] font-bold">Viewing this exclusive offer</p>
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-2 bg-dark/95 border border-gold/30 px-6 py-3 rounded-[4px] shadow-2xl">
-              <div className="flex items-center gap-2 text-gold">
-                <Clock className="w-4 h-4" />
-                <span className="text-xs font-bold uppercase tracking-[0.3em]">Strictly Limited</span>
+            <div className="bg-dark border border-gold/20 p-6 rounded-xl flex items-center justify-between group hover:border-gold/40 transition-all duration-300 shadow-2xl">
+              <div className="flex items-center gap-5">
+                <div className="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center border border-gold/20">
+                  <Clock className="w-6 h-6 text-gold animate-spin-slow" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-display text-gold leading-none mb-1">Strictly Limited</h4>
+                  <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold">300 Bottles Crafted Monthly</p>
+                </div>
               </div>
-              <p className="text-[10px] text-white/60 uppercase tracking-[0.1em] text-center max-w-[250px]">
-                Artisanal production: Only <span className="text-gold font-bold">300 bottles</span> crafted each month for elite clients.
-              </p>
+              <div className="bg-gold/10 px-3 py-1 rounded-md border border-gold/20">
+                <span className="text-gold text-xs font-bold font-mono">24/300</span>
+              </div>
             </div>
           </div>
 
-          <motion.div {...fadeInUp} className="relative z-10 text-center max-w-4xl">
-            <div className="flex flex-col items-center gap-4 mb-8">
-              <div className="flex flex-col items-center gap-2">
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className="w-4 h-4 text-gold fill-gold" />
-                  ))}
-                </div>
-                <p className="text-xs font-bold text-gold bg-gold/5 px-4 py-1.5 rounded-full border border-gold/20 uppercase tracking-[0.2em] backdrop-blur-sm">
-                  The Choice of Elite 2,000+
-                </p>
-              </div>
+          <motion.div {...fadeInUp} className="relative z-10 text-center max-w-4xl px-4">
+            <div className="inline-flex items-center gap-2 mb-8 bg-gold/5 border border-gold/10 px-6 py-2 rounded-full backdrop-blur-sm">
+              <SparklesIcon className="w-4 h-4 text-gold" />
+              <span className="text-[10px] font-bold text-gold uppercase tracking-[0.3em]">Premium Artisan Formula</span>
+              <SparklesIcon className="w-4 h-4 text-gold" />
             </div>
             
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-dark leading-[1.1] mb-8 font-medium">
