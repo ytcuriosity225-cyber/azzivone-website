@@ -58,15 +58,15 @@ const FloatingIcons = () => {
 
 export default function Home() {
   const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] as const } }
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const } }
   };
 
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+      transition: { staggerChildren: 0.1 }
     }
   };
 
@@ -88,46 +88,41 @@ export default function Home() {
       title: "Natural Glow",
       description: "Reveals radiant, glass-like skin texture",
       image: product3
-    },
-    {
-      icon: Shield,
-      title: "Skin Repair",
-      description: "Heals scars, acne marks & fine lines naturally",
-      image: product4
     }
   ];
 
-  const testimonials = [
+  const products = [
     {
-      name: "Ayesha K.",
-      text: "Started using 2 weeks ago. My skin has never looked this good! The glow is real ✨",
-      rating: 5
+      id: 1,
+      name: "Azzivone Snail Serum",
+      price: "3,500",
+      image: product4,
+      bullets: [
+        "96% Pure Snail Mucin",
+        "Deep 24h Hydration",
+        "Repairs Acne Scars",
+        "Cruelty-Free"
+      ]
     },
     {
-      name: "Sara M.",
-      text: "Finally found something that actually works. My dark spots are fading so fast!",
-      rating: 5
-    },
-    {
-      name: "Fatima R.",
-      text: "Best investment for my skin. Even my husband noticed the difference! 💕",
-      rating: 5
+      id: 2,
+      name: "Skin Reset Balm",
+      price: "2,800",
+      image: product5,
+      bullets: [
+        "Calms Redness",
+        "Barrier Repair",
+        "Vitamin B5 Rich",
+        "All-Night Glow"
+      ]
     }
-  ];
-
-  const comparisonData = [
-    { feature: "Snail Mucin Concentration", ours: "96% Pure", market: "30-50% diluted" },
-    { feature: "Added Fillers", ours: "Zero fillers", market: "Water & alcohols" },
-    { feature: "Absorption Time", ours: "Under 30 sec", market: "2-3 minutes" },
-    { feature: "Dermatologist Tested", ours: "Yes ✓", market: "Rarely" },
-    { feature: "Results Timeline", ours: "7-14 days", market: "4-6 weeks" }
   ];
 
   const reviews = [
-    { type: 'video', url: '#', thumbnail: product1 },
-    { type: 'video', url: '#', thumbnail: product2 },
-    { type: 'video', url: '#', thumbnail: product3 },
-    { type: 'video', url: '#', thumbnail: product4 },
+    { type: 'video', thumbnail: product1 },
+    { type: 'video', thumbnail: product2 },
+    { type: 'video', thumbnail: product3 },
+    { type: 'video', thumbnail: product4 },
   ];
 
   const whatsappScreenshots = [
@@ -135,33 +130,24 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-cream overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#FAFAF9] overflow-x-hidden relative selection:bg-gold/10">
       <FloatingIcons />
+      
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-cream/80 backdrop-blur-md border-b border-gold/10">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FAFAF9]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-          <img src={logo} alt="Azzivone" className="h-16 md:h-24 transform hover:scale-105 transition-transform" data-testid="logo-nav" />
+          <img src={logo} alt="Azzivone" className="h-12 md:h-16" />
           <Link href="/product">
-            <button 
-              className="bg-gold text-white px-6 md:px-10 py-3 md:py-4 rounded-full font-body font-bold text-sm md:text-base tracking-wide hover:bg-gold/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-              data-testid="button-order-nav"
-            >
+            <button className="bg-gold text-white px-6 py-2.5 rounded-[6px] font-body font-medium text-sm tracking-tight hover:shadow-lg transition-all active:scale-95">
               Order Now
             </button>
           </Link>
         </div>
       </nav>
 
-      {/* Hero Section with Video Background */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          data-testid="video-hero"
-        >
+      {/* Hero Section */}
+      <section className="relative h-[85vh] md:h-screen flex items-center justify-center overflow-hidden bg-white">
+        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-90">
           <source src={heroVideo} type="video/mp4" />
         </video>
         <div className="absolute inset-0 hero-video-overlay" />
@@ -170,279 +156,165 @@ export default function Home() {
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="relative z-10 text-center px-6 max-w-4xl mx-auto"
+          className="relative z-10 text-center px-6 max-w-3xl mx-auto"
         >
-          <motion.p 
-            variants={fadeInUp}
-            className="font-body text-gold uppercase tracking-[0.3em] text-xs md:text-sm mb-6"
-          >
-            Premium Skincare
-          </motion.p>
           <motion.h1 
             variants={fadeInUp}
-            className="font-display text-4xl md:text-7xl lg:text-8xl text-white leading-tight mb-8"
+            className="font-display text-4xl md:text-7xl text-dark leading-[1.1] mb-6 font-medium"
           >
-            The 30-Second Morning Ritual for{" "}
-            <span className="italic text-gold">Flawless Skin</span>
+            Glass-Glow Skin, engineered for people who don’t slow down
           </motion.h1>
-          <motion.p 
-            variants={fadeInUp}
-            className="font-body text-white text-lg md:text-2xl max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-md"
-          >
-            Discover the power of 96% pure Snail Mucin. Transform your skin with intense hydration and natural glow.
-          </motion.p>
           <motion.div variants={fadeInUp}>
             <Link href="/product">
-              <button 
-                className="gold-gradient text-white px-10 md:px-14 py-5 rounded-full font-body font-black text-lg md:text-2xl tracking-wide hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-gold/30"
-                data-testid="button-order-hero"
-              >
-                View Product 
-                <ChevronRight className="inline-block ml-2 w-6 h-6 stroke-[3px]" />
+              <button className="bg-gold text-white px-10 py-4 rounded-[6px] font-body font-medium text-lg hover:shadow-xl transition-all active:scale-95">
+                Order Now
               </button>
             </Link>
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
         <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
-          <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
-            <motion.div 
-              animate={{ y: [0, 12, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              className="w-1.5 h-1.5 bg-gold rounded-full"
-            />
-          </div>
+          <ChevronLeft className="-rotate-90 w-5 h-5 text-dark/30" />
         </motion.div>
       </section>
 
-      {/* Benefits Horizontal Slider */}
-      <section className="py-24 md:py-32 bg-cream overflow-hidden relative z-10">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 text-dark font-black">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="text-center mb-16 md:mb-24"
-          >
-            <motion.p variants={fadeInUp} className="font-body text-gold uppercase tracking-[0.25em] text-sm md:text-lg mb-6">
-              Why It Works
-            </motion.p>
-            <motion.h2 variants={fadeInUp} className="font-display text-4xl md:text-7xl mb-8">
-              Why Busy People <span className="italic text-gold">Love It</span>
-            </motion.h2>
-            <motion.div variants={fadeInUp} className="w-32 h-1 bg-gold mx-auto" />
-          </motion.div>
-
-          <div className="relative group/slider -mx-4 md:-mx-6 px-4 md:px-6">
-            <motion.div 
-              className="flex gap-6 md:gap-10 overflow-x-auto pb-16 snap-x snap-mandatory no-scrollbar scroll-smooth touch-pan-x"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {benefits.map((benefit, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ 
-                    duration: 0.6, 
-                    delay: index * 0.1,
-                    ease: "easeOut"
-                  }}
-                  className="min-w-[85vw] md:min-w-[450px] snap-center group relative bg-white rounded-[3rem] overflow-hidden elegant-shadow border-4 border-white transition-all duration-500 hover:scale-[1.02]"
-                  data-testid={`card-benefit-${index}`}
-                >
-                  <div className="aspect-[4/5] overflow-hidden">
-                    <img 
-                      src={benefit.image} 
-                      alt={benefit.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-                    <div className="flex items-center gap-4 mb-4 md:mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-gold/30 backdrop-blur-md flex items-center justify-center border border-white/20">
-                        <benefit.icon className="w-8 h-8 text-gold" />
-                      </div>
-                      <h3 className="font-display text-3xl md:text-4xl text-white tracking-wide">{benefit.title}</h3>
-                    </div>
-                    <p className="font-body text-white/90 text-lg md:text-xl font-medium leading-relaxed">{benefit.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Video Reviews Section */}
-      <section className="py-24 md:py-32 bg-white overflow-hidden relative z-10">
+      {/* Product Catalogue */}
+      <section className="py-24 bg-white relative z-10">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="text-center mb-16 md:mb-24"
-          >
-            <motion.p variants={fadeInUp} className="font-body text-gold uppercase tracking-[0.25em] text-sm md:text-lg mb-6">
-              Experience the Magic
-            </motion.p>
-            <motion.h2 variants={fadeInUp} className="font-display text-4xl md:text-7xl text-dark mb-8">
-              Video <span className="italic text-gold">Reviews</span>
-            </motion.h2>
-            <motion.div variants={fadeInUp} className="w-32 h-1 bg-gold mx-auto" />
-          </motion.div>
-
-          <div className="flex gap-6 md:gap-10 overflow-x-auto pb-16 snap-x snap-mandatory no-scrollbar scroll-smooth -mx-4 md:-mx-6 px-4 md:px-6 touch-pan-x cursor-grab active:cursor-grabbing">
-            {reviews.map((video, index) => (
-              <motion.div 
-                key={index} 
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="min-w-[80vw] md:min-w-[380px] aspect-[9/16] bg-cream rounded-[3rem] overflow-hidden snap-center relative group elegant-shadow border-4 border-gold/10"
-              >
-                <img src={video.thumbnail} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Video Review" />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gold/90 flex items-center justify-center text-white backdrop-blur-sm transform scale-90 group-hover:scale-110 transition-all duration-300 shadow-2xl">
-                    <Play className="w-10 h-10 md:w-12 md:h-12 fill-white ml-1" />
-                  </div>
-                </div>
-                <div className="absolute bottom-10 left-8 right-8 text-white drop-shadow-xl">
-                  <p className="font-display text-2xl md:text-3xl font-bold italic mb-2">"Absolute Game Changer ✨"</p>
-                  <div className="flex text-gold gap-1">
-                    {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-current" />)}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+          <div className="mb-16">
+            <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">The Catalogue</h2>
+            <div className="w-12 h-0.5 bg-gold" />
           </div>
-        </div>
-      </section>
 
-      {/* Product Showcase */}
-      <section className="py-24 md:py-32 bg-gradient-to-b from-cream to-white relative z-10">
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative"
-            >
-              <div className="absolute -inset-8 bg-gold/5 rounded-[3rem] -rotate-3" />
-              <img 
-                src={product5} 
-                alt="Snail Mucin Serum" 
-                className="relative rounded-[3rem] elegant-shadow float-animation w-full border-4 border-white"
-                data-testid="img-product-showcase"
-              />
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <p className="font-body text-gold uppercase tracking-[0.25em] text-sm md:text-lg mb-6">
-                The Formula
-              </p>
-              <h2 className="font-display text-4xl md:text-6xl text-dark mb-10 font-black">
-                96% Pure Snail Mucin <span className="italic text-gold">Perfection</span>
-              </h2>
-              <p className="font-body text-dark text-lg md:text-2xl leading-relaxed mb-12 font-medium">
-                Our serum harnesses the regenerative power of snail secretion filtrate, 
-                naturally rich in hyaluronic acid, glycoprotein enzymes, and copper peptides. 
-                Each drop delivers intense hydration while stimulating collagen production.
-              </p>
-              
-              <div className="space-y-6 mb-16">
-                {[
-                  "Intense 24-hour hydration",
-                  "Reduces fine lines & wrinkles",
-                  "Fades acne scars & dark spots",
-                  "Strengthens skin barrier",
-                  "Dermatologist approved"
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4">
-                    <CheckCircle className="w-8 h-8 text-gold flex-shrink-0 stroke-[3px]" />
-                    <span className="font-body text-lg md:text-xl text-dark font-black tracking-tight">{item}</span>
-                  </div>
-                ))}
+          <div className="hidden md:grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {products.map((p) => (
+              <div key={p.id} className="group bg-[#FAFAF9] p-8 rounded-[6px] flex gap-10 items-center card-hover border border-transparent hover:border-gold/5">
+                <div className="w-1/2 aspect-[4/5] rounded-[6px] overflow-hidden">
+                  <img src={p.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={p.name} />
+                </div>
+                <div className="w-1/2">
+                  <h3 className="font-display text-3xl text-dark mb-4">{p.name}</h3>
+                  <ul className="space-y-3 mb-8">
+                    {p.bullets.map((b, i) => (
+                      <li key={i} className="flex items-center gap-2 text-dark/70 font-body text-sm">
+                        <CheckCircle className="w-4 h-4 text-gold" /> {b}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="font-display text-2xl text-gold mb-6">Rs. {p.price}</p>
+                  <Link href="/product">
+                    <button className="w-full bg-gold text-white py-3 rounded-[6px] font-body text-sm font-medium hover:shadow-lg transition-all">View Details</button>
+                  </Link>
+                </div>
               </div>
+            ))}
+          </div>
 
-              <Link href="/product">
-                <button 
-                  className="w-full md:w-auto bg-gold text-white px-10 py-5 rounded-full font-body font-black text-xl hover:scale-105 transition-all duration-300 shadow-2xl shadow-gold/30 flex items-center justify-center gap-3"
-                  data-testid="button-order-showcase"
-                >
-                  Get Yours Today
-                  <ChevronRight className="w-6 h-6 stroke-[3px]" />
-                </button>
-              </Link>
-            </motion.div>
+          {/* Mobile Carousel */}
+          <div className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 pb-4">
+            {products.map((p) => (
+              <div key={p.id} className="min-w-[85vw] snap-center bg-[#FAFAF9] p-6 rounded-[6px]">
+                <img src={p.image} className="w-full aspect-[4/5] object-cover rounded-[6px] mb-6" alt={p.name} />
+                <h3 className="font-display text-2xl text-dark mb-4">{p.name}</h3>
+                <p className="font-display text-xl text-gold mb-6">Rs. {p.price}</p>
+                <Link href="/product">
+                  <button className="w-full bg-gold text-white py-3 rounded-[6px] font-body text-sm font-medium">Order Now</button>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* WhatsApp Proof Section */}
-      <section className="py-24 md:py-32 bg-cream relative z-10">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 text-dark font-black">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="text-center mb-16 md:mb-24"
-          >
-            <motion.p variants={fadeInUp} className="font-body text-gold uppercase tracking-[0.25em] text-sm md:text-lg mb-6">
-              Community Love
-            </motion.p>
-            <motion.h2 variants={fadeInUp} className="font-display text-4xl md:text-7xl mb-8">
-              Real <span className="italic text-gold">Conversations</span>
-            </motion.h2>
-            <motion.div variants={fadeInUp} className="w-32 h-1 bg-gold mx-auto" />
-          </motion.div>
+      {/* Reactions Section */}
+      <section className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">Reaction from Customers</h2>
+            <div className="w-12 h-0.5 bg-gold mx-auto" />
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-            {whatsappScreenshots.map((img, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-[2.5rem] overflow-hidden elegant-shadow p-3 border-4 border-white transform hover:-translate-y-2 transition-transform duration-300"
-              >
-                <img 
-                  src={img} 
-                  className="w-full h-auto rounded-[2rem]" 
-                  alt="WhatsApp Proof" 
-                  data-testid={`whatsapp-proof-${index}`}
-                />
-              </motion.div>
+          <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
+            {reviews.map((video, index) => (
+              <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
+                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Review" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
+                    <Play className="w-6 h-6 fill-white ml-1" />
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-12">
+            {whatsappScreenshots.map((img, index) => (
+              <div key={index} className="bg-white p-2 rounded-[6px] elegant-shadow border border-gold/5">
+                <img src={img} className="w-full aspect-[3/4] object-cover rounded-[4px]" alt="Chat" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Science & Benefits */}
+      <section className="py-24 bg-white relative z-10">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {benefits.map((b, i) => (
+              <div key={i} className="text-center md:text-left">
+                <div className="w-12 h-12 bg-gold/10 rounded-[6px] flex items-center justify-center mb-6 mx-auto md:mx-0">
+                  <b.icon className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="font-display text-2xl text-dark mb-4">{b.title}</h3>
+                <p className="font-body text-dark/70 text-sm leading-relaxed">{b.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Scarcity & Final CTA */}
+      <section className="py-32 bg-[#FAFAF9] relative z-10">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h2 className="font-display text-3xl md:text-6xl text-dark mb-8 leading-tight">
+            Elevate your skin to <span className="text-gold">Glass-Status</span>
+          </h2>
+          <p className="font-body text-dark/60 text-lg mb-12">
+            Experience the 96% pure difference. <br />
+            <span className="text-gold font-medium">Only 300 bottles produced monthly.</span>
+          </p>
+          <Link href="/product">
+            <button className="bg-gold text-white px-12 py-4 rounded-[6px] font-body font-medium text-lg hover:shadow-xl transition-all">
+              Order Azzivone Serum
+            </button>
+          </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-24 px-6 border-t border-gold/10 text-center bg-cream relative z-10">
-        <img src={logo} alt="Azzivone" className="h-16 mx-auto mb-10 opacity-70" />
-        <p className="font-body text-dark font-bold text-lg mb-4">Azzivone Skincare Elite</p>
-        <p className="font-body text-dark/40 text-sm font-bold tracking-widest uppercase">&copy; 2026 Azzivone Skincare. Crafted for your radiance.</p>
+      <footer className="py-16 bg-white border-t border-gold/10 text-center relative z-10 px-6">
+        <h2 className="font-display text-2xl text-dark mb-6">Azzivone</h2>
+        <div className="flex flex-wrap justify-center gap-x-12 gap-y-4 font-body text-xs text-dark/40 uppercase tracking-widest mb-8">
+          <span>Premium Skincare</span>
+          <span>US Shipping</span>
+          <span>Contact Us</span>
+        </div>
+        <p className="font-body text-[10px] text-dark/30 tracking-[0.3em] uppercase">© 2026 Azzivone. All rights reserved.</p>
       </footer>
+
+      {/* Sticky Bottom CTA */}
+      <div className="md:hidden fixed bottom-6 left-6 right-6 z-50">
+        <Link href="/product">
+          <button className="w-full bg-gold text-white py-4 rounded-[6px] font-body font-medium text-base shadow-2xl active:scale-95 transition-transform">
+            Order Azzivone Serum
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }

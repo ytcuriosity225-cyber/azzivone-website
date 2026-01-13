@@ -1,0 +1,69 @@
+Upgrade my existing Azzivone skincare landing page at [https://elite-conversion-blueprint--ytcuriosity225.replit.app/] to a **premium, luxury, conversion-optimized homepage and product page**. Use only the existing color palette: #FAFAF9 (main background), white, and #B45309 (accent / CTA). Do NOT use black or charcoal anywhere. Focus on layout, typography, spacing, and polished interactions. Make fully mobile-first.
+
+1️⃣ COLORS & TYPOGRAPHY:
+- Section backgrounds: #FAFAF9 or white
+- Text: black for readability only where needed, otherwise white on colored accent areas
+- Accent / CTA buttons: #B45309
+- Headings: Cormorant Garamond, weight 500–600, line-height 1.1–1.2
+- Body text: Montserrat / Inter, weight 400–500, line-height 1.6
+- Buttons: radius 6px, subtle hover shadow/scale
+- Ensure typography is consistent across hero, product catalogue, reviews, benefits, CTA, and footer
+
+2️⃣ HERO:
+- Full-bleed video/image background with minimal overlay for readability (use white or semi-transparent #FAFAF9 if needed)
+- Headline: "Glass-Glow Skin, engineered for people who don’t slow down"
+- CTA: gold button (#B45309) → Order Now
+- Mobile-friendly hero height and font sizes
+
+3️⃣ PRODUCT CATALOGUE:
+- Grid layout: desktop 1–2 products per row, mobile swipeable carousel
+- Product image left, 3–4 feature bullets right
+- Hover: subtle lift + shadow
+- CTA button prominent
+- Keep images and text aligned, consistent spacing
+- Maintain #FAFAF9 / white backgrounds only
+
+4️⃣ CUSTOMER REACTIONS / REVIEWS SECTION:
+- Section title: "Reaction from Customers"
+- Horizontal scroll carousel for short video reviews
+- WhatsApp chat screenshots in uniform cards
+- Delivery / feedback images below, consistent layout
+- Background: #FAFAF9
+- Fix spacing, alignment, readability on mobile & desktop
+
+5️⃣ SCIENCE & BENEFITS SECTION:
+- Highlight 3–4 key benefits in columns (stacked on mobile)
+- Use #B45309 for icons / bullet highlights if needed
+- Background: #FAFAF9
+- Copy concise, authoritative
+
+6️⃣ SCARCITY & FINAL CTA:
+- Background: #FAFAF9 / white (no black)
+- Text: #1C1917 or black for readability only
+- Highlight numbers / urgency in #B45309
+- Sticky bottom CTA on mobile: "Order Azzivone Serum"
+- Emphasize: "Only 300 bottles produced monthly"
+
+7️⃣ FOOTER:
+- Minimal: brand name, US shipping, contact
+- Background: #FAFAF9 / white
+- Text: #1C1917 / black for readability
+- No dark or black backgrounds
+
+8️⃣ INTERACTIONS & ANIMATIONS:
+- Smooth fade / translateY section reveals
+- Hover lift/shadow on product cards
+- Video autoplay muted + lazy-load
+- Mobile swipe for product carousel & video reviews
+- Subtle cinematic motion, no flashy animations
+
+9️⃣ MOBILE-FIRST ADJUSTMENTS:
+- Limit scroll to 5–6 sections
+- Hero height reduced for mobile
+- Sticky CTA always visible
+- Adjust font sizes & padding for readability
+
+🔟 GOAL:
+- Upgrade the existing Replit site **without using black/charcoal backgrounds**
+- Fix typography, spacing, product layout, customer reactions/reviews, sticky CTA
+- Make homepage & product page **polished, cohesive, luxury, and conversion-optimized**
