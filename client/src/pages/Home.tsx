@@ -109,14 +109,14 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-cream/80 backdrop-blur-md border-b border-gold/10">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
           <img src={logo} alt="Azzivone" className="h-8 md:h-10" data-testid="logo-nav" />
-          <Link href="/checkout">
-            <button 
-              className="bg-gold text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full font-body font-semibold text-xs md:text-sm tracking-wide hover:bg-gold/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-              data-testid="button-order-nav"
-            >
-              Order Now
-            </button>
-          </Link>
+            <Link href="/product">
+              <button 
+                className="bg-gold text-white px-4 md:px-6 py-2 md:py-2.5 rounded-full font-body font-semibold text-xs md:text-sm tracking-wide hover:bg-gold/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+                data-testid="button-order-nav"
+              >
+                Order Now
+              </button>
+            </Link>
         </div>
       </nav>
 
@@ -160,7 +160,7 @@ export default function Home() {
             Discover the power of 96% pure Snail Mucin. Transform your skin with intense hydration and natural glow.
           </motion.p>
           <motion.div variants={fadeInUp}>
-            <Link href="/checkout">
+            <Link href="/product">
               <button 
                 className="gold-gradient text-white px-8 md:px-10 py-4 rounded-full font-body font-bold text-base md:text-lg tracking-wide hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-gold/30"
                 data-testid="button-order-hero"
@@ -352,7 +352,7 @@ export default function Home() {
                 ))}
               </div>
 
-              <Link href="/checkout">
+              <Link href="/product">
                 <button 
                   className="w-full md:w-auto bg-gold text-white px-8 py-4 rounded-full font-body font-bold hover:bg-gold/90 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                   data-testid="button-order-showcase"
