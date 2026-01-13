@@ -1,6 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { CheckCircle, Droplets, Sparkles, Shield, Clock, Star, ChevronRight, Award, Leaf, Heart } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { CheckCircle, Droplets, Sparkles, Shield, Clock, Star, ChevronRight, ChevronLeft, Award, Leaf, Heart } from "lucide-react";
 import heroVideo from "@assets/HERO_VIDEO_1768257063489.mp4";
 import logo from "@assets/logo_1768257103773.png";
 import product1 from "@assets/WhatsApp_Image_2026-01-12_at_2.29.14_PM_1768257023864.jpeg";
@@ -207,37 +208,52 @@ export default function Home() {
             <motion.div variants={fadeInUp} className="w-20 h-0.5 bg-gold mx-auto" />
           </motion.div>
 
-          <div className="relative">
+          <div className="relative group/slider">
             <motion.div 
-              className="flex gap-6 overflow-x-auto pb-8 snap-x no-scrollbar"
+              className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar scroll-smooth"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {benefits.map((benefit, index) => (
                 <motion.div
                   key={index}
-                  className="min-w-[300px] md:min-w-[400px] snap-center group relative bg-white rounded-2xl overflow-hidden card-hover elegant-shadow"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ 
+                    duration: 0.6, 
+                    delay: index * 0.1,
+                    ease: [0.23, 1, 0.32, 1]
+                  }}
+                  className="min-w-[300px] md:min-w-[400px] snap-center group relative bg-white rounded-2xl overflow-hidden card-hover elegant-shadow transition-all duration-500"
                   data-testid={`card-benefit-${index}`}
                 >
                   <div className="aspect-[4/5] overflow-hidden">
                     <img 
                       src={benefit.image} 
                       alt={benefit.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90" />
                   </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-gold/30 backdrop-blur-sm flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-gold/30 backdrop-blur-md flex items-center justify-center border border-white/20">
                         <benefit.icon className="w-5 h-5 text-gold" />
                       </div>
-                      <h3 className="font-display text-xl md:text-2xl text-white">{benefit.title}</h3>
+                      <h3 className="font-display text-xl md:text-2xl text-white tracking-wide">{benefit.title}</h3>
                     </div>
-                    <p className="font-body text-white/90 text-sm md:text-base">{benefit.description}</p>
+                    <p className="font-body text-white/90 text-sm md:text-base leading-relaxed">{benefit.description}</p>
                   </div>
                 </motion.div>
               ))}
             </motion.div>
+            
+            {/* Visual Hint for Swiping */}
+            <div className="flex justify-center gap-2 mt-4 md:hidden">
+              {benefits.map((_, i) => (
+                <div key={i} className="w-1.5 h-1.5 rounded-full bg-gold/30" />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -261,19 +277,23 @@ export default function Home() {
             <motion.div variants={fadeInUp} className="w-20 h-0.5 bg-gold mx-auto" />
           </motion.div>
 
-          <div className="flex gap-6 overflow-x-auto pb-8 snap-x no-scrollbar">
+          <div className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar scroll-smooth">
             {reviews.map((video, index) => (
-              <div 
+              <motion.div 
                 key={index} 
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="min-w-[260px] md:min-w-[320px] aspect-[9/16] bg-cream rounded-2xl overflow-hidden snap-center relative group elegant-shadow"
               >
-                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Video Review" />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-gold/80 flex items-center justify-center text-white backdrop-blur-sm transform group-hover:scale-110 transition-transform">
+                <img src={video.thumbnail} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Video Review" />
+                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-gold/90 flex items-center justify-center text-white backdrop-blur-md transform scale-90 group-hover:scale-110 transition-all duration-300 shadow-xl">
                     <ChevronRight className="w-8 h-8 ml-1" />
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
