@@ -209,6 +209,7 @@ export default function Product() {
               </div>
             ))}
           </div>
+        </div>
       </section>
 
       {/* DOC Reactions Section */}
