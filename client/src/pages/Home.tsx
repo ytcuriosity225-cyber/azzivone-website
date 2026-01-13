@@ -366,6 +366,26 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Limited Edition Glaze Strip */}
+      <section className="relative overflow-hidden py-4">
+        <div className="absolute inset-0 gold-gradient opacity-90 backdrop-blur-sm" />
+        <div className="relative z-10 overflow-hidden">
+          <div className="flex whitespace-nowrap animate-shimmer py-3">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="flex items-center gap-8 mx-4">
+                <Sparkles className="w-5 h-5 text-white animate-pulse" />
+                <span className="font-display text-white text-lg md:text-xl tracking-wider font-semibold">
+                  ONLY 300 BOTTLES ARE MADE EACH MONTH
+                </span>
+                <Sparkles className="w-5 h-5 text-white animate-pulse" />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Glossy Overlay Effect */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-white/10 pointer-events-none" />
+      </section>
+
       {/* WhatsApp Proof Section */}
       <section className="py-20 md:py-24 bg-cream">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
