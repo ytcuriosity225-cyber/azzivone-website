@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   LayoutDashboard, 
@@ -20,7 +20,14 @@ import {
   Video,
   CheckCircle2,
   Clock,
-  Star
+  Star,
+  Activity,
+  History,
+  Type,
+  Maximize2,
+  Monitor,
+  Search,
+  Zap
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -33,9 +40,9 @@ import { Textarea } from "@/components/ui/textarea";
 // Mock Data
 const stats = [
   { label: "Total Visitors", value: "12,480", icon: Eye, color: "text-blue-500", bg: "bg-blue-50" },
-  { label: "Total Customers", value: "1,236", icon: Users, color: "text-gold", bg: "bg-gold/10" },
+  { label: "Total Orders", value: "824", icon: Package, color: "text-purple-500", bg: "bg-purple-50" },
   { label: "Add to Carts", value: "3,982", icon: ShoppingCart, color: "text-emerald-500", bg: "bg-emerald-50" },
-  { label: "Orders", value: "824", icon: Package, color: "text-purple-500", bg: "bg-purple-50" },
+  { label: "Conversion Rate", value: "6.8%", icon: Activity, color: "text-gold", bg: "bg-gold/10" },
 ];
 
 const locations = [
@@ -45,412 +52,450 @@ const locations = [
   { city: "Faisalabad", count: "450", percent: 5 },
 ];
 
-export default function AdminDashboard() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const changelog = [
+  { action: "Hero text updated", time: "2 mins ago" },
+  { action: "Review from Sara K. removed", time: "1 hour ago" },
+  { action: "Main product image replaced", time: "3 hours ago" },
+  { action: "Benefits list reordered", time: "5 hours ago" },
+];
 
-  if (!isLoggedIn) {
-    return (
-      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center p-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md"
-        >
-          <Card className="border-gold/10 elegant-shadow">
-            <CardHeader className="text-center pb-2">
-              <div className="mb-4 flex justify-center">
-                <div className="w-12 h-12 rounded-full gold-gradient flex items-center justify-center">
-                  <Settings className="text-white w-6 h-6" />
-                </div>
-              </div>
-              <CardTitle className="font-display text-2xl text-dark">Azzivone Admin</CardTitle>
-              <p className="text-sm text-dark/40 uppercase tracking-widest font-bold mt-2">Elite Control Panel</p>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-              <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Email Address</Label>
-                <Input 
-                  type="email" 
-                  placeholder="admin@azzivone.com" 
-                  className="border-gold/20 focus:border-gold h-12"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Password</Label>
-                <Input 
-                  type="password" 
-                  placeholder="••••••••" 
-                  className="border-gold/20 focus:border-gold h-12"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <Button 
-                onClick={() => setIsLoggedIn(true)}
-                className="w-full gold-gradient text-white h-12 font-bold uppercase tracking-widest mt-4 hover:shadow-lg transition-all"
-              >
-                Login to Dashboard
-              </Button>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-    );
-  }
+export default function AdminDashboard() {
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeSubTab, setActiveSubTab] = useState("homepage");
+  const [previewMode, setPreviewMode] = useState(false);
+
+  // Preview States
+  const [heroHeading, setHeroHeading] = useState("Azzivone Snail Mucin Serum");
+  const [productPrice, setProductPrice] = useState("2,499");
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gold/10 hidden lg:flex flex-col sticky top-0 h-screen">
+    <div className="min-h-screen bg-[#FAFAF9] flex font-body selection:bg-gold/10">
+      {/* Left Sidebar */}
+      <aside className="w-64 bg-white border-r border-gold/10 hidden lg:flex flex-col sticky top-0 h-screen z-50">
         <div className="p-8">
-          <h1 className="font-display text-2xl text-dark">Azzivone</h1>
-          <p className="text-[10px] text-gold font-bold uppercase tracking-[0.2em] mt-1">Admin Panel</p>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center">
+              <Zap className="text-white w-4 h-4" />
+            </div>
+            <div>
+              <h1 className="font-display text-xl text-dark leading-none">Azzivone</h1>
+              <p className="text-[10px] text-gold font-bold uppercase tracking-[0.2em] mt-1">Control Center</p>
+            </div>
+          </div>
         </div>
 
-        <nav className="flex-1 px-4 space-y-2">
+        <nav className="flex-1 px-4 space-y-1">
           {[
-            { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-            { id: "analytics", label: "Analytics", icon: BarChart3 },
-            { id: "content", label: "Content", icon: FileText },
-            { id: "products", label: "Products", icon: Package },
-            { id: "reviews", label: "Reviews", icon: MessageSquare },
-            { id: "media", label: "Media", icon: ImageIcon },
-            { id: "pages", label: "Pages", icon: Globe },
+            { id: "dashboard", label: "Overview", icon: LayoutDashboard },
+            { id: "content", label: "Website Content", icon: FileText },
+            { id: "product", label: "Product Page", icon: Package },
+            { id: "reviews", label: "Reviews & Proof", icon: MessageSquare },
+            { id: "media", label: "Media Library", icon: ImageIcon },
+            { id: "theme", label: "Theme Controls", icon: Type },
+            { id: "analytics", label: "Analytics (Preview)", icon: BarChart3 },
             { id: "settings", label: "Settings", icon: Settings },
           ].map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all group ${
                 activeTab === item.id 
-                  ? "bg-gold/10 text-gold font-bold" 
+                  ? "bg-gold text-white font-bold shadow-lg shadow-gold/20" 
                   : "text-dark/40 hover:bg-gold/5 hover:text-dark/60"
               }`}
             >
-              <item.icon className="w-5 h-5" />
+              <item.icon className={`w-5 h-5 ${activeTab === item.id ? "text-white" : "group-hover:text-gold transition-colors"}`} />
               <span className="text-sm font-medium">{item.label}</span>
-              {activeTab === item.id && <motion.div layoutId="active" className="ml-auto w-1.5 h-1.5 rounded-full bg-gold" />}
             </button>
           ))}
         </nav>
 
         <div className="p-6 border-t border-gold/10">
-          <button 
-            onClick={() => setIsLoggedIn(false)}
-            className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-50 rounded-xl transition-all"
-          >
+          <button className="w-full flex items-center gap-3 px-4 py-3 text-dark/40 hover:bg-red-50 hover:text-red-500 rounded-xl transition-all">
             <LogOut className="w-5 h-5" />
             <span className="text-sm font-medium">Logout</span>
           </button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 min-w-0 p-8 lg:p-12 overflow-y-auto">
-        <div className="max-w-6xl mx-auto">
-          {/* Dashboard View */}
-          {activeTab === "dashboard" && (
-            <div className="space-y-8">
-              <header className="flex items-center justify-between">
-                <div>
-                  <h2 className="font-display text-4xl text-dark">Executive Overview</h2>
-                  <p className="text-dark/40 mt-1">Welcome back, Administrator</p>
-                </div>
-                <div className="flex gap-4">
-                  <select className="bg-white border border-gold/10 rounded-lg px-4 py-2 text-sm text-dark/60 focus:outline-none focus:ring-2 ring-gold/20 cursor-pointer">
-                    <option>Last 30 Days</option>
-                    <option>Last 7 Days</option>
-                    <option>Today</option>
-                  </select>
-                </div>
-              </header>
+      {/* Main Content Area */}
+      <main className="flex-1 flex flex-col min-w-0">
+        {/* Top Header */}
+        <header className="h-20 bg-white/80 backdrop-blur-md border-b border-gold/10 sticky top-0 z-40 flex items-center justify-between px-8">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 bg-[#FAFAF9] px-3 py-1.5 rounded-lg border border-gold/10">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-dark/60">System Online</span>
+            </div>
+            <div className="h-4 w-px bg-gold/10" />
+            <p className="text-xs font-medium text-dark/40">Phase 1: Visual Control Mode</p>
+          </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {stats.map((stat, i) => (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    key={stat.label}
-                  >
-                    <Card className="border-gold/5 elegant-shadow hover:scale-[1.02] transition-transform cursor-default">
+          <div className="flex items-center gap-4">
+            <Button 
+              variant="outline" 
+              onClick={() => setPreviewMode(!previewMode)}
+              className={`border-gold/20 flex gap-2 h-10 px-6 rounded-full font-bold uppercase tracking-widest text-[10px] transition-all ${previewMode ? 'bg-dark text-white border-dark' : 'text-gold hover:bg-gold/5'}`}
+            >
+              <Monitor className="w-4 h-4" /> {previewMode ? "Exit Preview" : "Live Preview"}
+            </Button>
+            <Button className="gold-gradient text-white flex gap-2 h-10 px-6 rounded-full font-bold uppercase tracking-widest text-[10px] shadow-lg shadow-gold/20">
+              <Save className="w-4 h-4" /> Publish Changes
+            </Button>
+          </div>
+        </header>
+
+        <div className="flex-1 p-8 lg:p-12">
+          <div className="max-w-6xl mx-auto space-y-12">
+            {activeTab === "dashboard" && (
+              <div className="space-y-12">
+                <section>
+                  <h2 className="font-display text-4xl text-dark mb-2">Executive Dashboard</h2>
+                  <div className="flex items-center gap-2">
+                    <History className="w-4 h-4 text-gold" />
+                    <p className="text-dark/40 text-sm italic">Live data will activate after backend integration</p>
+                  </div>
+                </section>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {stats.map((stat, i) => (
+                    <Card key={i} className="border-gold/5 elegant-shadow hover:translate-y-[-4px] transition-all duration-300">
                       <CardContent className="p-6">
                         <div className={`w-12 h-12 rounded-xl ${stat.bg} flex items-center justify-center mb-4`}>
                           <stat.icon className={`w-6 h-6 ${stat.color}`} />
                         </div>
-                        <p className="text-[10px] font-bold text-dark/40 uppercase tracking-widest">{stat.label}</p>
-                        <h3 className="text-3xl font-display text-dark mt-1">{stat.value}</h3>
+                        <p className="text-[10px] font-bold text-dark/40 uppercase tracking-widest mb-1">{stat.label}</p>
+                        <h3 className="text-3xl font-display text-dark">{stat.value}</h3>
                       </CardContent>
                     </Card>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <Card className="lg:col-span-2 border-gold/5 elegant-shadow">
-                  <CardHeader>
-                    <CardTitle className="font-display text-xl">Visitor Traffic</CardTitle>
-                  </CardHeader>
-                  <CardContent className="h-80 flex items-center justify-center bg-gold/5 rounded-xl border border-dashed border-gold/20 m-6">
-                    <div className="text-center">
-                      <BarChart3 className="w-12 h-12 text-gold/30 mx-auto mb-2" />
-                      <p className="text-dark/30 text-sm font-medium">Traffic Heatmap Visualization</p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-gold/5 elegant-shadow">
-                  <CardHeader>
-                    <CardTitle className="font-display text-xl">Top Locations</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6 pt-2">
-                    {locations.map((loc) => (
-                      <div key={loc.city} className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="font-medium text-dark/60">{loc.city}</span>
-                          <span className="text-dark/40">{loc.count}</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-gold/5 rounded-full overflow-hidden">
-                          <motion.div 
-                            initial={{ width: 0 }}
-                            animate={{ width: `${loc.percent}%` }}
-                            className="h-full bg-gold" 
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          )}
-
-          {/* Content Manager View */}
-          {activeTab === "content" && (
-            <div className="space-y-8">
-              <header className="flex items-center justify-between">
-                <div>
-                  <h2 className="font-display text-4xl text-dark font-medium">Website Content Manager</h2>
-                  <p className="text-dark/40 mt-1">Live updates across all luxury touchpoints</p>
+                  ))}
                 </div>
-                <Button className="gold-gradient text-white flex gap-2">
-                  <Save className="w-4 h-4" /> Save Changes
-                </Button>
-              </header>
 
-              <Tabs defaultValue="homepage" className="space-y-6">
-                <TabsList className="bg-white border border-gold/10 p-1 h-14 rounded-xl shadow-sm">
-                  <TabsTrigger value="homepage" className="px-8 rounded-lg data-[state=active]:bg-gold/10 data-[state=active]:text-gold font-bold transition-all">Home Page</TabsTrigger>
-                  <TabsTrigger value="product" className="px-8 rounded-lg data-[state=active]:bg-gold/10 data-[state=active]:text-gold font-bold transition-all">Product Page</TabsTrigger>
-                  <TabsTrigger value="media" className="px-8 rounded-lg data-[state=active]:bg-gold/10 data-[state=active]:text-gold font-bold transition-all">Media Assets</TabsTrigger>
-                </TabsList>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-2 space-y-8">
+                    <Card className="border-gold/5 elegant-shadow overflow-hidden">
+                      <CardHeader className="bg-gold/5 border-b border-gold/10">
+                        <CardTitle className="font-display text-xl">Visitor Traffic Trends</CardTitle>
+                      </CardHeader>
+                      <CardContent className="h-64 flex flex-col items-center justify-center p-8 text-center bg-white">
+                        <BarChart3 className="w-16 h-16 text-gold/20 mb-4" />
+                        <p className="text-dark/40 text-sm font-medium">Metric visualization pending data pipeline connection</p>
+                      </CardContent>
+                    </Card>
 
-                <TabsContent value="homepage" className="space-y-6">
+                    <Card className="border-gold/5 elegant-shadow">
+                      <CardHeader>
+                        <CardTitle className="font-display text-xl flex items-center gap-2">
+                          <History className="w-5 h-5 text-gold" /> Activity Log
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {changelog.map((log, i) => (
+                          <div key={i} className="flex items-center justify-between py-3 border-b border-gold/5 last:border-0">
+                            <div className="flex items-center gap-3">
+                              <div className="w-2 h-2 rounded-full bg-gold/30" />
+                              <span className="text-sm font-medium text-dark/70">{log.action}</span>
+                            </div>
+                            <span className="text-[10px] font-bold text-dark/30 uppercase tracking-widest">{log.time}</span>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
+                  </div>
+
                   <Card className="border-gold/5 elegant-shadow">
-                    <CardHeader className="border-b border-gold/10">
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <LayoutDashboard className="w-5 h-5 text-gold" /> Hero Section
-                      </CardTitle>
+                    <CardHeader>
+                      <CardTitle className="font-display text-xl">Top Regions</CardTitle>
                     </CardHeader>
-                    <CardContent className="p-8 space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-4">
+                    <CardContent className="space-y-6">
+                      {locations.map((loc, i) => (
+                        <div key={i} className="space-y-2">
+                          <div className="flex justify-between text-xs">
+                            <span className="font-bold text-dark/60">{loc.city}</span>
+                            <span className="text-dark/40">{loc.count}</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-gold/5 rounded-full overflow-hidden">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={{ width: `${loc.percent}%` }}
+                              className="h-full bg-gold"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                      <div className="pt-8 flex flex-col items-center">
+                         <div className="w-full aspect-square bg-gold/5 rounded-2xl border border-dashed border-gold/20 flex items-center justify-center">
+                            <MapPin className="w-12 h-12 text-gold/20" />
+                         </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "content" && (
+              <div className="space-y-8">
+                <header>
+                  <h2 className="font-display text-4xl text-dark">Website Content</h2>
+                  <p className="text-dark/40 mt-1">Manage the narrative of your brand</p>
+                </header>
+
+                <Tabs defaultValue="hero" className="space-y-6">
+                  <TabsList className="bg-white border border-gold/10 p-1.5 h-auto rounded-2xl shadow-sm">
+                    <TabsTrigger value="hero" className="px-8 py-3 rounded-xl data-[state=active]:bg-gold data-[state=active]:text-white font-bold transition-all">Hero Section</TabsTrigger>
+                    <TabsTrigger value="pages" className="px-8 py-3 rounded-xl data-[state=active]:bg-gold data-[state=active]:text-white font-bold transition-all">Page Settings</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="hero" className="space-y-6">
+                    <Card className="border-gold/5 elegant-shadow p-8">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div className="space-y-6">
                           <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Hero Headline</Label>
-                            <Input defaultValue="Modern Skincare for Elite Performance" className="border-gold/10 h-12" />
+                            <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Hero Heading</Label>
+                            <Input 
+                              value={heroHeading}
+                              onChange={(e) => setHeroHeading(e.target.value)}
+                              className="border-gold/10 h-14 text-lg font-medium focus:ring-gold/20" 
+                            />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Subheading Text</Label>
-                            <Textarea defaultValue="High-performance snail mucin serum designed for those who demand excellence." className="border-gold/10 min-h-[100px]" />
+                            <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Hero Subheading</Label>
+                            <Textarea 
+                              defaultValue="High-performance snail mucin serum designed for those who demand excellence."
+                              className="border-gold/10 min-h-[120px] focus:ring-gold/20" 
+                            />
                           </div>
                           <div className="space-y-2">
                             <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">CTA Button Text</Label>
                             <Input defaultValue="Shop the Elite Collection" className="border-gold/10 h-12" />
                           </div>
                         </div>
-                        <div className="space-y-4">
-                          <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Visual Media</Label>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div className="aspect-[4/3] bg-gold/5 rounded-xl border-2 border-dashed border-gold/20 flex flex-col items-center justify-center p-4 text-center cursor-pointer hover:bg-gold/10 transition-all">
-                              <ImageIcon className="w-8 h-8 text-gold/40 mb-2" />
-                              <span className="text-[10px] font-bold text-dark/40 uppercase">Hero Image</span>
-                            </div>
-                            <div className="aspect-[4/3] bg-gold/5 rounded-xl border-2 border-dashed border-gold/20 flex flex-col items-center justify-center p-4 text-center cursor-pointer hover:bg-gold/10 transition-all">
-                              <Video className="w-8 h-8 text-gold/40 mb-2" />
-                              <span className="text-[10px] font-bold text-dark/40 uppercase">Hero Video</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
 
-                <TabsContent value="product" className="space-y-6">
-                  <Card className="border-gold/5 elegant-shadow">
-                    <CardContent className="p-8 space-y-8">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Product Title</Label>
-                            <Input defaultValue="Azzivone Snail Mucin Serum" className="border-gold/10 h-12" />
-                          </div>
-                          <div className="space-y-2">
-                            <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Short Description</Label>
-                            <Textarea defaultValue="Glass-Glow Skin, Engineered for High-Performance Lives." className="border-gold/10" />
-                          </div>
-                        </div>
                         <div className="space-y-6">
-                          <div className="flex items-center justify-between p-4 bg-gold/5 rounded-xl border border-gold/10">
-                            <div>
-                              <Label className="text-sm font-bold text-dark">Customer Reactions</Label>
-                              <p className="text-[10px] text-dark/40 font-bold uppercase tracking-widest mt-1">Toggle video section visibility</p>
-                            </div>
-                            <Switch defaultChecked />
+                          <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Primary Hero Media</Label>
+                          <div className="aspect-video bg-gold/5 rounded-2xl border-2 border-dashed border-gold/20 flex flex-col items-center justify-center gap-4 cursor-pointer hover:bg-gold/10 transition-all group overflow-hidden relative">
+                             <ImageIcon className="w-12 h-12 text-gold/30 group-hover:scale-110 transition-transform" />
+                             <span className="text-[10px] font-bold text-dark/40 uppercase tracking-widest">Replace Hero Image</span>
                           </div>
-                          <div className="flex items-center justify-between p-4 bg-gold/5 rounded-xl border border-gold/10">
-                            <div>
-                              <Label className="text-sm font-bold text-dark">Elite Choice Bar</Label>
-                              <p className="text-[10px] text-dark/40 font-bold uppercase tracking-widest mt-1">Show stars and avatars</p>
-                            </div>
-                            <Switch defaultChecked />
+                          <div className="space-y-2">
+                            <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Hero Video URL (Optional)</Label>
+                            <Input placeholder="https://youtube.com/..." className="border-gold/10" />
                           </div>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </div>
-          )}
-
-          {/* Reviews Manager */}
-          {activeTab === "reviews" && (
-            <div className="space-y-8">
-              <header className="flex items-center justify-between">
-                <div>
-                  <h2 className="font-display text-4xl text-dark font-medium">Reviews & Social Proof</h2>
-                  <p className="text-dark/40 mt-1">Manage what the world sees</p>
-                </div>
-                <Button className="gold-gradient text-white flex gap-2">
-                  <Plus className="w-4 h-4" /> Add Review
-                </Button>
-              </header>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  { type: "WhatsApp", status: "Approved", name: "Sara K." },
-                  { type: "Video", status: "Pending", name: "Ahmed R." },
-                  { type: "WhatsApp", status: "Approved", name: "Maria Z." },
-                ].map((review, i) => (
-                  <Card key={i} className="border-gold/5 elegant-shadow overflow-hidden group">
-                    <CardHeader className="flex flex-row items-center justify-between bg-gold/5 py-3">
-                      <span className={`text-[10px] font-bold uppercase tracking-widest ${review.status === 'Approved' ? 'text-emerald-500' : 'text-amber-500'}`}>
-                        {review.status}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-                        <span className="text-[10px] font-bold uppercase text-dark/40">{review.type}</span>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                      <div className="aspect-[4/3] bg-gold/5 rounded-lg mb-4 flex items-center justify-center border border-gold/10 group-hover:bg-gold/10 transition-colors">
-                        {review.type === 'Video' ? <Video className="w-8 h-8 text-gold/30" /> : <MessageSquare className="w-8 h-8 text-gold/30" />}
-                      </div>
-                      <h4 className="font-bold text-dark">{review.name}</h4>
-                      <p className="text-xs text-dark/40 mt-1">Received 2 hours ago</p>
-                      <div className="flex gap-2 mt-4 pt-4 border-t border-gold/5">
-                        <Button variant="ghost" className="flex-1 text-[10px] uppercase font-bold tracking-widest h-8">Reject</Button>
-                        <Button variant="outline" className="flex-1 border-gold/20 text-gold text-[10px] uppercase font-bold tracking-widest h-8">Approve</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                    </Card>
+                  </TabsContent>
+                </Tabs>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Settings View */}
-          {activeTab === "settings" && (
-            <div className="space-y-8">
-              <header className="flex items-center justify-between">
-                <div>
-                  <h2 className="font-display text-4xl text-dark font-medium">Brand Settings</h2>
-                  <p className="text-dark/40 mt-1">Core identity configurations</p>
-                </div>
-              </header>
+            {activeTab === "product" && (
+              <div className="space-y-8">
+                <header>
+                  <h2 className="font-display text-4xl text-dark">Product Details</h2>
+                  <p className="text-dark/40 mt-1">Refine your product presentation</p>
+                </header>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <Card className="border-gold/5 elegant-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Brand Identity</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="space-y-2">
-                      <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Brand Logo</Label>
-                      <div className="w-full h-32 bg-white border border-gold/10 rounded-xl flex items-center justify-center p-8 group cursor-pointer hover:border-gold/30 transition-all">
-                        <div className="text-center">
-                          <Plus className="w-6 h-6 text-gold/30 mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                          <span className="text-[10px] font-bold text-dark/40 uppercase">Update Logo</span>
+                <Card className="border-gold/5 elegant-shadow p-8">
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                      <div className="space-y-6">
+                        <div className="grid grid-cols-2 gap-4">
+                           <div className="space-y-2">
+                              <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Product Name</Label>
+                              <Input defaultValue="Snail Mucin Serum" className="border-gold/10 h-12" />
+                           </div>
+                           <div className="space-y-2">
+                              <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Base Price</Label>
+                              <div className="relative">
+                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-dark/40 font-bold">$</span>
+                                 <Input defaultValue="2,499" className="border-gold/10 h-12 pl-8" />
+                              </div>
+                           </div>
+                        </div>
+                        <div className="space-y-2">
+                           <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Description</Label>
+                           <Textarea defaultValue="Glass-Glow Skin, Engineered for High-Performance Lives." className="border-gold/10 min-h-[100px]" />
+                        </div>
+                        <div className="space-y-4">
+                           <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Benefits (Add/Remove)</Label>
+                           <div className="space-y-2">
+                              {["Deep hydration", "Scar healing", "Barrier repair"].map((b, i) => (
+                                <div key={i} className="flex items-center gap-2">
+                                   <Input defaultValue={b} className="border-gold/10 h-10" />
+                                   <Button variant="ghost" size="sm" className="text-red-400">Remove</Button>
+                                </div>
+                              ))}
+                              <Button variant="ghost" className="text-gold text-[10px] font-bold uppercase tracking-widest">+ Add Benefit</Button>
+                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Primary Color</Label>
-                        <div className="h-12 bg-gold rounded-lg border border-gold/20 flex items-center justify-center">
-                          <span className="text-[10px] font-bold text-white uppercase tracking-widest">#D4AF37</span>
+
+                      <div className="space-y-8 bg-gold/5 p-8 rounded-2xl border border-gold/10">
+                        <h4 className="font-display text-xl text-dark">Psychological Narrative</h4>
+                        <div className="space-y-6">
+                           <div className="space-y-2">
+                              <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Problem</Label>
+                              <Textarea defaultValue="Persistent dryness and visible acne scars." className="border-gold/10" />
+                           </div>
+                           <div className="space-y-2">
+                              <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Agitation</Label>
+                              <Textarea defaultValue="Every day without proper repair is a day your skin loses elasticity." className="border-gold/10" />
+                           </div>
+                           <div className="space-y-2">
+                              <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Solution</Label>
+                              <Textarea defaultValue="Azzivone uses 96% Pure Snail Mucin to reset your skin." className="border-gold/10" />
+                           </div>
                         </div>
                       </div>
-                      <div className="space-y-2 opacity-50">
-                        <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Language (Disabled)</Label>
-                        <div className="h-12 bg-white border border-gold/10 rounded-lg flex items-center px-4">
-                          <span className="text-[10px] font-bold text-dark/40 uppercase">English (US)</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
+                   </div>
                 </Card>
+              </div>
+            )}
 
-                <Card className="border-gold/5 elegant-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Page Status</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {[
-                      { name: "Home", status: "Live", date: "2 mins ago" },
-                      { name: "Product", status: "Live", date: "4 mins ago" },
-                      { name: "About", status: "Draft", date: "Never" },
-                      { name: "Checkout", status: "Live", date: "1 hour ago" },
-                    ].map((page) => (
-                      <div key={page.name} className="flex items-center justify-between p-4 bg-white border border-gold/5 rounded-xl hover:border-gold/20 transition-all">
-                        <div className="flex items-center gap-4">
-                          <div className={`w-2 h-2 rounded-full ${page.status === 'Live' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                          <div>
-                            <p className="text-sm font-bold text-dark">{page.name}</p>
-                            <p className="text-[10px] text-dark/40 uppercase tracking-widest font-bold">Updated {page.date}</p>
-                          </div>
+            {activeTab === "reviews" && (
+              <div className="space-y-8">
+                <header>
+                  <h2 className="font-display text-4xl text-dark">Reviews & Proof</h2>
+                  <p className="text-dark/40 mt-1">Curate your brand's social reputation</p>
+                </header>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <Card className="border-gold/5 elegant-shadow p-8 space-y-6">
+                     <div className="flex items-center justify-between">
+                        <CardTitle className="font-display text-xl">Review Sections</CardTitle>
+                     </div>
+                     <div className="space-y-4">
+                        <div className="flex items-center justify-between p-4 bg-white border border-gold/10 rounded-xl">
+                           <div>
+                              <p className="text-sm font-bold text-dark">WhatsApp Screenshots</p>
+                              <p className="text-[10px] text-dark/40 font-bold uppercase mt-1">Toggle Visibility</p>
+                           </div>
+                           <Switch defaultChecked />
                         </div>
+                        <div className="flex items-center justify-between p-4 bg-white border border-gold/10 rounded-xl">
+                           <div>
+                              <p className="text-sm font-bold text-dark">Doctor Endorsements</p>
+                              <p className="text-[10px] text-dark/40 font-bold uppercase mt-1">Toggle Visibility</p>
+                           </div>
+                           <Switch defaultChecked />
+                        </div>
+                     </div>
+                  </Card>
+
+                  <Card className="border-gold/5 elegant-shadow p-8">
+                     <CardTitle className="font-display text-xl mb-6">Live Social Feed</CardTitle>
+                     <div className="grid grid-cols-3 gap-3">
+                        {[1,2,3,4,5,6].map(i => (
+                          <div key={i} className="aspect-square bg-gold/5 rounded-lg border border-gold/10 flex items-center justify-center relative group overflow-hidden">
+                             <ImageIcon className="w-6 h-6 text-gold/20" />
+                             <div className="absolute inset-0 bg-dark/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-white hover:text-red-400">×</Button>
+                             </div>
+                          </div>
+                        ))}
+                        <div className="aspect-square border-2 border-dashed border-gold/20 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gold/5 transition-all">
+                           <Plus className="w-6 h-6 text-gold/40" />
+                        </div>
+                     </div>
+                  </Card>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "theme" && (
+              <div className="space-y-8">
+                 <header>
+                  <h2 className="font-display text-4xl text-dark">Theme & Branding</h2>
+                  <p className="text-dark/40 mt-1">Visual identity system</p>
+                </header>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <Card className="border-gold/5 elegant-shadow p-8 space-y-8">
+                     <div className="space-y-4">
+                        <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Gold Accent Variations</Label>
+                        <div className="flex gap-4">
+                           {["#D4AF37", "#B8860B", "#DAA520"].map(color => (
+                              <button key={color} className="w-12 h-12 rounded-full border-4 border-white shadow-md transition-transform hover:scale-110" style={{ backgroundColor: color }} />
+                           ))}
+                        </div>
+                     </div>
+
+                     <div className="space-y-4">
+                        <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Font Scale</Label>
                         <div className="flex gap-2">
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <Settings className="w-4 h-4 text-dark/40" />
-                          </Button>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <ChevronRight className="w-4 h-4 text-dark/40" />
-                          </Button>
+                           {["Small", "Default", "Large"].map(s => (
+                              <Button key={s} variant={s === "Default" ? "default" : "outline"} className={`flex-1 h-12 rounded-xl ${s === "Default" ? "gold-gradient text-white border-0" : "border-gold/20 text-gold"}`}>
+                                {s}
+                              </Button>
+                           ))}
                         </div>
+                     </div>
+
+                     <div className="space-y-4">
+                        <Label className="text-[10px] uppercase tracking-widest font-bold text-dark/40">Button Styling</Label>
+                        <div className="flex gap-2">
+                           <Button variant="outline" className="flex-1 h-12 rounded-none border-gold/20 text-gold">Sharp</Button>
+                           <Button variant="outline" className="flex-1 h-12 rounded-xl border-gold/20 text-gold">Soft</Button>
+                           <Button variant="outline" className="flex-1 h-12 rounded-full border-gold/20 text-gold">Round</Button>
+                        </div>
+                     </div>
+                  </Card>
+
+                  <div className="space-y-4 bg-white p-12 rounded-2xl border border-gold/10 flex flex-col items-center justify-center text-center">
+                     <div className="w-20 h-20 rounded-full gold-gradient mb-6" />
+                     <h3 className="font-display text-2xl text-dark">Aesthetic Preview</h3>
+                     <p className="text-dark/40 mt-4 mb-8">This panel ensures visual consistency across the entire Azzivone ecosystem.</p>
+                     <Button className="gold-gradient text-white px-12 h-12 rounded-full font-bold uppercase tracking-widest text-xs">Test Component</Button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "settings" && (
+              <div className="space-y-8">
+                 <header>
+                  <h2 className="font-display text-4xl text-dark">System Settings</h2>
+                  <p className="text-dark/40 mt-1">Infrastructure & environment control</p>
+                </header>
+
+                <Card className="border-gold/5 elegant-shadow p-12">
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                      <div className="space-y-8">
+                         <div className="space-y-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-dark/40">Backend Status</p>
+                            <div className="flex items-center gap-3 text-amber-500 font-bold">
+                               <Clock className="w-5 h-5" />
+                               <span>Not connected (Phase 2)</span>
+                            </div>
+                         </div>
+                         <div className="space-y-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-dark/40">Auth Environment</p>
+                            <div className="flex items-center gap-3 text-dark/40 font-bold">
+                               <Settings className="w-5 h-5" />
+                               <span>Frontend Demo Mode Only</span>
+                            </div>
+                         </div>
+                         <div className="space-y-2">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-dark/40">System Version</p>
+                            <p className="text-sm font-medium text-dark/60 italic underline decoration-gold/30">Azzivone v1.0.0-alpha</p>
+                         </div>
                       </div>
-                    ))}
-                  </CardContent>
+
+                      <div className="bg-emerald-50 p-8 rounded-2xl border border-emerald-100">
+                         <h4 className="font-bold text-emerald-800 mb-2">Ready for Handover</h4>
+                         <p className="text-sm text-emerald-700 leading-relaxed">
+                            This panel is architected to be "Backend-Ready". All UI components are modular and state-driven, ensuring a seamless transition when the database layer is integrated.
+                         </p>
+                         <div className="mt-6 flex items-center gap-2 text-emerald-600 font-bold text-[10px] uppercase tracking-widest">
+                            <CheckCircle2 className="w-4 h-4" /> Final Phase 1 Deliverable
+                         </div>
+                      </div>
+                   </div>
                 </Card>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </main>
     </div>

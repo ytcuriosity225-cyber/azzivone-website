@@ -1,0 +1,269 @@
+Create a frontend-only Admin Panel (Control Center) that visually controls and previews the existing website
+👉 WITHOUT modifying, breaking, or redesigning any current pages, layouts, colors, fonts, or components.
+
+This panel is Phase-1 (visual + UX only). Backend, authentication, and real data will be integrated later.
+
+🧱 CORE CONSTRAINTS (NON-NEGOTIABLE)
+
+❌ Do NOT change existing UI, colors, fonts, layouts, spacing, animations, or sections
+
+❌ Do NOT introduce black or charcoal backgrounds anywhere
+
+❌ Do NOT replace brand colors — only reuse current palette
+
+❌ Do NOT touch existing product page, home page, or components directly
+
+✅ Admin panel must be a separate route:
+
+/admin
+
+
+✅ All data is mock / dummy / frontend state only
+
+✅ Changes must reflect via live preview simulation (state-based)
+
+🗂️ TECH STACK ALIGNMENT
+
+React + Tailwind (same setup as existing site)
+
+Reuse existing UI components where possible
+
+No backend
+
+No auth (add placeholder note only)
+
+🧭 ADMIN PANEL STRUCTURE
+📍 Route
+/admin
+
+
+No navbar icon.
+Accessed manually via URL.
+
+🖥️ ADMIN LAYOUT
+Left Sidebar (Fixed)
+
+Overview
+
+Website Content
+
+Product Page
+
+Reviews & Proof
+
+Media Library
+
+Theme Controls
+
+Analytics (Preview)
+
+Settings
+
+Clean, minimal, same font system.
+
+1️⃣ OVERVIEW DASHBOARD (Visual Only)
+
+Show metric cards:
+
+Total Visitors
+
+Total Orders
+
+Add to Carts
+
+Conversion Rate
+
+Top City
+
+⚠️ Numbers are static / fake
+Add label:
+
+“Live data will activate after backend integration”
+
+2️⃣ WEBSITE CONTENT CONTROL (CRITICAL)
+Hero Section Controls
+
+Inputs:
+
+Hero Heading (text)
+
+Hero Subheading (textarea)
+
+CTA Button Text
+
+Hero Image (image preview upload)
+
+Hero Video URL
+
+Behavior:
+
+Update live preview state
+
+No hard save (visual only)
+
+3️⃣ PRODUCT PAGE CONTROL
+
+Editable fields:
+
+Product Name
+
+Price
+
+Discount %
+
+Short Description
+
+Benefits List (add/remove points)
+
+Problem → Agitation → Solution text
+
+All changes update preview panel only
+
+4️⃣ REVIEWS & SOCIAL PROOF MANAGER
+
+Controls:
+
+Section title edit
+
+Toggle section ON/OFF
+
+Add/remove review thumbnails
+
+Replace WhatsApp chat screenshots
+
+Doctor review section toggle
+
+Preview behavior:
+
+When OFF → section visually disabled (opacity / blur)
+
+5️⃣ MEDIA LIBRARY (Frontend Only)
+
+Grid view:
+
+Images
+
+Videos
+
+Thumbnails
+
+Actions:
+
+Preview
+
+Replace (mock)
+
+Label usage (Hero / Reviews / Gallery)
+
+No real upload persistence.
+
+6️⃣ THEME CONTROLS (LIMITED BY DESIGN)
+
+Allowed controls ONLY:
+
+Primary gold shade (3 preset buttons)
+
+Font scale (Small / Default / Large)
+
+Button radius (Sharp / Soft)
+
+❌ No custom colors
+❌ No background color changes
+
+7️⃣ PAGE & SECTION TOGGLES
+
+Switches:
+
+Homepage
+
+Product Page
+
+Reviews Section
+
+Doctor Section
+
+Delivery Gallery
+
+Behavior:
+
+Toggle affects preview simulation only
+
+Add note:
+
+“Live control after backend phase”
+
+8️⃣ ANALYTICS (PREVIEW MODE)
+
+Visuals only:
+
+Line chart (Visitors)
+
+Bar chart (Orders)
+
+Map placeholder (Locations)
+
+Clear label:
+
+“Mock data — real analytics coming soon”
+
+9️⃣ CHANGE LOG (TRUST BUILDER)
+
+Auto list:
+
+“Hero text updated”
+
+“Review removed”
+
+“Image replaced”
+
+Purely frontend state.
+
+🔐 SETTINGS PAGE
+
+Show:
+
+Backend status: “Not connected”
+
+Auth status: “Coming in Phase 2”
+
+Environment: “Frontend Demo Mode”
+
+🧠 UX RULES
+
+Clean
+
+Minimal
+
+Executive-friendly
+
+No clutter
+
+Toggle-driven
+
+Preview-first mindset
+
+CEO should feel:
+
+“I’m in control.”
+
+📦 DELIVERABLE
+
+Fully functional Admin Panel UI
+
+Live preview simulation
+
+Zero impact on existing pages
+
+Clean code, modular components
+
+Ready for backend plug-in later
+
+🟢 SUCCESS CRITERIA
+
+If backend is added later:
+
+Same panel continues
+
+No redesign needed
+
+No rework
