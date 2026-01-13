@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 // Assets
-import productHero from "@assets/1_1768298491722.png";
+import productHero from "@assets/4_1768323041447.png";
 import productDisplay from "@assets/2_1768298491725.png";
 import productClean from "@assets/3_1768298491725.png";
 import productBathroom from "@assets/4_1768298491727.png";
@@ -118,12 +118,25 @@ export default function Product() {
             <div className="flex flex-col items-center gap-4 mb-8">
               <div className="flex -space-x-1.5">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-8 h-8 rounded-full border border-white bg-slate-100 overflow-hidden">
-                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+20}`} alt="User" />
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-gold/50 bg-dark overflow-hidden shadow-lg shadow-gold/20">
+                    <img 
+                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+50}&backgroundColor=000000&top=shorthair,longhair&accessories=eyepatch,sunglasses`} 
+                      className="w-full h-full object-cover grayscale brightness-110 contrast-125"
+                      alt="Elite User" 
+                    />
                   </div>
                 ))}
               </div>
-              <p className="text-xs font-medium text-gold bg-gold/5 px-3 py-1 rounded-full border border-gold/10 uppercase tracking-widest">2,000+ Happy Users</p>
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} className="w-4 h-4 text-gold fill-gold" />
+                  ))}
+                </div>
+                <p className="text-xs font-bold text-gold bg-gold/5 px-4 py-1.5 rounded-full border border-gold/20 uppercase tracking-[0.2em] backdrop-blur-sm">
+                  The Choice of Elite 2,000+
+                </p>
+              </div>
             </div>
             
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-dark leading-[1.1] mb-8 font-medium">
