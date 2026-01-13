@@ -94,7 +94,7 @@ export default function Home() {
   const products = [
     {
       id: 1,
-      name: "Azzivone Snail Serum",
+      name: "Snail Mucin Serum",
       price: "3,500",
       image: product4,
       bullets: [
@@ -106,8 +106,8 @@ export default function Home() {
     },
     {
       id: 2,
-      name: "Skin Reset Balm",
-      price: "2,800",
+      name: "Coming Soon!",
+      price: "9,999",
       image: product5,
       bullets: [
         "Calms Redness",

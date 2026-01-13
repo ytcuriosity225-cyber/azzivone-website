@@ -2,12 +2,12 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { CheckCircle2, ShieldCheck, Star, ArrowRight, Play, ShoppingCart, Truck, Zap, ChevronRight, Heart, Sparkles as SparklesIcon, ChevronLeft } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Star, ArrowRight, Play, ShoppingCart, Truck, Zap, ChevronRight, Heart, Sparkles as SparklesIcon, ChevronLeft, Clock, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 // Assets
-import productHero from "@assets/4_1768323041447.png";
+import productHero from "@assets/Time_(1)_1768325370235.png";
 import productDisplay from "@assets/2_1768298491725.png";
 import productClean from "@assets/3_1768298491725.png";
 import productBathroom from "@assets/4_1768298491727.png";
@@ -109,24 +109,45 @@ export default function Product() {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="relative w-full max-w-4xl mb-12"
+            className="relative w-full max-w-4xl mb-6"
           >
             <img src={productHero} alt="Product" className="relative rounded-[6px] elegant-shadow w-full aspect-[16/9] md:aspect-[21/9] object-cover border border-gold/5" />
           </motion.div>
 
-          <motion.div {...fadeInUp} className="relative z-10 text-center max-w-4xl">
-            <div className="flex flex-col items-center gap-4 mb-8">
+          <div className="flex flex-col items-center gap-6 mb-12">
+            <div className="flex flex-col items-center gap-4">
               <div className="flex -space-x-1.5">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-10 h-10 rounded-full border-2 border-gold/50 bg-dark overflow-hidden shadow-lg shadow-gold/20">
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-gold/50 bg-dark overflow-hidden shadow-lg shadow-gold/20 z-10">
                     <img 
-                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+50}&backgroundColor=000000&top=shorthair,longhair&accessories=eyepatch,sunglasses`} 
+                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+100}&backgroundColor=000000&top=shorthair,longhair&accessories=eyepatch,sunglasses`} 
                       className="w-full h-full object-cover grayscale brightness-110 contrast-125"
                       alt="Elite User" 
                     />
                   </div>
                 ))}
               </div>
+              <div className="flex items-center gap-2 px-4 py-2 bg-gold/5 rounded-full border border-gold/20 backdrop-blur-sm">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span className="flex items-center gap-2 text-[10px] font-bold text-gold uppercase tracking-[0.2em]">
+                  <Eye className="w-3 h-3 text-gold" /> 50 People viewing this now
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center gap-2 bg-dark/95 border border-gold/30 px-6 py-3 rounded-[4px] shadow-2xl">
+              <div className="flex items-center gap-2 text-gold">
+                <Clock className="w-4 h-4" />
+                <span className="text-xs font-bold uppercase tracking-[0.3em]">Strictly Limited</span>
+              </div>
+              <p className="text-[10px] text-white/60 uppercase tracking-[0.1em] text-center max-w-[250px]">
+                Artisanal production: Only <span className="text-gold font-bold">300 bottles</span> crafted each month for elite clients.
+              </p>
+            </div>
+          </div>
+
+          <motion.div {...fadeInUp} className="relative z-10 text-center max-w-4xl">
+            <div className="flex flex-col items-center gap-4 mb-8">
               <div className="flex flex-col items-center gap-2">
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((s) => (
