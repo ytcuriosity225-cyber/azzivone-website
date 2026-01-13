@@ -1,0 +1,193 @@
+Objective:
+Create a high-conversion Product Page that sits between the Home Page and Checkout Page, acting as a decision-accelerator. This page must emotionally convince, visually prove, and smoothly route users to checkout.
+
+🔗 PAGE LINKING & FLOW (CRITICAL)
+
+All CTA buttons on Home Page (Order Now / Buy Now / Get Started / etc.) must redirect to this Product Page.
+
+All primary CTAs on the Product Page must redirect to the Checkout Page.
+
+No dead ends. Smooth, linear funnel:
+Home → Product Page → Checkout
+
+🧩 PRODUCT PAGE STRUCTURE (MANDATORY SECTIONS)
+1️⃣ HERO / ABOVE-THE-FOLD (Decision Zone)
+
+Include:
+
+Product Name (bold, clear)
+
+One-line outcome-driven value proposition
+(What result they get + why it matters)
+
+Product visual (mockup / lifestyle / UI preview)
+
+Micro social proof (e.g. “Trusted by 2,000+ users”)
+
+Primary CTA button:
+“Proceed to Secure Checkout”
+
+UX Notes:
+
+CTA visible without scrolling
+
+Clean spacing, modern typography
+
+Mobile-first design
+
+2️⃣ PROBLEM → AGITATION → SOLUTION SECTION
+
+Three cards or columns:
+
+Problem
+
+Relatable pain points in bullet form
+
+Written in user language
+
+Agitation
+
+Consequences of not solving the problem
+
+Emotional but ethical
+
+Solution
+
+How this product uniquely fixes it
+
+Clear differentiation
+
+3️⃣ PRODUCT FEATURES → OUTCOMES
+
+Icon + short text layout:
+
+Feature → Benefit / Outcome
+
+Focus on results, not technical jargon
+
+Example format:
+
+✔ Feature name → What it improves
+
+✔ Feature name → Time / money / stress saved
+
+4️⃣ SHORT VIDEO REVIEWS SECTION (MANDATORY)
+
+This section is compulsory
+
+Requirements:
+
+Horizontally swipeable / scrollable section
+
+Short vertical videos (Reels-style)
+
+Videos displayed side-by-side
+
+Smooth swipe interaction (mobile-optimized)
+
+Each video shows:
+
+Real user
+
+Short testimonial / reaction / proof
+
+UI Note:
+Looks like Instagram / TikTok horizontal carousel.
+
+5️⃣ PRODUCT DELIVERY GALLERY (MANDATORY)
+
+Create a dedicated section below videos showing:
+
+Product delivery screenshots
+
+Customer unboxing / usage images
+
+Real proof visuals
+
+Layout:
+
+Grid or scrollable gallery
+
+Clean borders, soft shadows
+
+Caption like:
+“Real deliveries. Real customers.”
+
+6️⃣ VISUAL PROOF / EXPLAINER SECTION
+
+Screenshots of product
+
+Interface previews or step-by-step visuals
+
+Optional short explainer video
+
+Purpose:
+Remove “How does this work?” confusion.
+
+7️⃣ SOCIAL PROOF STACK
+
+Include:
+
+Star rating (4.5+ visual)
+
+2–3 short testimonials
+
+One transformation-based quote
+
+Keep it authentic, minimal, and believable.
+
+8️⃣ RISK REVERSAL / TRUST SECTION
+
+Must include:
+
+Secure payment badge
+
+Money-back or satisfaction assurance (if applicable)
+
+Clear reassurance copy:
+“No hidden charges. No risk.”
+
+9️⃣ PRICING PREVIEW (NOT FULL CHECKOUT)
+
+Show price
+
+Show discount or value stack if any
+
+Mention bonuses (if applicable)
+
+CTA:
+“Continue to Checkout”
+
+🔟 FAQ SECTION (MAX 5 QUESTIONS)
+
+Answer common objections:
+
+Who is this for?
+
+How do I receive access?
+
+Is it beginner-friendly?
+
+Refund / guarantee?
+
+Support availability?
+
+Short, calm, confidence-building answers only.
+
+🎨 DESIGN & UX GUIDELINES
+
+Modern, minimal, premium feel
+
+High contrast CTA buttons
+
+Sticky CTA on scroll (optional but recommended)
+
+Fully responsive (mobile first)
+
+Fast loading
+
+🚀 FINAL CONVERSION GOAL
+
+User finishes this page thinking:
+
+“This makes sense. I trust this. Let me pay.”
