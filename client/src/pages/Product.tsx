@@ -16,6 +16,21 @@ import productTexture from "@assets/6_1768298491727.png";
 import productLifestyle from "@assets/7_1768298491728.png";
 import logo from "@assets/logo_1768257103773.png";
 
+const reviews = [
+  { thumbnail: productDisplay },
+  { thumbnail: productClean },
+  { thumbnail: productBathroom },
+  { thumbnail: productHand },
+];
+
+const whatsappScreenshots = [
+  productTexture,
+  productLifestyle,
+  productHero,
+  productDisplay,
+  productClean,
+];
+
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
