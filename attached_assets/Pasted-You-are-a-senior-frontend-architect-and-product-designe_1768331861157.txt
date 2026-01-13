@@ -1,0 +1,174 @@
+You are a senior frontend architect and product designer.
+
+Task:
+Create a FRONTEND-ONLY Admin Dashboard (no backend, no database, no APIs yet) for an existing luxury skincare brand website named “Azzivone”.
+
+CRITICAL RULES (DO NOT BREAK):
+1. Do NOT modify, delete, refactor, or redesign any existing pages, sections, styles, colors, fonts, or components of the live website.
+2. This admin panel must be a NEW, SEPARATE page/module (e.g. /admin or admin.html).
+3. The admin panel is VISUAL + INTERACTIVE only (mock data, placeholders).
+4. All controls are UI-only (no real functionality yet).
+5. Match existing brand colors, fonts, spacing, and luxury aesthetic exactly.
+6. Do NOT use black backgrounds or new color palettes.
+7. Keep everything minimal, clean, quiet-luxury style.
+
+---
+
+### PURPOSE OF THIS ADMIN PANEL
+This dashboard is for:
+• CEO pitch & stakeholder presentation  
+• Future backend planning  
+• Showing full control over the website visually  
+
+---
+
+### ADMIN PANEL STRUCTURE
+
+#### 1. LOGIN SCREEN (UI ONLY)
+• Email field  
+• Password field  
+• “Login to Admin Dashboard” button  
+• Luxury minimal card design  
+• No authentication logic  
+
+---
+
+#### 2. DASHBOARD HOME (Overview)
+
+Show visual STAT CARDS (mock numbers):
+• Total Visitors (e.g. 12,480)
+• Total Customers (e.g. 1,236)
+• Add to Carts (e.g. 3,982)
+• Orders (e.g. 824)
+• Conversion Rate (%)
+• Top Locations (pakistan cities)
+
+Each card:
+• Soft background
+• Icon
+• Subtle hover
+• Brand color accents only
+
+---
+
+#### 3. TRAFFIC & LOCATION (VISUAL ONLY)
+• World map or USA map (static SVG or chart)
+• Mock heat dots
+• City list (lahore karachi etc )
+• Time range dropdown (Today / 7 days / 30 days – UI only)
+
+---
+
+#### 4. WEBSITE CONTENT CONTROL (MOST IMPORTANT)
+
+Create a section called:
+### “Website Content Manager”
+
+Tabs or accordions:
+
+##### A. Home Page
+• Hero headline (text input)
+• Hero subheading (textarea)
+• Hero CTA text
+• Upload hero image (UI only)
+• Upload hero video (UI only)
+and any thing else that is nessecray accordgly
+##### B. Product Page
+• Product title
+• Short description
+• Long description
+• Benefits list (editable list UI)
+• Ingredients text
+• Reaction from Customers section toggle (ON/OFF)
+
+##### C. Media Manager
+• Upload images (grid preview)
+• Upload videos (thumbnail preview)
+• Replace media (UI simulation only)
+
+⚠️ No real uploads — use placeholders and preview cards.
+
+---and any thing else that is nessecray accordgly
+
+#### 5. REVIEWS & SOCIAL PROOF (UI MOCK)
+• WhatsApp reviews section
+• Video reactions section
+• Toggle visibility ON/OFF
+• Reorder items via drag UI
+• “Pending / Approved” tags (visual only)
+
+---and any thing else that is nessecray accordgly
+
+#### 6. PAGES CONTROL
+List existing pages:
+• Home
+• Product
+• About
+• Contact
+
+Each page:
+• Edit button (opens UI form)
+• Visibility toggle
+• Status badge (Live / Draft)
+
+NO real routing changes.
+
+---and any thing else that is nessecray accordgly
+
+#### 7. SETTINGS (UI ONLY)
+• Brand logo upload preview
+• Primary color preview (locked)
+• Font preview (locked)
+• Language selector (disabled)
+• Currency selector (disabled)
+
+---
+and any thing else that is nessecray accordgly
+#### 8. SIDEBAR NAVIGATION
+Left sidebar with icons:
+• Dashboard
+• Analytics
+• Content
+• Products
+• Reviews
+• Media
+• Pages
+• Settings
+• Logout
+
+Sticky sidebar, smooth transitions.
+
+---
+and any thing else that is nessecray accordgly
+### DESIGN REQUIREMENTS
+• Same fonts as existing website
+• Same color palette
+• No harsh shadows
+• Rounded cards
+• Generous spacing
+• Calm animations (opacity, translateY only)
+• Desktop-first, responsive second
+
+---
+and any thing else that is nessecray accordgly
+### TECH NOTES
+• Use HTML + CSS + minimal JS
+• OR React if project already uses it
+• Mock data only
+• Clean, commented code
+• No backend logic
+
+---
+and any thing else that is nessecray accordgly
+### FINAL OUTPUT
+Deliver:
+• Admin dashboard UI page
+• Fully styled
+• Fully navigable
+• Safe to demo to CEO
+• Future-backend-ready
+and any thing else that is nessecray accordgly
+Do NOT include explanations.
+Do NOT include backend code.
+Do NOT change existing website behavior.
+and any thing else that is nessecray accordgly
