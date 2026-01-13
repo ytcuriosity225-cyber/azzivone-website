@@ -104,9 +104,18 @@ export default function Product() {
 
       {/* Hero Section */}
       <section className="relative pt-32 md:pt-48 pb-20 px-4 md:px-10 lg:px-20 max-w-7xl mx-auto overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
-          <motion.div {...fadeInUp} className="relative z-10">
-            <div className="flex items-center gap-2 mb-6">
+        <div className="flex flex-col items-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="relative w-full max-w-4xl mb-12"
+          >
+            <img src={productHero} alt="Product" className="relative rounded-[6px] elegant-shadow w-full aspect-[16/9] md:aspect-[21/9] object-cover border border-gold/5" />
+          </motion.div>
+
+          <motion.div {...fadeInUp} className="relative z-10 text-center max-w-4xl">
+            <div className="flex flex-col items-center gap-4 mb-8">
               <div className="flex -space-x-1.5">
                 {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="w-8 h-8 rounded-full border border-white bg-slate-100 overflow-hidden">
@@ -125,25 +134,18 @@ export default function Product() {
               Wake up to glass skin. Our 96% pure formula repairs damage and locks in moisture for a 24-hour natural glow.
             </p>
 
-            <Link href="/checkout">
-              <button className="gold-gradient text-white px-10 py-4 rounded-[6px] font-body font-bold text-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 uppercase tracking-widest">
-                Continue to Checkout <ChevronRight className="w-5 h-5" />
-              </button>
-            </Link>
-            
-            <div className="mt-8 flex flex-wrap gap-4 text-xs text-dark/60 font-medium">
-              <span className="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-gold" /> Secure Payment</span>
-              <span className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-gold" /> Fast Shipping</span>
+            <div className="flex flex-col items-center gap-6">
+              <Link href="/checkout">
+                <button className="gold-gradient text-white px-10 py-4 rounded-[6px] font-body font-bold text-lg hover:shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 uppercase tracking-widest min-w-[300px]">
+                  Continue to Checkout <ChevronRight className="w-5 h-5" />
+                </button>
+              </Link>
+              
+              <div className="flex flex-wrap justify-center gap-6 text-xs text-dark/60 font-medium">
+                <span className="flex items-center gap-1.5"><ShieldCheck className="h-4 w-4 text-gold" /> Secure Payment</span>
+                <span className="flex items-center gap-1.5"><Truck className="h-4 w-4 text-gold" /> Fast Shipping</span>
+              </div>
             </div>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            <img src={productHero} alt="Product" className="relative rounded-[6px] elegant-shadow w-full aspect-[4/5] object-cover border border-gold/5" />
           </motion.div>
         </div>
       </section>
@@ -207,6 +209,28 @@ export default function Product() {
               </div>
             ))}
           </div>
+      </section>
+
+      {/* DOC Reactions Section */}
+      <section className="py-24 bg-[#FAFAF9] relative z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-3xl md:text-5xl text-dark mb-4">What Doctors say?</h2>
+            <div className="w-12 h-1 gold-glaze-bar mx-auto rounded-full" />
+          </div>
+
+          <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
+            {reviews.map((video, index) => (
+              <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
+                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Review" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
+                    <Play className="w-6 h-6 fill-white ml-1" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-12">
             {whatsappScreenshots.map((img, index) => (
@@ -217,7 +241,7 @@ export default function Product() {
           </div>
         </div>
       </section>
-
+      
       {/* Delivery Gallery */}
       <section className="py-24 px-4 max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16">
