@@ -56,6 +56,7 @@ const FloatingIcons = () => {
 };
 
 export default function Checkout() {
+  const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -64,7 +65,7 @@ export default function Checkout() {
     city: "",
     notes: "",
     coupon: "",
-    courier: "daewoo",
+    courier: "tcs",
     bank: "",
     jazzcashNumber: "",
     easypaisaNumber: "",
@@ -78,7 +79,15 @@ export default function Checkout() {
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const pricePerUnit = 3500;
-  const total = quantity * pricePerUnit;
+  
+  const shippingCharges = {
+    tcs: 350,
+    daewoo: 400
+  };
+
+  const currentShipping = paymentMethod === "cod" ? shippingCharges[formData.courier as keyof typeof shippingCharges] : 0;
+  const subtotal = quantity * pricePerUnit;
+  const total = subtotal + currentShipping;
 
   const pakistanDistricts = [
     "Attock", "Bahawalnagar", "Bahawalpur", "Bhakkar", "Chakwal", "Chiniot", "Dera Ghazi Khan", "Faisalabad", "Gujranwala", "Gujrat", "Hafizabad", "Jhang", "Jhelum", "Kasur", "Khanewal", "Khushab", "Lahore", "Layyah", "Lodhran", "Mandi Bahauddin", "Mianwali", "Multan", "Muzaffargarh", "Nankana Sahib", "Narowal", "Okara", "Pakpattan", "Rahim Yar Khan", "Rajanpur", "Rawalpindi", "Sahiwal", "Sargodha", "Sheikhupura", "Sialkot", "Toba Tek Singh", "Vehari",
@@ -94,7 +103,7 @@ export default function Checkout() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Order placed successfully! (This is a prototype)");
+    setIsSuccess(true);
   };
 
   const fadeInUp = {
@@ -224,12 +233,18 @@ export default function Checkout() {
                                   <label className="font-body text-[10px] text-dark/40 font-bold block uppercase tracking-widest">Select Courier Service</label>
                                   <div className="grid grid-cols-1 gap-2">
                                     <label className="flex items-center gap-3 p-3 bg-white border border-gold/10 rounded-[4px] cursor-pointer">
-                                      <input type="radio" name="courier" value="daewoo" checked={formData.courier === "daewoo"} onChange={handleInputChange} />
-                                      <span className="text-xs font-body text-dark">Daewoo Express (48 Hours)</span>
+                                      <input type="radio" name="courier" value="tcs" checked={formData.courier === "tcs"} onChange={handleInputChange} />
+                                      <div className="flex-1 flex justify-between items-center">
+                                        <span className="text-xs font-body text-dark">TCS (2-3 Days)</span>
+                                        <span className="text-[10px] font-bold text-gold">Rs. 350</span>
+                                      </div>
                                     </label>
                                     <label className="flex items-center gap-3 p-3 bg-white border border-gold/10 rounded-[4px] cursor-pointer">
-                                      <input type="radio" name="courier" value="tcs" checked={formData.courier === "tcs"} onChange={handleInputChange} />
-                                      <span className="text-xs font-body text-dark">TCS (2-3 Days)</span>
+                                      <input type="radio" name="courier" value="daewoo" checked={formData.courier === "daewoo"} onChange={handleInputChange} />
+                                      <div className="flex-1 flex justify-between items-center">
+                                        <span className="text-xs font-body text-dark">Daewoo Express (48 Hours)</span>
+                                        <span className="text-[10px] font-bold text-gold">Rs. 400</span>
+                                      </div>
                                     </label>
                                   </div>
                                   <p className="text-[9px] text-dark/40 italic">* Note: Delivery may take longer for minor cities.</p>
@@ -311,11 +326,11 @@ export default function Checkout() {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center border border-gold/10 rounded-[4px] p-1">
-                        <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-6 h-6 flex items-center justify-center text-gold text-sm font-bold">-</button>
+                        <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-6 h-6 flex items-center justify-center text-gold text-sm font-bold">-</button>
                         <span className="font-body font-bold text-xs px-3">{quantity}</span>
-                        <button onClick={() => setQuantity(quantity + 1)} className="w-6 h-6 flex items-center justify-center text-gold text-sm font-bold">+</button>
+                        <button type="button" onClick={() => setQuantity(quantity + 1)} className="w-6 h-6 flex items-center justify-center text-gold text-sm font-bold">+</button>
                       </div>
-                      <p className="font-display text-lg text-gold">Rs. {total.toLocaleString()}</p>
+                      <p className="font-display text-lg text-gold">Rs. {subtotal.toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
@@ -323,11 +338,13 @@ export default function Checkout() {
                 <div className="py-8 space-y-3">
                   <div className="flex justify-between font-body text-xs">
                     <span className="text-dark/40">Subtotal</span>
-                    <span className="text-dark font-bold">Rs. {total.toLocaleString()}</span>
+                    <span className="text-dark font-bold">Rs. {subtotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between font-body text-xs">
-                    <span className="text-dark/40">Shipping</span>
-                    <span className="text-gold font-bold uppercase tracking-widest">Free</span>
+                    <span className="text-dark/40">Shipping ({formData.courier.toUpperCase()})</span>
+                    <span className="text-gold font-bold">
+                      {currentShipping > 0 ? `Rs. ${currentShipping}` : "Free"}
+                    </span>
                   </div>
                   
                   {/* Selected Payment Info */}
@@ -374,6 +391,53 @@ export default function Checkout() {
       <footer className="py-12 text-center relative z-10 px-6">
         <p className="font-body text-[8px] text-dark/20 tracking-[0.4em] uppercase">© 2026 Azzivone. Secure Prototype.</p>
       </footer>
+
+      {/* Success Modal */}
+      <AnimatePresence>
+        {isSuccess && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-dark/80 backdrop-blur-md"
+              onClick={() => setIsSuccess(false)}
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-md bg-white rounded-2xl elegant-shadow overflow-hidden text-center p-8 border border-gold/20"
+            >
+              {/* Celebration Explosion */}
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={{ scale: [0, 1.2, 1] }}
+                className="absolute -top-10 left-1/2 -translate-x-1/2 text-6xl"
+              >
+                🎉
+              </motion.div>
+              
+              <div className="w-32 h-32 mx-auto mb-6 rounded-xl overflow-hidden shadow-2xl border-2 border-gold/20">
+                <img src={product} className="w-full h-full object-cover" alt="Snail Mucin" />
+              </div>
+
+              <h2 className="font-display text-3xl text-dark mb-2">Congratulations! 🎉</h2>
+              <p className="text-dark/40 font-bold uppercase tracking-widest text-[10px] mb-6">Order Placed Successfully</p>
+              
+              <div className="bg-gold/5 border border-gold/10 p-4 rounded-xl mb-8">
+                <p className="text-sm text-dark font-body">Your skin is about to get that elite <span className="text-gold font-bold">Glass-Glow</span> treatment.</p>
+              </div>
+
+              <Link href="/">
+                <button className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base uppercase tracking-widest shadow-lg shadow-gold/20">
+                  Back to Home
+                </button>
+              </Link>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
