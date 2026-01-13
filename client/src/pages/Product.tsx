@@ -200,6 +200,18 @@ export default function Product() {
               <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                 <div className="bg-white/20 backdrop-blur-md border border-white/30 px-6 py-3 rounded-full text-white font-bold uppercase tracking-widest text-xs">View Gallery</div>
               </div>
+
+              {/* Play Button Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <motion.div 
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  whileHover={{ scale: 1.1 }}
+                  className="w-20 h-20 md:w-24 md:h-24 rounded-full gold-gradient flex items-center justify-center shadow-[0_0_50px_rgba(212,175,55,0.5)] border-4 border-white/30 backdrop-blur-sm group-hover:scale-110 transition-transform duration-500"
+                >
+                  <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1.5" />
+                </motion.div>
+              </div>
             </div>
           </motion.div>
 
