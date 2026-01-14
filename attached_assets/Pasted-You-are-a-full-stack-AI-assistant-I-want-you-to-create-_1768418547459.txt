@@ -1,0 +1,51 @@
+You are a full-stack AI assistant. I want you to create a fully functional Supabase backend integration for my existing website dashboard. 
+Here are the requirements:
+
+1. *Supabase credentials (for Replit usage)*:
+   - URL: "https://zburevdajshgcsfqaw.e.supabase.co"
+   - Anon/public key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cmV2bmFkanNoZ3NzZnFhbXdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0MTE0OTEsImV4cCI6MjA4Mzk4NzQ5MX0.OY_3KTtIEcBN-6p_jTf6yY-r6Son6UThjMXBmUKl9p0"
+   - Secret key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp1cmV2bmFkanNoZ3NzZnFhbXdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg0MTE0OTEsImV4cCI6MjA4Mzk4NzQ5MX0.OY_3KTtIEcBN-6p_jTf6yY-r6Son6UThjMXBmUKl9p0"
+
+2. *Tables* (already exist in Supabase):
+   - public.products → columns: id (uuid PK), name, price, inventory, status
+   - public.orders → columns: id (uuid PK), customer_name, phone, email, address, product_id (FK → products.id), price, created_at
+   - RLS enabled with:
+     - orders_insert_policy (authenticated users)
+     - orders_select_admin (admin only)
+     - products_select_public (public read-only)
+
+3. *Requirements for the integration*:
+   - Create a reusable *Supabase client* in Replit using JS/TS or Python (depending on Replit project type).  
+   - Implement *CRUD functions*:
+     - getProducts() → fetch products for website
+     - getOrders() → fetch orders for admin dashboard (only for admin)
+     - createOrder(orderData) → insert new order from website checkout form
+   - Ensure *foreign key validation*: orders.product_id must exist in products table
+   - Ensure *price consistency*: order price must match product.price (can validate in code before insertion)
+   - Handle *errors and exceptions gracefully* with informative messages
+   - Do not disturb any existing frontend UI, classnames, or design
+   - Use *environment variables* for Supabase URL and keys; do not hardcode
+   - Provide *example usage* for Replit:
+     js
+     const products = await getProducts();
+     const newOrder = await createOrder({
+       customer_name: "Ali",
+       phone: "03001234567",
+       email: "ali@test.com",
+       address: "Islamabad",
+       product_id: "uuid-of-product",
+       price: 3500
+     });
+     
+   - Include *strict restrictions*:
+     - No destructive changes to existing Supabase tables or data
+     - Do not disable RLS
+     - Do not change column types or names
+     - All code must respect existing foreign key constraints
+
+4. *Extra*:
+   - Provide *full comments* in code explaining each function
+   - Include *how to test* in Replit console
+   - Include optional: *listener / webhook* for automatic dashboard updates when orders are inserted
+
+Output the complete ready-to-use code files with clear instructions to integrate into existing Replit frontend project.
