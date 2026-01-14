@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Order, type InsertOrder } from "@shared/schema";
+import { type User, type InsertUser, type Order, type InsertOrder, type Hero, type InsertHero } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 // modify the interface with any CRUD methods
@@ -12,15 +12,28 @@ export interface IStorage {
   // Orders
   createOrder(order: InsertOrder): Promise<Order>;
   getOrders(): Promise<Order[]>;
+
+  // Hero
+  getHero(): Promise<Hero>;
+  updateHero(hero: InsertHero): Promise<Hero>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private orders: Map<string, Order>;
+  private hero: Hero;
 
   constructor() {
     this.users = new Map();
     this.orders = new Map();
+    this.hero = {
+      id: "1",
+      title: "Glass-Glow Skin, engineered for people who don’t slow down",
+      subtitle: "Experience the 96% pure difference. Repair, hydration, and refinement.",
+      ctaText: "Order Now",
+      videoUrl: "",
+      logoUrl: ""
+    };
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -56,6 +69,15 @@ export class MemStorage implements IStorage {
 
   async getOrders(): Promise<Order[]> {
     return Array.from(this.orders.values());
+  }
+
+  async getHero(): Promise<Hero> {
+    return this.hero;
+  }
+
+  async updateHero(hero: InsertHero): Promise<Hero> {
+    this.hero = { ...hero, id: "1" };
+    return this.hero;
   }
 }
 

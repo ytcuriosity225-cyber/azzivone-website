@@ -2,6 +2,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { useState, useRef, useEffect } from "react";
 import { CheckCircle, Droplets, Sparkles, Shield, Clock, Star, ChevronRight, ChevronLeft, Award, Leaf, Heart, ShoppingCart as ShoppingCartIcon, Play } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { type Hero } from "@shared/schema";
 import heroVideo from "@assets/HERO_VIDEO_1768257063489.mp4";
 import logo from "@assets/logo_1768257103773.png";
 import product1 from "@assets/WhatsApp_Image_2026-01-12_at_2.29.14_PM_1768257023864.jpeg";
@@ -57,28 +59,18 @@ const FloatingIcons = () => {
 };
 
 export default function Home() {
-  const [heroData, setHeroData] = useState({ title: "Glass-Glow Skin, engineered for people who don’t slow down", subtitle: "Experience the 96% pure difference. Repair, hydration, and refinement.", ctaText: "Order Now" });
-  const [productData, setProductData] = useState<any[]>([]);
-  const [reviewData, setReviewData] = useState<any[]>([]);
+  // Replacement point for future real backend endpoint
+  const { data: heroData } = useQuery<Hero>({
+    queryKey: ["/api/dashboard/hero"],
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [heroRes, productsRes, reviewsRes] = await Promise.all([
-          fetch("/api/dashboard/hero"),
-          fetch("/api/dashboard/products"),
-          fetch("/api/dashboard/reviews")
-        ]);
+  const { data: productData = [] } = useQuery<any[]>({
+    queryKey: ["/api/dashboard/products"],
+  });
 
-        if (heroRes.ok) setHeroData(await heroRes.json());
-        if (productsRes.ok) setProductData(await productsRes.json());
-        if (reviewsRes.ok) setReviewData(await reviewsRes.json());
-      } catch (err) {
-        console.error("Failed to fetch home data:", err);
-      }
-    };
-    fetchData();
-  }, []);
+  const { data: reviewData = [] } = useQuery<any[]>({
+    queryKey: ["/api/dashboard/reviews"],
+  });
 
   // Use fetched data or fallback to original hardcoded values
   const displayProducts = productData.length > 0 ? productData : [
@@ -216,12 +208,12 @@ export default function Home() {
             variants={fadeInUp}
             className="font-display text-4xl md:text-7xl text-white leading-[1.1] mb-6 font-medium drop-shadow-2xl"
           >
-            {heroData.title}
+            {heroData?.title || "Glass-Glow Skin, engineered for people who don’t slow down"}
           </motion.h1>
           <motion.div variants={fadeInUp}>
             <Link href="/product">
               <button className="gold-gradient text-white px-10 py-4 rounded-[6px] font-body font-bold text-lg hover:shadow-xl transition-all active:scale-95 uppercase tracking-widest">
-                {heroData.ctaText}
+                {heroData?.ctaText || "Order Now"}
               </button>
             </Link>
           </motion.div>

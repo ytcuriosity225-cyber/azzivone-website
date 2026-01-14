@@ -29,6 +29,22 @@ export const insertUserSchema = createInsertSchema(users).pick({
   password: true,
 });
 
+export const heroContent = pgTable("hero_content", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  subtitle: text("subtitle").notNull(),
+  ctaText: text("cta_text").notNull(),
+  videoUrl: text("video_url"),
+  logoUrl: text("logo_url"),
+});
+
+export const insertHeroSchema = createInsertSchema(heroContent).omit({
+  id: true,
+});
+
+export type InsertHero = z.infer<typeof insertHeroSchema>;
+export type Hero = typeof heroContent.$inferSelect;
+
 export const insertOrderSchema = createInsertSchema(orders).omit({
   id: true,
   status: true,

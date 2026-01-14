@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertOrderSchema } from "@shared/schema";
+import { insertOrderSchema, insertHeroSchema } from "@shared/schema";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -38,14 +38,6 @@ export async function registerRoutes(
     }
   ];
 
-  const mockHero = {
-    title: "Glass-Glow Skin, engineered for people who don’t slow down",
-    subtitle: "Experience the 96% pure difference. Repair, hydration, and refinement.",
-    ctaText: "Order Now",
-    videoUrl: "",
-    logoUrl: ""
-  };
-
   const mockReviews = [
     {
       id: 1,
@@ -68,7 +60,21 @@ export async function registerRoutes(
   // API Routes
   app.get("/api/dashboard/stats", (_req, res) => res.json(mockStats));
   app.get("/api/dashboard/products", (_req, res) => res.json(mockProducts));
-  app.get("/api/dashboard/hero", (_req, res) => res.json(mockHero));
+  app.get("/api/dashboard/hero", async (_req, res) => {
+    // Replacement point for future real backend endpoint
+    const hero = await storage.getHero();
+    res.json(hero);
+  });
+  app.post("/api/dashboard/hero", async (req, res) => {
+    try {
+      // Replacement point for future real backend endpoint
+      const heroData = insertHeroSchema.parse(req.body);
+      const updatedHero = await storage.updateHero(heroData);
+      res.json(updatedHero);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
   app.get("/api/dashboard/reviews", (_req, res) => res.json(mockReviews));
 
   app.post("/api/orders", async (req, res) => {

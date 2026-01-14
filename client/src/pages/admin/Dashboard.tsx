@@ -11,25 +11,68 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { stats as mockStatsService, heroContent as mockHeroService } from "@/services/mockData";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { type Hero } from "@shared/schema";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [previewMode, setPreviewMode] = useState(false);
   const [stats, setStats] = useState<any[]>([]);
+  const { toast } = useToast();
 
-  // === Controlled States for Content ===
+  // === Form State for Content ===
   const [heroHeading, setHeroHeading] = useState("");
   const [heroSubheading, setHeroSubheading] = useState("");
   const [ctaText, setCtaText] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
   const [productPrice, setProductPrice] = useState("2,499");
   const [benefits, setBenefits] = useState(["Deep hydration", "Scar healing", "Barrier repair"]);
 
+  // Fetch Hero Content
+  const { data: heroData, isLoading: isLoadingHero } = useQuery<Hero>({
+    queryKey: ["/api/dashboard/hero"],
+  });
+
+  // Sync state with fetched data
   useEffect(() => {
-    // Simulate API fetch from mock services
+    if (heroData) {
+      setHeroHeading(heroData.title);
+      setHeroSubheading(heroData.subtitle);
+      setCtaText(heroData.ctaText);
+      setVideoUrl(heroData.videoUrl || "");
+      setLogoUrl(heroData.logoUrl || "");
+    }
+  }, [heroData]);
+
+  // Update Hero Content Mutation
+  const heroMutation = useMutation({
+    mutationFn: async (data: Partial<Hero>) => {
+      // Replacement point for future real backend endpoint
+      const res = await apiRequest("POST", "/api/dashboard/hero", data);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/dashboard/hero"] });
+      toast({
+        title: "Success",
+        description: "Hero section updated successfully",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+    },
+  });
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        // Stats fetch
         const statsRes = await fetch("/api/dashboard/stats");
         if (statsRes.ok) {
           const statsJson = await statsRes.json();
@@ -41,15 +84,6 @@ export default function AdminDashboard() {
           }));
           setStats(statsData);
         }
-
-        // Hero fetch
-        const heroRes = await fetch("/api/dashboard/hero");
-        if (heroRes.ok) {
-          const heroJson = await heroRes.json();
-          setHeroHeading(heroJson.title);
-          setHeroSubheading(heroJson.subtitle);
-          setCtaText(heroJson.ctaText);
-        }
       } catch (err) {
         console.error("Dashboard fetch error:", err);
       }
@@ -58,9 +92,14 @@ export default function AdminDashboard() {
     fetchData();
   }, []);
 
-  // === Placeholder Handlers for Future Backend Integration ===
   const handleSave = () => {
-    console.log("Save / Publish called, integrate API here.");
+    heroMutation.mutate({
+      title: heroHeading,
+      subtitle: heroSubheading,
+      ctaText: ctaText,
+      videoUrl: videoUrl,
+      logoUrl: logoUrl,
+    });
   };
   const handleAddBenefit = () => {
     setBenefits([...benefits, ""]);
@@ -164,11 +203,23 @@ export default function AdminDashboard() {
                         <Textarea value={heroSubheading} onChange={e => setHeroSubheading(e.target.value)} />
                         <Label>CTA Text</Label>
                         <Input value={ctaText} onChange={e => setCtaText(e.target.value)} />
+                        <Label>Media URL (Video/Image)</Label>
+                        <Input value={videoUrl} onChange={e => setVideoUrl(e.target.value)} placeholder="https://..." />
+                        <Label>Logo URL</Label>
+                        <Input value={logoUrl} onChange={e => setLogoUrl(e.target.value)} placeholder="https://..." />
                       </div>
                       <div className="space-y-6">
                         <Label>Primary Hero Media</Label>
-                        <div className="aspect-video bg-gold/5 rounded-2xl flex items-center justify-center">
-                          <ImageIcon className="w-12 h-12 text-gold/30" />
+                        <div className="aspect-video bg-gold/5 rounded-2xl flex items-center justify-center overflow-hidden">
+                          {videoUrl ? (
+                            videoUrl.endsWith('.mp4') ? (
+                              <video src={videoUrl} className="w-full h-full object-cover" muted loop />
+                            ) : (
+                              <img src={videoUrl} className="w-full h-full object-cover" alt="Hero Preview" />
+                            )
+                          ) : (
+                            <ImageIcon className="w-12 h-12 text-gold/30" />
+                          )}
                         </div>
                       </div>
                     </div>
