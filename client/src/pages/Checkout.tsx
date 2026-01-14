@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { insertOrderSchema } from "@shared/schema";
 import { 
   ArrowLeft, Shield, Truck, CheckCircle, Package, CreditCard, 
   MapPin, Phone, User, Mail, Heart, ShoppingCart, 
@@ -57,6 +61,8 @@ const FloatingIcons = () => {
 
 export default function Checkout() {
   const [isSuccess, setIsSuccess] = useState(false);
+  const { toast } = useToast();
+  const [, setLocation] = useLocation();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -89,6 +95,27 @@ export default function Checkout() {
   const subtotal = quantity * pricePerUnit;
   const total = subtotal + currentShipping;
 
+  const orderMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await apiRequest("POST", "/api/orders", data);
+      return res.json();
+    },
+    onSuccess: () => {
+      setIsSuccess(true);
+      toast({
+        title: "Order Placed Successfully",
+        description: "We've received your order and will contact you soon.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to place order. Please try again.",
+        variant: "destructive",
+      });
+    }
+  });
+
   const pakistanDistricts = [
     "Attock", "Bahawalnagar", "Bahawalpur", "Bhakkar", "Chakwal", "Chiniot", "Dera Ghazi Khan", "Faisalabad", "Gujranwala", "Gujrat", "Hafizabad", "Jhang", "Jhelum", "Kasur", "Khanewal", "Khushab", "Lahore", "Layyah", "Lodhran", "Mandi Bahauddin", "Mianwali", "Multan", "Muzaffargarh", "Nankana Sahib", "Narowal", "Okara", "Pakpattan", "Rahim Yar Khan", "Rajanpur", "Rawalpindi", "Sahiwal", "Sargodha", "Sheikhupura", "Sialkot", "Toba Tek Singh", "Vehari",
     "Badin", "Dadu", "Ghotki", "Hyderabad", "Jacobabad", "Jamshoro", "Karachi Central", "Karachi East", "Karachi South", "Karachi West", "Korangi", "Malir", "Kashmore", "Khairpur", "Larkana", "Matiari", "Mirpur Khas", "Naushahro Feroze", "Qambar Shahdadkot", "Sanghar", "Shaheed Benazirabad", "Shikarpur", "Sujawal", "Sukkur", "Tando Allahyar", "Tando Muhammad Khan", "Tharparkar", "Thatta", "Umerkot",
@@ -103,7 +130,20 @@ export default function Checkout() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSuccess(true);
+    const orderData = {
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email || null,
+      address: formData.address,
+      city: formData.city,
+      quantity: quantity.toString(),
+      totalPrice: total.toString(),
+      paymentMethod,
+      courier: paymentMethod === "cod" ? formData.courier : null,
+      notes: formData.notes || null,
+    };
+    
+    orderMutation.mutate(orderData);
   };
 
   const fadeInUp = {
@@ -157,16 +197,16 @@ export default function Checkout() {
                 <div className="space-y-4">
                   <div>
                     <label className="font-body text-[10px] text-dark/40 font-bold mb-2 block uppercase tracking-widest">Full Name</label>
-                    <input type="text" name="name" required className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm" placeholder="Your Name" />
+                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} required className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm" placeholder="Your Name" />
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="font-body text-[10px] text-dark/40 font-bold mb-2 block uppercase tracking-widest">Phone</label>
-                      <input type="tel" name="phone" required className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm" placeholder="03xx-xxxxxxx" />
+                      <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm" placeholder="03xx-xxxxxxx" />
                     </div>
                     <div>
                       <label className="font-body text-[10px] text-dark/40 font-bold mb-2 block uppercase tracking-widest">Email</label>
-                      <input type="email" name="email" className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm" placeholder="your@email.com" />
+                      <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm" placeholder="your@email.com" />
                     </div>
                   </div>
                 </div>
@@ -180,7 +220,7 @@ export default function Checkout() {
                 <div className="space-y-4">
                   <div>
                     <label className="font-body text-[10px] text-dark/40 font-bold mb-2 block uppercase tracking-widest">Complete Address</label>
-                    <textarea name="address" required rows={3} className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm resize-none" placeholder="House no, Street, Area..." />
+                    <textarea name="address" value={formData.address} onChange={handleInputChange} required rows={3} className="w-full px-4 py-3 rounded-[4px] border border-gold/10 bg-[#FAFAF9] outline-none font-body text-sm resize-none" placeholder="House no, Street, Area..." />
                   </div>
                   <div>
                     <label className="font-body text-[10px] text-dark/40 font-bold mb-2 block uppercase tracking-widest">City / District</label>
@@ -373,8 +413,12 @@ export default function Checkout() {
                   </div>
                 </div>
 
-                <button onClick={handleSubmit} className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base hover:shadow-lg transition-all active:scale-95 uppercase tracking-widest">
-                  Complete Purchase
+                <button 
+                  type="submit" 
+                  disabled={orderMutation.isPending}
+                  className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base hover:shadow-lg transition-all active:scale-95 uppercase tracking-widest disabled:opacity-50"
+                >
+                  {orderMutation.isPending ? "Processing..." : "Complete Purchase"}
                 </button>
 
                 <div className="mt-8 flex justify-center gap-6 opacity-30">
