@@ -1,0 +1,80 @@
+Objective
+Upgrade and stabilize the existing Azzivone Admin Dashboard UI to function as a CMS-style control center that visually works end-to-end using mock data and is future-ready for backend (PHP REST APIs).
+This is a UI + UX refinement task, NOT a redesign.
+🧠 CONTEXT (VERY IMPORTANT)
+The admin dashboard is already built in React + Tailwind + React Query
+Backend APIs do NOT exist yet
+Current issue: dashboard looks empty because API data is missing
+Goal: make the admin feel fully alive, premium, and usable using mock data
+This dashboard will later connect to real APIs without UI changes
+✅ WHAT YOU MUST DO
+1️⃣ DATA STRATEGY (CRITICAL)
+Inject temporary mock data for:
+Dashboard stats
+Hero content
+Products
+Reviews
+Mock data must match existing state shape & UI logic
+Do NOT remove React Query or mutations
+Do NOT hardcode UI text inside JSX — only feed data
+2️⃣ DASHBOARD EXPERIENCE
+Ensure the following visibly work:
+Overview tab
+Executive KPI cards animate and display:
+Customers
+Orders
+Visitors
+Location
+Keep existing animations, icons, gradients
+Content / Hero tab
+Inputs must auto-fill with mock hero data
+Live preview panel must render image/video if URL exists
+CTA text editable
+Logo URL editable
+Product tab
+Product dropdown must show at least 1 premium product
+Editing:
+Name
+Price (Rs. 3500)
+Inventory (300 units)
+Status (Limited Stock)
+Benefits list (editable bullets)
+Reviews tab
+Add review form must work visually
+Reviews list must render stars + comments
+🎨 DESIGN RULES (NON-NEGOTIABLE)
+✅ KEEP
+Existing layout
+Colors (gold, off-white, soft neutrals)
+Fonts (display + body)
+Spacing
+Animations
+Premium “quiet luxury” vibe
+❌ DO NOT
+Do NOT change color palette
+Do NOT add dark/black backgrounds
+Do NOT redesign cards
+Do NOT rename tabs
+Do NOT remove Tailwind classes
+Do NOT break responsiveness
+Do NOT touch frontend website pages
+🛑 HARD RESTRICTIONS
+Breaking any rule below is failure.
+❌ No new libraries
+❌ No backend code
+❌ No routing changes
+❌ No folder restructuring
+❌ No removal of existing components
+❌ No visual regression
+❌ No API URL changes
+🧩 OUTPUT EXPECTATION
+After completion:
+Admin dashboard looks fully functional
+CEO can explore it without errors
+Mock data can later be replaced with real API responses
+Zero impact on existing design or frontend pages
+🏁 SUCCESS CRITERIA
+If backend is plugged in later:
+Only API base URL changes
+No UI refactor required
+Dashboard instantly becomes real

@@ -51,13 +51,14 @@ export class MemStorage implements IStorage {
     this.reviews = new Map();
     this.gallery = new Map();
     this.stats = [
-      { id: 1, label: "Total Revenue", value: "Rs. 1,250,000", change: "+12.5%", trendingUp: true },
-      { id: 2, label: "Active Orders", value: "45", change: "+5.2%", trendingUp: true },
-      { id: 3, label: "Customer Base", value: "8,942", change: "+18.3%", trendingUp: true },
-      { id: 4, label: "Avg. Order Value", value: "Rs. 3,850", change: "-2.1%", trendingUp: false },
-      { id: 5, label: "Total Visitors", value: "24,512", change: "+5.2%", trendingUp: true },
-      { id: 6, label: "Add to Carts", value: "1,842", change: "+3.1%", trendingUp: true },
-      { id: 7, label: "Conversion Rate", value: "3.2%", change: "+0.4%", trendingUp: true },
+      { id: 1, label: "Total Revenue", value: "Rs. 1,482,000", change: "+12.5%", trendingUp: true },
+      { id: 2, label: "Active Orders", value: "142", change: "+5.2%", trendingUp: true },
+      { id: 3, label: "Customer Base", value: "12,942", change: "+18.3%", trendingUp: true },
+      { id: 4, label: "Avg. Order Value", value: "Rs. 4,250", change: "-2.1%", trendingUp: false },
+      { id: 5, label: "Total Visitors", value: "48,512", change: "+5.2%", trendingUp: true },
+      { id: 6, label: "Add to Carts", value: "3,842", change: "+3.1%", trendingUp: true },
+      { id: 7, label: "Conversion Rate", value: "4.8%", change: "+0.4%", trendingUp: true },
+      { id: 8, label: "Active Sessions", value: "84", change: "+2%", trendingUp: true },
     ];
     this.hero = {
       id: "1",
@@ -73,9 +74,9 @@ export class MemStorage implements IStorage {
       {
         name: "Snail Mucin Serum",
         price: "3500",
-        inventory: "124",
-        sales: "856",
-        status: "In Stock",
+        inventory: "300",
+        sales: "1,248",
+        status: "Limited Stock",
         image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600",
         bullets: ["96% Pure Snail Mucin", "Deep 24h Hydration", "Repairs Acne Scars", "Cruelty-Free"]
       },
