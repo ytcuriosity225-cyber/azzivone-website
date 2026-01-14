@@ -357,7 +357,8 @@ export default function AdminDashboard() {
                     <Textarea value={reviewComment} onChange={e => setReviewComment(e.target.value)} />
                     <Button onClick={() => reviewMutation.mutate({
                       user: reviewUser, comment: reviewComment, rating: reviewRating,
-                      date: new Date().toISOString().split('T')[0], type: "text"
+                      date: new Date().toISOString().split('T')[0], type: "text",
+                      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${reviewUser}`
                     })} className="gold-gradient text-white w-full">Add Review</Button>
                   </div>
                 </Card>

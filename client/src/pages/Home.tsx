@@ -76,6 +76,10 @@ export default function Home() {
     queryKey: ["/api/dashboard/gallery", { type: "whatsapp" }],
   });
 
+  const { data: socialFeed = [] } = useQuery<Review[]>({
+    queryKey: ["/api/dashboard/reviews"],
+  });
+
   // Use fetched data or fallback to original hardcoded values
   const displayProducts = productData.length > 0 ? productData : [
     {
@@ -94,7 +98,7 @@ export default function Home() {
     }
   ];
 
-  const reviewsListDisplay = (reviewData as any[]).length > 0 ? (reviewData as any[]) : [
+  const reviewsListDisplay = (socialFeed as any[]).length > 0 ? (socialFeed as any[]) : [
     { type: 'video', thumbnail: product1 },
     { type: 'video', thumbnail: product2 },
     { type: 'video', thumbnail: product3 },

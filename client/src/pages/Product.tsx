@@ -136,18 +136,18 @@ export default function Product() {
     bullets: ["96% Pure Snail Mucin", "Deep 24h Hydration", "Repairs Acne Scars", "Cruelty-Free"]
   };
 
-  const reviewsList = reviewData.length > 0 ? reviewData : reviews;
+  const reviewsList = (reviewData as any[]).length > 0 ? (reviewData as any[]) : reviews;
   
-  const doctorVideosList = doctorGallery.length > 0 
-    ? doctorGallery.map(i => i.url) 
+  const doctorVideosList = (doctorGallery as any[]).length > 0 
+    ? (doctorGallery as any[]).map(i => i.url) 
     : doctorVideos;
 
-  const whatsappScreenshotsList = whatsappGallery.length > 0 
-    ? whatsappGallery.map(i => i.url) 
+  const whatsappScreenshotsList = (whatsappGallery as any[]).length > 0 
+    ? (whatsappGallery as any[]).map(i => i.url) 
     : whatsappScreenshots;
 
-  const deliveryGalleryList = deliveryGallery.length > 0 
-    ? deliveryGallery.map(i => i.url) 
+  const deliveryGalleryList = (deliveryGallery as any[]).length > 0 
+    ? (deliveryGallery as any[]).map(i => i.url) 
     : [productDisplay, productClean, productBathroom, productLifestyle];
   
   useEffect(() => {
