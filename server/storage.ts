@@ -1,6 +1,5 @@
 import { type User, type InsertUser, type Order, type InsertOrder, type Hero, type InsertHero, type Product, type InsertProduct, type Review, type InsertReview, type GalleryItem, type InsertGallery } from "@shared/schema";
 import { randomUUID } from "crypto";
-import { supabase } from "./supabase";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -38,6 +37,8 @@ export interface IStorage {
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
+  private orders: Map<string, Order>;
+  private products: Map<string, Product>;
   private reviews: Map<string, Review>;
   private gallery: Map<string, GalleryItem>;
   private hero: Hero;
@@ -45,6 +46,8 @@ export class MemStorage implements IStorage {
 
   constructor() {
     this.users = new Map();
+    this.orders = new Map();
+    this.products = new Map();
     this.reviews = new Map();
     this.gallery = new Map();
     this.stats = [
@@ -109,6 +112,28 @@ export class MemStorage implements IStorage {
       const id = randomUUID() as string;
       this.gallery.set(id, { ...item, id });
     });
+
+    // Seed initial products
+    const initialProducts: Product[] = [
+      {
+        id: randomUUID() as string,
+        name: "Snail Mucin Premium Serum",
+        price: "3850",
+        inventory: "95",
+        status: "Active",
+        sales: "0",
+        image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600",
+        bullets: [
+          "96% pure snail secretion filtrate",
+          "Repairs damaged skin barrier",
+          "Intense hydration for glass-glow skin"
+        ]
+      }
+    ];
+
+    initialProducts.forEach(p => {
+      this.products.set(p.id, p);
+    });
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -129,65 +154,28 @@ export class MemStorage implements IStorage {
   }
 
   async createOrder(insertOrder: InsertOrder): Promise<Order> {
-    // 1. Fetch product price for validation
-    const { data: product, error: pError } = await supabase
-      .from('products')
-      .select('price')
-      .eq('id', insertOrder.productId)
-      .single();
-
-    if (pError || !product) {
-      throw new Error('Product not found for order creation');
-    }
-
-    // 2. Insert into Supabase
-    const { data, error } = await supabase
-      .from('orders')
-      .insert([{
-        customer_name: insertOrder.name,
-        phone: insertOrder.phone,
-        email: insertOrder.email,
-        address: insertOrder.address,
-        product_id: insertOrder.productId,
-        price: Number(product.price),
-        created_at: new Date().toISOString()
-      }])
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    return {
-      id: data.id,
-      name: data.customer_name,
-      phone: data.phone,
-      email: data.email,
-      address: data.address,
-      productId: data.product_id,
+    const id = randomUUID() as string;
+    const order: Order = {
+      id,
+      name: insertOrder.name,
+      phone: insertOrder.phone,
+      email: insertOrder.email ?? null,
+      address: insertOrder.address,
+      city: insertOrder.city,
+      quantity: insertOrder.quantity,
+      totalPrice: insertOrder.totalPrice,
+      paymentMethod: insertOrder.paymentMethod,
       status: "pending",
-      notes: null,
-      courier: null
+      notes: insertOrder.notes ?? null,
+      courier: insertOrder.courier ?? null
     };
+    
+    this.orders.set(id, order);
+    return order;
   }
 
   async getOrders(): Promise<Order[]> {
-    const { data, error } = await supabase
-      .from('orders')
-      .select('*');
-    
-    if (error) throw error;
-
-    return data.map(o => ({
-      id: o.id,
-      name: o.customer_name,
-      phone: o.phone,
-      email: o.email,
-      address: o.address,
-      productId: o.product_id,
-      status: "completed", // Supabase doesn't have status yet, default to completed or pending
-      notes: null,
-      courier: null
-    }));
+    return Array.from(this.orders.values());
   }
 
   async getHero(): Promise<Hero> {
@@ -205,75 +193,44 @@ export class MemStorage implements IStorage {
   }
 
   async getProducts(): Promise<Product[]> {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*');
-    
-    if (error) throw error;
-
-    return data.map(p => ({
-      id: p.id,
-      name: p.name,
-      price: String(p.price),
-      inventory: String(p.inventory),
-      status: p.status,
-      sales: "0",
-      image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600",
-      bullets: []
-    }));
+    return Array.from(this.products.values());
   }
 
   async createProduct(insertProduct: InsertProduct): Promise<Product> {
-    const { data, error } = await supabase
-      .from('products')
-      .insert([{
-        name: insertProduct.name,
-        price: Number(insertProduct.price),
-        inventory: Number(insertProduct.inventory),
-        status: insertProduct.status
-      }])
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    return {
-      id: data.id,
-      name: data.name,
-      price: String(data.price),
-      inventory: String(data.inventory),
-      status: data.status,
-      sales: "0",
+    const id = randomUUID() as string;
+    const product: Product = {
+      id,
+      name: insertProduct.name,
+      price: insertProduct.price,
+      inventory: insertProduct.inventory,
+      status: insertProduct.status,
+      sales: insertProduct.sales || "0",
       image: insertProduct.image || "",
       bullets: insertProduct.bullets ?? null
     };
+    this.products.set(id, product);
+    return product;
   }
 
   async updateProduct(id: string, insertProduct: InsertProduct): Promise<Product> {
-    const { data, error } = await supabase
-      .from('products')
-      .update({
-        name: insertProduct.name,
-        price: Number(insertProduct.price),
-        inventory: Number(insertProduct.inventory),
-        status: insertProduct.status
-      })
-      .eq('id', id)
-      .select()
-      .single();
+    const existingProduct = this.products.get(id);
+    if (!existingProduct) {
+      throw new Error('Product not found');
+    }
 
-    if (error) throw error;
-
-    return {
-      id: data.id,
-      name: data.name,
-      price: String(data.price),
-      inventory: String(data.inventory),
-      status: data.status,
-      sales: "0",
-      image: insertProduct.image || "",
-      bullets: insertProduct.bullets ?? null
+    const updatedProduct: Product = {
+      id,
+      name: insertProduct.name,
+      price: insertProduct.price,
+      inventory: insertProduct.inventory,
+      status: insertProduct.status,
+      sales: insertProduct.sales || existingProduct.sales,
+      image: insertProduct.image || existingProduct.image,
+      bullets: insertProduct.bullets ?? existingProduct.bullets
     };
+    
+    this.products.set(id, updatedProduct);
+    return updatedProduct;
   }
 
   async getReviews(): Promise<Review[]> {
