@@ -5,6 +5,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { CheckCircle2, ShieldCheck, Star, ArrowRight, Play, ShoppingCart, Truck, Zap, ChevronRight, Heart, Sparkles as SparklesIcon, ChevronLeft, Clock, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { type Hero, type Product, type Review, type GalleryItem } from "@shared/schema";
 
 // Assets
 import productHero from "@assets/Time_(1)_1768325370235.png";
@@ -111,8 +113,20 @@ export default function Product() {
     queryKey: ["/api/dashboard/hero"],
   });
 
-  const { data: displayReviews = [] } = useQuery<any[]>({
+  const { data: reviewData = [] } = useQuery<Review[]>({
     queryKey: ["/api/dashboard/reviews"],
+  });
+
+  const { data: doctorGallery = [] } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/dashboard/gallery", { type: "doctor" }],
+  });
+
+  const { data: whatsappGallery = [] } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/dashboard/gallery", { type: "whatsapp" }],
+  });
+
+  const { data: deliveryGallery = [] } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/dashboard/gallery", { type: "delivery" }],
   });
 
   const mainProduct = productsData.find(p => p.name.includes("Serum")) || {
@@ -122,7 +136,19 @@ export default function Product() {
     bullets: ["96% Pure Snail Mucin", "Deep 24h Hydration", "Repairs Acne Scars", "Cruelty-Free"]
   };
 
-  const reviewsList = displayReviews.length > 0 ? displayReviews : reviews;
+  const reviewsList = reviewData.length > 0 ? reviewData : reviews;
+  
+  const doctorVideosList = doctorGallery.length > 0 
+    ? doctorGallery.map(i => i.url) 
+    : doctorVideos;
+
+  const whatsappScreenshotsList = whatsappGallery.length > 0 
+    ? whatsappGallery.map(i => i.url) 
+    : whatsappScreenshots;
+
+  const deliveryGalleryList = deliveryGallery.length > 0 
+    ? deliveryGallery.map(i => i.url) 
+    : [productDisplay, productClean, productBathroom, productLifestyle];
   
   useEffect(() => {
     const section = searchParams.get('section');
@@ -316,7 +342,7 @@ export default function Product() {
           </div>
 
           <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
-            {reviewsList.map((video, index) => (
+            {reviewsList.map((video: any, index: number) => (
               <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
                 <img src={video.thumbnail || video.avatar} className="w-full h-full object-cover" alt="Review" />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -378,7 +404,7 @@ export default function Product() {
           </div>
 
           <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar scroll-smooth">
-            {doctorVideos.map((video, index) => (
+            {doctorVideosList.map((video: string, index: number) => (
               <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-black rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
                 <video 
                   src={video} 
@@ -402,7 +428,7 @@ export default function Product() {
               <div className="w-12 h-0.5 bg-gold/30 mx-auto mt-3" />
             </div>
             <div className="flex gap-4 overflow-x-auto pb-8 no-scrollbar snap-x snap-mandatory">
-              {whatsappScreenshots.map((img, index) => (
+              {whatsappScreenshotsList.map((img: string, index: number) => (
                 <div key={index} className="min-w-[280px] md:min-w-[320px] bg-white p-2 rounded-[6px] elegant-shadow border border-gold/5 snap-center">
                   <img src={img} className="w-full aspect-[3/4] object-cover rounded-[4px]" alt="Chat" />
                 </div>
@@ -419,7 +445,7 @@ export default function Product() {
           <div className="w-12 h-0.5 bg-gold mx-auto mt-4" />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[productDisplay, productClean, productBathroom, productLifestyle].map((url, i) => (
+          {deliveryGalleryList.map((url: string, i: number) => (
             <div key={i} className="aspect-square rounded-[6px] overflow-hidden elegant-shadow border border-gold/5">
               <img src={url} alt="Delivery" className="w-full h-full object-cover" />
             </div>

@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertOrderSchema, insertHeroSchema, insertProductSchema } from "@shared/schema";
+import { insertOrderSchema, insertHeroSchema, insertProductSchema, insertReviewSchema, insertGallerySchema } from "@shared/schema";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -13,25 +13,6 @@ export async function registerRoutes(
     { id: 2, label: "Active Orders", value: "45", change: "+5.2%", trendingUp: true },
     { id: 3, label: "Customer Base", value: "8,942", change: "+18.3%", trendingUp: true },
     { id: 4, label: "Avg. Order Value", value: "Rs. 3,850", change: "-2.1%", trendingUp: false },
-  ];
-
-  const mockReviews = [
-    {
-      id: 1,
-      user: "Sarah K.",
-      rating: 5,
-      comment: "Absolutely love the texture! My skin has never looked more radiant.",
-      date: "2025-12-15",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
-    },
-    {
-      id: 2,
-      user: "Ahmed R.",
-      rating: 4,
-      comment: "Great product, noticed a difference in my acne scars within a week.",
-      date: "2025-12-20",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ahmed"
-    }
   ];
 
   // API Routes
@@ -59,13 +40,11 @@ export async function registerRoutes(
     }
   });
   app.get("/api/dashboard/hero", async (_req, res) => {
-    // Replacement point for future real backend endpoint
     const hero = await storage.getHero();
     res.json(hero);
   });
   app.post("/api/dashboard/hero", async (req, res) => {
     try {
-      // Replacement point for future real backend endpoint
       const heroData = insertHeroSchema.parse(req.body);
       const updatedHero = await storage.updateHero(heroData);
       res.json(updatedHero);
@@ -73,7 +52,37 @@ export async function registerRoutes(
       res.status(400).json({ error: error.message });
     }
   });
-  app.get("/api/dashboard/reviews", (_req, res) => res.json(mockReviews));
+
+  // Reviews
+  app.get("/api/dashboard/reviews", async (_req, res) => {
+    const reviews = await storage.getReviews();
+    res.json(reviews);
+  });
+  app.post("/api/dashboard/reviews", async (req, res) => {
+    try {
+      const reviewData = insertReviewSchema.parse(req.body);
+      const review = await storage.createReview(reviewData);
+      res.status(201).json(review);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  // Gallery
+  app.get("/api/dashboard/gallery", async (req, res) => {
+    const type = req.query.type as string;
+    const items = await storage.getGallery(type);
+    res.json(items);
+  });
+  app.post("/api/dashboard/gallery", async (req, res) => {
+    try {
+      const galleryData = insertGallerySchema.parse(req.body);
+      const item = await storage.createGalleryItem(galleryData);
+      res.status(201).json(item);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
 
   app.post("/api/orders", async (req, res) => {
     try {

@@ -63,6 +63,37 @@ export const insertProductSchema = createInsertSchema(products).omit({
 export type InsertProduct = z.infer<typeof insertProductSchema>;
 export type Product = typeof products.$inferSelect;
 
+export const reviews = pgTable("reviews", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  user: text("user").notNull(),
+  rating: text("rating").notNull(),
+  comment: text("comment").notNull(),
+  date: text("date").notNull(),
+  avatar: text("avatar"),
+  type: text("type").notNull().default("text"), // text, video
+  thumbnail: text("thumbnail"),
+});
+
+export const gallery = pgTable("gallery", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  url: text("url").notNull(),
+  type: text("type").notNull(), // whatsapp, delivery, doctor
+});
+
+export const insertReviewSchema = createInsertSchema(reviews).omit({
+  id: true,
+});
+
+export const insertGallerySchema = createInsertSchema(gallery).omit({
+  id: true,
+});
+
+export type InsertReview = z.infer<typeof insertReviewSchema>;
+export type Review = typeof reviews.$inferSelect;
+
+export type InsertGallery = z.infer<typeof insertGallerySchema>;
+export type GalleryItem = typeof gallery.$inferSelect;
+
 export const insertOrderSchema = createInsertSchema(orders).omit({
   id: true,
   status: true,

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, BarChart3, Settings, LogOut, Users, ShoppingCart, Eye, MapPin,
-  FileText, Image as ImageIcon, MessageSquare, Plus, Save, Monitor, Clock, History, Type, Zap
+  FileText, Image as ImageIcon, MessageSquare, Plus, Save, Monitor, Clock, History, Type, Zap, Star
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { type Hero, type Product } from "@shared/schema";
+import { type Hero, type Product, type Review, type GalleryItem } from "@shared/schema";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -37,6 +37,11 @@ export default function AdminDashboard() {
   const [productStatus, setProductStatus] = useState("In Stock");
   const [benefits, setBenefits] = useState<string[]>([]);
 
+  // Review state
+  const [reviewUser, setReviewUser] = useState("");
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviewRating, setReviewRating] = useState("5");
+
   // Fetch Hero Content
   const { data: heroData } = useQuery<Hero>({
     queryKey: ["/api/dashboard/hero"],
@@ -45,6 +50,16 @@ export default function AdminDashboard() {
   // Fetch Products
   const { data: productsData = [] } = useQuery<Product[]>({
     queryKey: ["/api/dashboard/products"],
+  });
+
+  // Fetch Reviews
+  const { data: reviewsData = [] } = useQuery<Review[]>({
+    queryKey: ["/api/dashboard/reviews"],
+  });
+
+  // Fetch Gallery
+  const { data: galleryData = [] } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/dashboard/gallery"],
   });
 
   // Sync hero state
@@ -95,6 +110,18 @@ export default function AdminDashboard() {
     }
   });
 
+  const reviewMutation = useMutation({
+    mutationFn: async (data: Partial<Review>) => {
+      return apiRequest("POST", "/api/dashboard/reviews", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/dashboard/reviews"] });
+      toast({ title: "Success", description: "Review added successfully" });
+      setReviewUser("");
+      setReviewComment("");
+    }
+  });
+
   const handleSave = () => {
     if (activeTab === "hero") {
       heroMutation.mutate({
@@ -134,6 +161,7 @@ export default function AdminDashboard() {
             { id: "product", label: "Product Page", icon: ShoppingCart },
             { id: "media", label: "Media Library", icon: ImageIcon },
             { id: "theme", label: "Theme Controls", icon: Type },
+            {id: "reviews", label: "Customer Reviews", icon: MessageSquare},
             { id: "analytics", label: "Analytics", icon: BarChart3 },
             { id: "settings", label: "Settings", icon: Settings },
           ].map(item => (
@@ -277,6 +305,48 @@ export default function AdminDashboard() {
                   <Button onClick={() => setBenefits([...benefits, ""])} variant="ghost" className="text-gold text-[10px]">+ Add Benefit</Button>
                 </div>
               </Card>
+            </div>
+          )}
+          {activeTab === "reviews" && (
+            <div className="space-y-8">
+              <h2 className="text-4xl font-display text-dark">Customer Reviews</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <Card className="p-8 border-gold/5">
+                  <h3 className="text-xl font-display mb-6">Add New Review</h3>
+                  <div className="space-y-4">
+                    <Label>Customer Name</Label>
+                    <Input value={reviewUser} onChange={e => setReviewUser(e.target.value)} />
+                    <Label>Rating (1-5)</Label>
+                    <select value={reviewRating} onChange={e => setReviewRating(e.target.value)} className="w-full p-2 border border-gold/10 rounded-lg bg-[#FAFAF9]">
+                      <option value="5">5 Stars</option>
+                      <option value="4">4 Stars</option>
+                      <option value="3">3 Stars</option>
+                    </select>
+                    <Label>Comment</Label>
+                    <Textarea value={reviewComment} onChange={e => setReviewComment(e.target.value)} />
+                    <Button onClick={() => reviewMutation.mutate({
+                      user: reviewUser, comment: reviewComment, rating: reviewRating,
+                      date: new Date().toISOString().split('T')[0], type: "text"
+                    })} className="gold-gradient text-white w-full">Add Review</Button>
+                  </div>
+                </Card>
+                <div className="space-y-4">
+                  {reviewsData.map(r => (
+                    <Card key={r.id} className="p-4 border-gold/5">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="font-bold">{r.user}</p>
+                          <div className="flex gap-0.5 my-1">
+                            {Array.from({ length: Number(r.rating) }).map((_, i) => <Star key={i} className="w-3 h-3 text-gold fill-gold" />)}
+                          </div>
+                          <p className="text-sm text-dark/60">{r.comment}</p>
+                        </div>
+                        <span className="text-[10px] text-dark/30">{r.date}</span>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>

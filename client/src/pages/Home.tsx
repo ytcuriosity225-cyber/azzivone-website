@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useState, useRef, useEffect } from "react";
 import { CheckCircle, Droplets, Sparkles, Shield, Clock, Star, ChevronRight, ChevronLeft, Award, Leaf, Heart, ShoppingCart as ShoppingCartIcon, Play } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { type Hero } from "@shared/schema";
+import { type Hero, type GalleryItem, type Review } from "@shared/schema";
 import heroVideo from "@assets/HERO_VIDEO_1768257063489.mp4";
 import logo from "@assets/logo_1768257103773.png";
 import product1 from "@assets/WhatsApp_Image_2026-01-12_at_2.29.14_PM_1768257023864.jpeg";
@@ -68,8 +68,12 @@ export default function Home() {
     queryKey: ["/api/dashboard/products"],
   });
 
-  const { data: reviewData = [] } = useQuery<any[]>({
+  const { data: reviewData = [] } = useQuery<Review[]>({
     queryKey: ["/api/dashboard/reviews"],
+  });
+
+  const { data: whatsappGallery = [] } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/dashboard/gallery", { type: "whatsapp" }],
   });
 
   // Use fetched data or fallback to original hardcoded values
@@ -90,7 +94,7 @@ export default function Home() {
     }
   ];
 
-  const displayReviews = reviewData.length > 0 ? reviewData : [
+  const reviewsListDisplay = (reviewData as any[]).length > 0 ? (reviewData as any[]) : [
     { type: 'video', thumbnail: product1 },
     { type: 'video', thumbnail: product2 },
     { type: 'video', thumbnail: product3 },
@@ -165,9 +169,9 @@ export default function Home() {
     { type: 'video', thumbnail: product4 },
   ];
 
-  const whatsappScreenshots = [
-    product1, product2, product3, product4, product5
-  ];
+  const whatsappScreenshots = whatsappGallery.length > 0 
+    ? whatsappGallery.map(i => i.url) 
+    : [product1, product2, product3, product4, product5];
 
   return (
     <div className="min-h-screen bg-[#FAFAF9] overflow-x-hidden relative selection:bg-gold/10">
@@ -306,7 +310,7 @@ export default function Home() {
           </div>
 
           <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
-            {displayReviews.map((video, index) => (
+            {reviewsListDisplay.map((video: any, index: number) => (
               <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
                 <img src={video.thumbnail || video.avatar} className="w-full h-full object-cover" alt="Review" />
                 <div className="absolute inset-0 flex items-center justify-center">
