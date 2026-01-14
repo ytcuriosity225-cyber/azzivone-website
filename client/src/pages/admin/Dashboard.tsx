@@ -19,7 +19,6 @@ import { type Hero, type Product, type Review, type GalleryItem } from "@shared/
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [previewMode, setPreviewMode] = useState(false);
-  const [stats, setStats] = useState<any[]>([]);
   const { toast } = useToast();
 
   // === Form State for Content ===
@@ -60,6 +59,10 @@ export default function AdminDashboard() {
   // Fetch Gallery
   const { data: galleryData = [] } = useQuery<GalleryItem[]>({
     queryKey: ["/api/dashboard/gallery"],
+  });
+
+  const { data: statsData = [], isLoading: isLoadingStats } = useQuery<any[]>({
+    queryKey: ["/api/dashboard/stats"],
   });
 
   // Sync hero state
@@ -206,15 +209,43 @@ export default function AdminDashboard() {
             <div className="space-y-12">
               <h2 className="text-4xl font-display text-dark">Executive Dashboard</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {stats.map(stat => (
-                  <Card key={stat.id} className="border-gold/5 p-6">
-                    <div className={`w-12 h-12 rounded-xl ${stat.bg} flex items-center justify-center mb-4`}>
-                      <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                    </div>
-                    <p className="text-[10px] uppercase tracking-widest font-bold text-dark/40">{stat.label}</p>
-                    <h3 className="text-3xl font-display text-dark">{stat.value}</h3>
-                  </Card>
-                ))}
+                {isLoadingStats ? (
+                  Array.from({ length: 4 }).map((_, i) => (
+                    <Card key={i} className="animate-pulse h-32 bg-gray-100" />
+                  ))
+                ) : statsData.map((stat, index) => {
+                  const Icon = [Users, ShoppingCart, Eye, MapPin, BarChart3, Zap, Star][index % 7];
+                  const color = ["text-blue-600", "text-green-600", "text-purple-600", "text-orange-600", "text-gold", "text-red-600", "text-pink-600"][index % 7];
+                  const bg = ["bg-blue-50", "bg-green-50", "bg-purple-50", "bg-orange-50", "bg-gold/10", "bg-red-50", "bg-pink-50"][index % 7];
+                  
+                  return (
+                    <motion.div
+                      key={stat.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Card className="hover-elevate cursor-pointer border-gold/5 overflow-hidden">
+                        <CardContent className="p-6">
+                          <div className="flex items-center justify-between">
+                            <div className={`p-3 rounded-xl ${bg}`}>
+                              <Icon className={`w-6 h-6 ${color}`} />
+                            </div>
+                            <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                              stat.trendingUp ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                            }`}>
+                              {stat.change}
+                            </span>
+                          </div>
+                          <div className="mt-4">
+                            <p className="text-sm font-medium text-dark/50 uppercase tracking-wider">{stat.label}</p>
+                            <h3 className="text-3xl font-display text-dark mt-1">{stat.value}</h3>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           )}

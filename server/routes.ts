@@ -16,7 +16,18 @@ export async function registerRoutes(
   ];
 
   // API Routes
-  app.get("/api/dashboard/stats", (_req, res) => res.json(mockStats));
+  app.get("/api/dashboard/stats", async (_req, res) => {
+    const stats = await storage.getStats();
+    res.json(stats);
+  });
+  app.post("/api/dashboard/stats", async (req, res) => {
+    try {
+      const stats = await storage.updateStats(req.body);
+      res.json(stats);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
   app.get("/api/dashboard/products", async (_req, res) => {
     const products = await storage.getProducts();
     res.json(products);

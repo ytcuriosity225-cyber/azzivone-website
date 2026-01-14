@@ -29,6 +29,10 @@ export interface IStorage {
   // Gallery
   getGallery(type?: string): Promise<GalleryItem[]>;
   createGalleryItem(item: InsertGallery): Promise<GalleryItem>;
+
+  // Stats
+  getStats(): Promise<any[]>;
+  updateStats(stats: any[]): Promise<any[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -38,6 +42,7 @@ export class MemStorage implements IStorage {
   private reviews: Map<string, Review>;
   private gallery: Map<string, GalleryItem>;
   private hero: Hero;
+  private stats: any[];
 
   constructor() {
     this.users = new Map();
@@ -45,6 +50,15 @@ export class MemStorage implements IStorage {
     this.products = new Map();
     this.reviews = new Map();
     this.gallery = new Map();
+    this.stats = [
+      { id: 1, label: "Total Revenue", value: "Rs. 1,250,000", change: "+12.5%", trendingUp: true },
+      { id: 2, label: "Active Orders", value: "45", change: "+5.2%", trendingUp: true },
+      { id: 3, label: "Customer Base", value: "8,942", change: "+18.3%", trendingUp: true },
+      { id: 4, label: "Avg. Order Value", value: "Rs. 3,850", change: "-2.1%", trendingUp: false },
+      { id: 5, label: "Total Visitors", value: "24,512", change: "+5.2%", trendingUp: true },
+      { id: 6, label: "Add to Carts", value: "1,842", change: "+3.1%", trendingUp: true },
+      { id: 7, label: "Conversion Rate", value: "3.2%", change: "+0.4%", trendingUp: true },
+    ];
     this.hero = {
       id: "1",
       title: "Glass-Glow Skin, engineered for people who don’t slow down",
@@ -237,6 +251,15 @@ export class MemStorage implements IStorage {
     const item: GalleryItem = { ...insertItem, id };
     this.gallery.set(id, item);
     return item;
+  }
+
+  async getStats(): Promise<any[]> {
+    return this.stats;
+  }
+
+  async updateStats(newStats: any[]): Promise<any[]> {
+    this.stats = newStats;
+    return this.stats;
   }
 }
 
