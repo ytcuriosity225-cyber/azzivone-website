@@ -1,5 +1,6 @@
 import { type User, type InsertUser, type Order, type InsertOrder, type Hero, type InsertHero, type Product, type InsertProduct, type Review, type InsertReview, type GalleryItem, type InsertGallery } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { supabase } from "./supabase";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -37,8 +38,6 @@ export interface IStorage {
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
-  private orders: Map<string, Order>;
-  private products: Map<string, Product>;
   private reviews: Map<string, Review>;
   private gallery: Map<string, GalleryItem>;
   private hero: Hero;
@@ -46,8 +45,6 @@ export class MemStorage implements IStorage {
 
   constructor() {
     this.users = new Map();
-    this.orders = new Map();
-    this.products = new Map();
     this.reviews = new Map();
     this.gallery = new Map();
     this.stats = [
@@ -68,38 +65,6 @@ export class MemStorage implements IStorage {
       videoUrl: "",
       logoUrl: ""
     };
-
-    // Seed initial products
-    const initialProducts: InsertProduct[] = [
-      {
-        name: "Snail Mucin Serum",
-        price: "3500",
-        inventory: "300",
-        sales: "1,248",
-        status: "Limited Stock",
-        image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600",
-        bullets: ["96% Pure Snail Mucin", "Deep 24h Hydration", "Repairs Acne Scars", "Cruelty-Free"]
-      },
-      {
-        name: "Ceramide Barrier Cream",
-        price: "4200",
-        inventory: "0",
-        sales: "432",
-        status: "Out of Stock",
-        image: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?auto=format&fit=crop&q=80&w=600",
-        bullets: ["Calms Redness", "Barrier Repair", "Vitamin B5 Rich", "All-Night Glow"]
-      }
-    ];
-    
-    initialProducts.forEach(p => {
-      const id = randomUUID() as string;
-      this.products.set(id, { 
-        ...p, 
-        id, 
-        sales: p.sales || "0",
-        bullets: p.bullets ?? null
-      });
-    });
 
     // Seed initial reviews
     const initialReviews: InsertReview[] = [
@@ -164,21 +129,65 @@ export class MemStorage implements IStorage {
   }
 
   async createOrder(insertOrder: InsertOrder): Promise<Order> {
-    const id = randomUUID() as string;
-    const order: Order = {
-      ...insertOrder,
-      id,
+    // 1. Fetch product price for validation
+    const { data: product, error: pError } = await supabase
+      .from('products')
+      .select('price')
+      .eq('id', insertOrder.productId)
+      .single();
+
+    if (pError || !product) {
+      throw new Error('Product not found for order creation');
+    }
+
+    // 2. Insert into Supabase
+    const { data, error } = await supabase
+      .from('orders')
+      .insert([{
+        customer_name: insertOrder.name,
+        phone: insertOrder.phone,
+        email: insertOrder.email,
+        address: insertOrder.address,
+        product_id: insertOrder.productId,
+        price: Number(product.price),
+        created_at: new Date().toISOString()
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return {
+      id: data.id,
+      name: data.customer_name,
+      phone: data.phone,
+      email: data.email,
+      address: data.address,
+      productId: data.product_id,
       status: "pending",
-      email: insertOrder.email ?? null,
-      notes: insertOrder.notes ?? null,
-      courier: insertOrder.courier ?? null,
+      notes: null,
+      courier: null
     };
-    this.orders.set(id, order);
-    return order;
   }
 
   async getOrders(): Promise<Order[]> {
-    return Array.from(this.orders.values());
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*');
+    
+    if (error) throw error;
+
+    return data.map(o => ({
+      id: o.id,
+      name: o.customer_name,
+      phone: o.phone,
+      email: o.email,
+      address: o.address,
+      productId: o.product_id,
+      status: "completed", // Supabase doesn't have status yet, default to completed or pending
+      notes: null,
+      courier: null
+    }));
   }
 
   async getHero(): Promise<Hero> {
@@ -196,32 +205,75 @@ export class MemStorage implements IStorage {
   }
 
   async getProducts(): Promise<Product[]> {
-    return Array.from(this.products.values());
+    const { data, error } = await supabase
+      .from('products')
+      .select('*');
+    
+    if (error) throw error;
+
+    return data.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: String(p.price),
+      inventory: String(p.inventory),
+      status: p.status,
+      sales: "0",
+      image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600",
+      bullets: []
+    }));
   }
 
   async createProduct(insertProduct: InsertProduct): Promise<Product> {
-    const id = randomUUID() as string;
-    const product: Product = { 
-      ...insertProduct, 
-      id, 
-      sales: insertProduct.sales || "0",
+    const { data, error } = await supabase
+      .from('products')
+      .insert([{
+        name: insertProduct.name,
+        price: Number(insertProduct.price),
+        inventory: Number(insertProduct.inventory),
+        status: insertProduct.status
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return {
+      id: data.id,
+      name: data.name,
+      price: String(data.price),
+      inventory: String(data.inventory),
+      status: data.status,
+      sales: "0",
+      image: insertProduct.image || "",
       bullets: insertProduct.bullets ?? null
     };
-    this.products.set(id, product);
-    return product;
   }
 
   async updateProduct(id: string, insertProduct: InsertProduct): Promise<Product> {
-    const existing = this.products.get(id);
-    if (!existing) throw new Error("Product not found");
-    const updated: Product = { 
-      ...insertProduct, 
-      id, 
-      sales: insertProduct.sales || existing.sales,
+    const { data, error } = await supabase
+      .from('products')
+      .update({
+        name: insertProduct.name,
+        price: Number(insertProduct.price),
+        inventory: Number(insertProduct.inventory),
+        status: insertProduct.status
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return {
+      id: data.id,
+      name: data.name,
+      price: String(data.price),
+      inventory: String(data.inventory),
+      status: data.status,
+      sales: "0",
+      image: insertProduct.image || "",
       bullets: insertProduct.bullets ?? null
     };
-    this.products.set(id, updated);
-    return updated;
   }
 
   async getReviews(): Promise<Review[]> {
