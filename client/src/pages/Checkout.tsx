@@ -146,6 +146,43 @@ export default function Checkout() {
     orderMutation.mutate(orderData);
   };
 
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center px-4">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md w-full bg-white p-8 rounded-[6px] elegant-shadow border border-gold/5 text-center"
+        >
+          <div className="w-20 h-20 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="w-10 h-10 text-gold" />
+          </div>
+          <h2 className="font-display text-3xl text-dark mb-4">Order Successful!</h2>
+          <p className="font-body text-dark/60 mb-8">
+            Thank you for your purchase. We've received your order and will contact you shortly for confirmation.
+          </p>
+          <div className="space-y-4">
+            <div className="p-4 bg-[#FAFAF9] rounded-[4px] border border-gold/5 text-left">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] font-bold text-dark/40 uppercase tracking-widest">Order Amount</span>
+                <span className="text-sm font-bold text-gold">Rs. {total.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-[10px] font-bold text-dark/40 uppercase tracking-widest">Payment</span>
+                <span className="text-sm font-bold text-dark">{paymentOptions.find(o => o.id === paymentMethod)?.name}</span>
+              </div>
+            </div>
+            <Link href="/">
+              <button className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-sm uppercase tracking-widest hover:shadow-lg transition-all">
+                Continue Shopping
+              </button>
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
