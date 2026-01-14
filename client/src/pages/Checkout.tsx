@@ -146,6 +146,14 @@ export default function Checkout() {
     orderMutation.mutate(orderData);
   };
 
+  const paymentOptions = [
+    { id: "cod", name: "Cash on Delivery", icon: Package, desc: "Pay at your doorstep" },
+    { id: "bank", name: "Bank Transfer", icon: Building2, desc: "Direct bank deposit" },
+    { id: "jazzcash", name: "JazzCash", icon: Smartphone, desc: "Instant mobile payment" },
+    { id: "easypaisa", name: "EasyPaisa", icon: Wallet, desc: "Instant mobile payment" },
+    { id: "atm", name: "ATM/Debit Card", icon: CreditCard, desc: "All local cards supported" }
+  ];
+
   if (isSuccess) {
     return (
       <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center px-4">
@@ -187,14 +195,6 @@ export default function Checkout() {
     hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
-
-  const paymentOptions = [
-    { id: "cod", name: "Cash on Delivery", icon: Package, desc: "Pay at your doorstep" },
-    { id: "bank", name: "Bank Transfer", icon: Building2, desc: "Direct bank deposit" },
-    { id: "jazzcash", name: "JazzCash", icon: Smartphone, desc: "Instant mobile payment" },
-    { id: "easypaisa", name: "EasyPaisa", icon: Wallet, desc: "Instant mobile payment" },
-    { id: "atm", name: "ATM/Debit Card", icon: CreditCard, desc: "All local cards supported" }
-  ];
 
   return (
     <div className="min-h-screen bg-[#FAFAF9] relative selection:bg-gold/10">
