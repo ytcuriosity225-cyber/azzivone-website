@@ -309,8 +309,10 @@ export default function Product() {
             
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-dark leading-[1.1] mb-8 font-medium">
               {heroData?.title?.includes("Snail Mucin") ? (
-                <>Azzivone <span className="text-gold italic">Snail Mucin</span> Serum</>
-              ) : (heroData?.title || mainProduct.name)}
+                <>Azzivone <span className="gold-glaze-text italic">Snail Mucin</span> Serum</>
+              ) : (
+                <>Azzivone <span className="gold-glaze-text italic">Snail Mucin</span> Serum</>
+              )}
             </h1>
             
             <p className="text-lg md:text-xl text-dark/70 mb-10 leading-relaxed font-body">
