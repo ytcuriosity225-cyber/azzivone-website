@@ -45,6 +45,24 @@ export const insertHeroSchema = createInsertSchema(heroContent).omit({
 export type InsertHero = z.infer<typeof insertHeroSchema>;
 export type Hero = typeof heroContent.$inferSelect;
 
+export const products = pgTable("products", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  price: text("price").notNull(),
+  inventory: text("inventory").notNull(),
+  sales: text("sales").notNull().default("0"),
+  status: text("status").notNull(),
+  image: text("image").notNull(),
+  bullets: text("bullets").array(),
+});
+
+export const insertProductSchema = createInsertSchema(products).omit({
+  id: true,
+});
+
+export type InsertProduct = z.infer<typeof insertProductSchema>;
+export type Product = typeof products.$inferSelect;
+
 export const insertOrderSchema = createInsertSchema(orders).omit({
   id: true,
   status: true,

@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { type Hero } from "@shared/schema";
+import { type Hero, type Product } from "@shared/schema";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -28,15 +28,26 @@ export default function AdminDashboard() {
   const [ctaText, setCtaText] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
-  const [productPrice, setProductPrice] = useState("2,499");
-  const [benefits, setBenefits] = useState(["Deep hydration", "Scar healing", "Barrier repair"]);
+  
+  // Product state management
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const [productName, setProductName] = useState("");
+  const [productPrice, setProductPrice] = useState("");
+  const [productInventory, setProductInventory] = useState("");
+  const [productStatus, setProductStatus] = useState("In Stock");
+  const [benefits, setBenefits] = useState<string[]>([]);
 
   // Fetch Hero Content
-  const { data: heroData, isLoading: isLoadingHero } = useQuery<Hero>({
+  const { data: heroData } = useQuery<Hero>({
     queryKey: ["/api/dashboard/hero"],
   });
 
-  // Sync state with fetched data
+  // Fetch Products
+  const { data: productsData = [] } = useQuery<Product[]>({
+    queryKey: ["/api/dashboard/products"],
+  });
+
+  // Sync hero state
   useEffect(() => {
     if (heroData) {
       setHeroHeading(heroData.title);
@@ -47,59 +58,54 @@ export default function AdminDashboard() {
     }
   }, [heroData]);
 
-  // Update Hero Content Mutation
+  // Sync selected product state
+  useEffect(() => {
+    const p = productsData.find(p => p.id === selectedProductId) || productsData[0];
+    if (p) {
+      setSelectedProductId(p.id);
+      setProductName(p.name);
+      setProductPrice(p.price);
+      setProductInventory(p.inventory);
+      setProductStatus(p.status);
+      setBenefits(p.bullets || []);
+    }
+  }, [productsData, selectedProductId]);
+
+  const productMutation = useMutation({
+    mutationFn: async (data: Partial<Product>) => {
+      if (selectedProductId) {
+        return apiRequest("PATCH", `/api/dashboard/products/${selectedProductId}`, data);
+      }
+      return apiRequest("POST", "/api/dashboard/products", data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/dashboard/products"] });
+      toast({ title: "Success", description: "Product updated successfully" });
+    }
+  });
+
   const heroMutation = useMutation({
     mutationFn: async (data: Partial<Hero>) => {
-      // Replacement point for future real backend endpoint
       const res = await apiRequest("POST", "/api/dashboard/hero", data);
       return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/dashboard/hero"] });
-      toast({
-        title: "Success",
-        description: "Hero section updated successfully",
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
-    },
+      toast({ title: "Success", description: "Hero section updated" });
+    }
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const statsRes = await fetch("/api/dashboard/stats");
-        if (statsRes.ok) {
-          const statsJson = await statsRes.json();
-          const statsData = statsJson.map((s: any) => ({
-            ...s,
-            icon: s.id === 1 ? Eye : s.id === 2 ? ShoppingCart : s.id === 3 ? ShoppingCart : History,
-            color: s.id === 1 ? "text-blue-500" : s.id === 2 ? "text-purple-500" : s.id === 3 ? "text-emerald-500" : "text-gold",
-            bg: s.id === 1 ? "bg-blue-50" : s.id === 2 ? "bg-purple-50" : s.id === 3 ? "bg-emerald-50" : "bg-gold/10"
-          }));
-          setStats(statsData);
-        }
-      } catch (err) {
-        console.error("Dashboard fetch error:", err);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   const handleSave = () => {
-    heroMutation.mutate({
-      title: heroHeading,
-      subtitle: heroSubheading,
-      ctaText: ctaText,
-      videoUrl: videoUrl,
-      logoUrl: logoUrl,
-    });
+    if (activeTab === "hero") {
+      heroMutation.mutate({
+        title: heroHeading, subtitle: heroSubheading, ctaText, videoUrl, logoUrl
+      });
+    } else if (activeTab === "product") {
+      productMutation.mutate({
+        name: productName, price: productPrice, inventory: productInventory,
+        status: productStatus, bullets: benefits, image: productsData.find(p => p.id === selectedProductId)?.image || ""
+      });
+    }
   };
   const handleAddBenefit = () => {
     setBenefits([...benefits, ""]);
@@ -233,16 +239,43 @@ export default function AdminDashboard() {
             <div className="space-y-8">
               <h2 className="text-4xl font-display text-dark">Product Details</h2>
               <Card className="p-8 border-gold/5">
-                <Label>Product Price</Label>
-                <Input value={productPrice} onChange={e => setProductPrice(e.target.value)} />
-                <Label>Benefits</Label>
-                {benefits.map((b, i) => (
-                  <div key={i} className="flex gap-2">
-                    <Input value={b} onChange={e => { const newB = [...benefits]; newB[i] = e.target.value; setBenefits(newB); }} />
-                    <Button onClick={() => handleRemoveBenefit(i)} variant="ghost" className="text-red-400">Remove</Button>
-                  </div>
-                ))}
-                <Button onClick={handleAddBenefit} variant="ghost" className="text-gold text-[10px]">+ Add Benefit</Button>
+                <div className="space-y-6">
+                  <Label>Select Product</Label>
+                  <select 
+                    value={selectedProductId || ""} 
+                    onChange={e => setSelectedProductId(e.target.value)}
+                    className="w-full p-2 border border-gold/10 rounded-lg bg-[#FAFAF9]"
+                  >
+                    {productsData.map(p => (
+                      <option key={p.id} value={p.id}>{p.name}</option>
+                    ))}
+                  </select>
+
+                  <Label>Product Name</Label>
+                  <Input value={productName} onChange={e => setProductName(e.target.value)} />
+                  
+                  <Label>Product Price (Rs.)</Label>
+                  <Input value={productPrice} onChange={e => setProductPrice(e.target.value)} />
+
+                  <Label>Inventory Count</Label>
+                  <Input value={productInventory} onChange={e => setProductInventory(e.target.value)} />
+
+                  <Label>Availability Status</Label>
+                  <Input value={productStatus} onChange={e => setProductStatus(e.target.value)} />
+
+                  <Label>Benefits / Bullets</Label>
+                  {benefits.map((b, i) => (
+                    <div key={i} className="flex gap-2 mb-2">
+                      <Input value={b} onChange={e => { 
+                        const newB = [...benefits]; 
+                        newB[i] = e.target.value; 
+                        setBenefits(newB); 
+                      }} />
+                      <Button onClick={() => setBenefits(benefits.filter((_, idx) => idx !== i))} variant="ghost" className="text-red-400">Remove</Button>
+                    </div>
+                  ))}
+                  <Button onClick={() => setBenefits([...benefits, ""])} variant="ghost" className="text-gold text-[10px]">+ Add Benefit</Button>
+                </div>
               </Card>
             </div>
           )}
