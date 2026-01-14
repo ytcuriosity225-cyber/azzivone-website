@@ -52,3 +52,8 @@ outputType = "webview"
 [agent]
 mockupState = "FULLSTACK"
 expertMode = true
+
+[userenv]
+
+[userenv.shared]
+VITE_API_URL = "/api"
