@@ -16,6 +16,23 @@ import productTexture from "@assets/6_1768298491727.png";
 import productLifestyle from "@assets/7_1768298491728.png";
 import logo from "@assets/logo_1768257103773.png";
 
+// Doctor Videos
+import docVideo1 from "@assets/Create_a_realistic_15_second_video_of_a_Pakistani_female_derma_1768392208823.mp4";
+import docVideo2 from "@assets/Create_a_realistic_15_second_video_of_a_Pakistani_female_derma_1768392697428.mp4";
+import docVideo3 from "@assets/Create_a_realistic_15_second_video_of_a_Pakistani_female_derma_1768392697442.mp4";
+import docVideo4 from "@assets/Create_a_realistic_15_second_video_of_a_Pakistani_female_derma_1768392697458.mp4";
+import docVideo5 from "@assets/Create_a_realistic_15_second_video_of_a_Pakistani_female_derma_1768392697493.mp4";
+import docVideo6 from "@assets/VID_20260114143253107_1768392697472.mp4";
+
+const doctorVideos = [
+  docVideo1,
+  docVideo2,
+  docVideo3,
+  docVideo4,
+  docVideo5,
+  docVideo6,
+];
+
 const reviews = [
   { thumbnail: productDisplay },
   { thumbnail: productClean },
@@ -333,12 +350,19 @@ export default function Product() {
             <div className="w-12 h-1 gold-glaze-bar mx-auto rounded-full" />
           </div>
 
-          <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
-            {reviews.map((video, index) => (
-              <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
-                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Review" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
+          <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar scroll-smooth">
+            {doctorVideos.map((video, index) => (
+              <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-black rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
+                <video 
+                  src={video} 
+                  className="w-full h-full object-cover" 
+                  preload="metadata"
+                  onMouseOver={(e) => e.currentTarget.play()}
+                  onMouseOut={(e) => e.currentTarget.pause()}
+                  playsInline
+                />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none group-hover:opacity-0 transition-opacity">
+                  <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl">
                     <Play className="w-6 h-6 fill-white ml-1" />
                   </div>
                 </div>
