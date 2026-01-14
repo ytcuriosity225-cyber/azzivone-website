@@ -213,7 +213,13 @@ export default function Product() {
               onClick={() => setIsCarouselOpen(true)}
               className="relative group overflow-hidden rounded-2xl elegant-shadow border border-gold/10 cursor-pointer"
             >
-              <img src={productHero} alt="Product" className="w-full aspect-[21/9] object-cover transition-transform duration-700 group-hover:scale-105" />
+              <img 
+                src={productHero} 
+                alt="Product" 
+                className="w-full aspect-[21/9] object-cover transition-transform duration-700 group-hover:scale-105" 
+                loading="eager"
+                width="1200"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                 <div className="bg-white/20 backdrop-blur-md border border-white/30 px-6 py-3 rounded-full text-white font-bold uppercase tracking-widest text-xs">View Gallery</div>
               </div>
@@ -356,9 +362,8 @@ export default function Product() {
                 <video 
                   src={video} 
                   className="w-full h-full object-cover" 
-                  preload="metadata"
-                  onMouseOver={(e) => e.currentTarget.play()}
-                  onMouseOut={(e) => e.currentTarget.pause()}
+                  preload="none"
+                  onClick={(e) => e.currentTarget.paused ? e.currentTarget.play() : e.currentTarget.pause()}
                   playsInline
                 />
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none group-hover:opacity-0 transition-opacity">

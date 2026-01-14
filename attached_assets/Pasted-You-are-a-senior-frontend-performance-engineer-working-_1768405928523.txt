@@ -1,0 +1,56 @@
+You are a senior frontend performance engineer working on a live luxury skincare website.
+Your job is ONLY performance optimization, NOT redesign.
+CRITICAL RESTRICTIONS (DO NOT BREAK):
+❌ Do NOT change layout, spacing, sizing, colors, fonts, animations, UI structure, or component hierarchy
+❌ Do NOT rename classes, IDs, components, or files
+❌ Do NOT remove any styles that are currently applied or visible
+❌ Do NOT refactor logic or rewrite components
+❌ Do NOT touch backend, routing, state, or data flow
+❌ Do NOT alter visual behavior in any viewport (desktop / mobile)
+❌ Do NOT remove any element even if it looks unused
+❌ Do NOT break existing Tailwind config or custom styles
+Existing design must look 100% IDENTICAL after optimization.
+🎯 ALLOWED CHANGES (ONLY THESE):
+Images
+Convert images to WebP (same dimensions, same quality perception)
+Enforce max widths exactly as provided:
+Hero images: max-width 1200px
+Section images: 600–800px
+Add loading="lazy" to all images except above-the-fold hero image
+Videos
+Do NOT autoplay
+Replace direct video loads with:
+Static thumbnail
+Play-on-click behavior
+Lazy load embeds (Intersection Observer or equivalent)
+Maintain exact UI size and position
+Fonts
+Keep existing Google Fonts
+Do NOT change font families, weights, or sizes
+Optimize font loading:
+preload primary font
+ensure no duplicate font requests
+JavaScript
+Remove unused libraries only if they are 100% unused
+Keep Framer Motion only where already visually active
+Do NOT change animation timing, easing, or triggers
+CSS / Tailwind
+Remove unused Tailwind classes ONLY at build level (purge/safelist)
+Do NOT remove:
+Custom CSS
+Gold gradients
+Typography styles
+Utility classes already affecting UI
+No inline CSS additions
+🛡 SAFETY RULES:
+Before removing anything, verify it is unused AND not referenced dynamically
+If unsure → leave it untouched
+If a change risks visual difference → skip that change
+Performance gain is secondary to design safety
+✅ OUTPUT EXPECTATION:
+Faster load time
+Better Lighthouse score
+Identical UI before & after
+No broken styles
+No missing elements
+If any instruction conflicts, follow design preservation over performance.

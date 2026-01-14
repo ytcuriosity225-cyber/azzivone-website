@@ -147,7 +147,13 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative h-[85vh] md:h-screen flex items-center justify-center overflow-hidden bg-black">
-        <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-60">
+        <video 
+          muted 
+          loop 
+          playsInline 
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+          onClick={(e) => e.currentTarget.paused ? e.currentTarget.play() : e.currentTarget.pause()}
+        >
           <source src={heroVideo} type="video/mp4" />
         </video>
         <div className="absolute inset-0 hero-video-overlay" />
@@ -215,7 +221,7 @@ export default function Home() {
                 className="group bg-[#FAFAF9] p-8 rounded-[6px] flex gap-10 items-center card-hover border border-transparent hover:border-gold/5"
               >
                 <div className="w-1/2 aspect-[4/5] rounded-[6px] overflow-hidden">
-                  <img src={p.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={p.name} />
+                  <img src={p.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={p.name} loading="lazy" width="600" />
                 </div>
                 <div className="w-1/2">
                   <h3 className="font-display text-3xl text-dark mb-4">{p.name}</h3>
