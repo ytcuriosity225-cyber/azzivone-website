@@ -1,0 +1,49 @@
+[12:16 PM, 1/14/2026] Mashal Hadi: Hey VS Code AI, yeh web project complete hai aur ready hai. Ab tu ye steps ek saath kare:
+
+1) Build the project for production:
+   - Run npm install, npm run build (ya project ke package manager ke hisaab se).  
+   - Fix any TypeScript errors during the build.  
+
+2) Deploy live server:
+   - Deploy the project to the production/live environment (Vercel, Netlify, or Supabase hosting).  
+   - Ensure all environment variables are set (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY).  
+   - Make sure client-side only uses anon key; server uses service_role key.  
+   - Preserve UI layout and lazy-load images.  
+
+3) Git Push:
+   - Pull latest changes from main branch.  
+   - Create a feature branch feature/live-deploy.  
+   - Commit all changes with des…
+[12:19 PM, 1/14/2026] Mashal Hadi: Hey Replit AI, mujhe poori website live karni hai aur visible dashboard bhi chahiye jo backend/API ke saath fully connected ho. Follow these steps carefully without breaking UI design:
+
+1) Setup & Build:
+   - Install all dependencies (npm install / pnpm install / yarn install).  
+   - Build the project for production (npm run build / yarn build).  
+   - Ensure TypeScript passes without errors.  
+
+2) Connect Supabase APIs:
+   - Use supabaseClient.ts for client-side calls (anon key only).  
+   - Ensure createOrder, fetchProducts, fetchHero, fetchReviews work correctly with the API.  
+   - Admin endpoints must still use server-side service_role key securely.  
+
+3) Dashboard UI:
+   - Render the dashboard components on the live UI exactly as in code.  
+   - Bind API responses to the dashboard so that products, orders, and reviews are visible in real-time.  
+   - Ensure JWT/user_role checks for admin actions are enforced.  
+
+4) Design Safety:
+   - Do NOT change layouts, styles, or component positioning.  
+   - Preserve image placeholders and lazy-loading.  
+   - Keep all responsive/mobile UI intact.  
+
+5) Deployment:
+   - Make the website fully accessible via Replit’s live URL.  
+   - Ensure all API routes are reachable and working correctly.  
+   - Confirm the site is functional for both customers (checkout/orders) and admin (dashboard).  
+
+6) Verification:
+   - Test fetching products, creating orders, and viewing dashboard data.  
+   - Ensure no sensitive keys (service_role) are exposed in frontend.  
+   - Report live URL once deployment is complete.  
+
+Do all these sequentially and ensure full functionality before marking it live. Preserve all UI/UX perfectly.
