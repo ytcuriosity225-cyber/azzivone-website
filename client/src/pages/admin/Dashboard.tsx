@@ -280,7 +280,7 @@ export default function AdminDashboard() {
                             videoUrl.endsWith('.mp4') ? (
                               <video src={videoUrl} className="w-full h-full object-cover" muted loop />
                             ) : (
-                              <img src={videoUrl} className="w-full h-full object-cover" alt="Hero Preview" />
+                              <img src={videoUrl} className="w-full h-full object-cover" alt="Hero Preview" loading="lazy" />
                             )
                           ) : (
                             <ImageIcon className="w-12 h-12 text-gold/30" />

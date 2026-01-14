@@ -98,7 +98,9 @@ export default function Checkout() {
   const orderMutation = useMutation({
     mutationFn: async (data: any) => {
       const res = await apiRequest("POST", "/api/orders", data);
-      return res.json();
+      // apiRequest returns either a real Response or a JSON-like object from Supabase helper
+      if ((res as any).json) return (res as any).json();
+      return res;
     },
     onSuccess: () => {
       setIsSuccess(true);
@@ -136,8 +138,8 @@ export default function Checkout() {
       email: formData.email || null,
       address: formData.address,
       city: formData.city,
-      quantity: quantity.toString(),
-      totalPrice: total.toString(),
+      quantity: quantity,
+      totalPrice: total,
       paymentMethod,
       courier: paymentMethod === "cod" ? formData.courier : null,
       notes: formData.notes || null,
@@ -172,7 +174,7 @@ export default function Checkout() {
               Back
             </button>
           </Link>
-          <img src={logo} alt="Azzivone" className="h-10 md:h-12" />
+          <img src={logo} alt="Azzivone" className="h-10 md:h-12" loading="lazy" />
           <div className="w-10" /> {/* Spacer */}
         </div>
       </header>
@@ -357,7 +359,7 @@ export default function Checkout() {
                 <h3 className="font-display text-xl text-dark mb-8">Order Summary</h3>
                 <div className="flex gap-4 pb-8 border-b border-gold/5">
                   <div className="w-20 h-24 rounded-[4px] bg-[#FAFAF9] overflow-hidden border border-gold/5">
-                    <img src={product} alt="Product" className="w-full h-full object-cover" />
+                    <img src={product} alt="Product" className="w-full h-full object-cover" loading="lazy" />
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
@@ -415,10 +417,10 @@ export default function Checkout() {
 
                 <button 
                   type="submit" 
-                  disabled={orderMutation.isPending}
+                  disabled={orderMutation.isLoading}
                   className="w-full gold-gradient text-white py-4 rounded-[6px] font-body font-bold text-base hover:shadow-lg transition-all active:scale-95 uppercase tracking-widest disabled:opacity-50"
                 >
-                  {orderMutation.isPending ? "Processing..." : "Complete Purchase"}
+                  {orderMutation.isLoading ? "Processing..." : "Complete Purchase"}
                 </button>
 
                 <div className="mt-8 flex justify-center gap-6 opacity-30">
@@ -463,7 +465,7 @@ export default function Checkout() {
               </motion.div>
               
               <div className="w-32 h-32 mx-auto mb-6 rounded-xl overflow-hidden shadow-2xl border-2 border-gold/20">
-                <img src={product} className="w-full h-full object-cover" alt="Snail Mucin" />
+                <img src={product} className="w-full h-full object-cover" alt="Snail Mucin" loading="lazy" />
               </div>
 
               <h2 className="font-display text-3xl text-dark mb-2">Congratulations! 🎉</h2>

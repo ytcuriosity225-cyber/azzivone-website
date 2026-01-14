@@ -1,4 +1,5 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { fetchProducts, fetchReviews, fetchHero, createOrder } from "./supabaseClient";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -16,9 +17,16 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  // Prepends the base URL for future backend integration
+  // Route some API calls to Supabase client helpers
+  // POST /api/orders -> Supabase insert
+  if (method.toUpperCase() === "POST" && url === "/api/orders") {
+    const created = await createOrder(data);
+    // Return a minimal Response-like object with json()
+    return { ok: true, status: 200, json: async () => created } as unknown as Response;
+  }
+
+  // Fallback to existing REST API base
   const fullUrl = url.startsWith("http") ? url : `${API_BASE}${url.startsWith("/") ? "" : "/"}${url}`;
-  
   const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
@@ -37,8 +45,21 @@ export const getQueryFn: <T>(options: {
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     const path = queryKey.join("/");
+
+    // Route certain query keys to Supabase helper functions
+    if (path.includes("/api/dashboard/products") || path === "/api/dashboard/products") {
+      return await fetchProducts();
+    }
+
+    if (path.includes("/api/dashboard/reviews") || path === "/api/dashboard/reviews") {
+      return await fetchReviews();
+    }
+
+    if (path.includes("/api/dashboard/hero") || path === "/api/dashboard/hero") {
+      return await fetchHero();
+    }
+
     const fullUrl = path.startsWith("http") ? path : `${API_BASE}${path.startsWith("/") ? "" : "/"}${path}`;
-    
     const res = await fetch(fullUrl, {
       credentials: "include",
     });

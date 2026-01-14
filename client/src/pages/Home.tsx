@@ -184,7 +184,7 @@ export default function Home() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#FAFAF9]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
-          <img src={logo} alt="Azzivone" className="h-12 md:h-16" />
+          <img src={logo} alt="Azzivone" className="h-12 md:h-16" loading="lazy" />
           <Link href="/product">
             <button className="gold-gradient text-white px-6 py-2.5 rounded-[6px] font-body font-bold text-sm tracking-tight hover:shadow-lg transition-all active:scale-95 uppercase tracking-widest">
               Order Now
@@ -293,7 +293,7 @@ export default function Home() {
           <div className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 pb-4">
             {displayProducts.map((p) => (
               <div key={p.id} className="min-w-[85vw] snap-center bg-[#FAFAF9] p-6 rounded-[6px]">
-                <img src={p.image} className="w-full aspect-[4/5] object-cover rounded-[6px] mb-6" alt={p.name} />
+                <img src={p.image} className="w-full aspect-[4/5] object-cover rounded-[6px] mb-6" alt={p.name} loading="lazy" />
                 <h3 className="font-display text-2xl text-dark mb-4">{p.name}</h3>
                 <p className="font-display text-xl text-gold mb-6">Rs. {p.price}</p>
                 <Link href="/product?section=reactions">
@@ -316,7 +316,7 @@ export default function Home() {
           <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
             {reviewsListDisplay.map((video: any, index: number) => (
               <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
-                <img src={video.thumbnail || video.avatar} className="w-full h-full object-cover" alt="Review" />
+                <img src={video.thumbnail || video.avatar} className="w-full h-full object-cover" alt="Review" loading="lazy" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
                     <Play className="w-6 h-6 fill-white ml-1" />
@@ -329,7 +329,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-12">
             {whatsappScreenshots.map((img, index) => (
               <div key={index} className="bg-white p-2 rounded-[6px] elegant-shadow border border-gold/5">
-                <img src={img} className="w-full aspect-[3/4] object-cover rounded-[4px]" alt="Chat" />
+                <img src={img} className="w-full aspect-[3/4] object-cover rounded-[4px]" alt="Chat" loading="lazy" />
               </div>
             ))}
           </div>
