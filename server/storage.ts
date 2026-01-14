@@ -1,6 +1,6 @@
 import { type User, type InsertUser, type Order, type InsertOrder, type Hero, type InsertHero, type Product, type InsertProduct, type Review, type InsertReview, type GalleryItem, type InsertGallery } from "@shared/schema";
 import { randomUUID } from "crypto";
-import { supabase } from "./supabase";
+// import { supabase } from "./supabase";
 
 // modify the interface with any CRUD methods
 // you might need
