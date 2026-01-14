@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, BarChart3, Settings, LogOut, Users, ShoppingCart, Eye, MapPin,
@@ -11,32 +11,39 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-
-// === Mock Data (can be replaced with API calls later) ===
-const mockStats = [
-  { id: 1, label: "Total Visitors", value: "12,480", icon: Eye, color: "text-blue-500", bg: "bg-blue-50" },
-  { id: 2, label: "Total Orders", value: "824", icon: ShoppingCart, color: "text-purple-500", bg: "bg-purple-50" },
-  { id: 3, label: "Add to Carts", value: "3,982", icon: ShoppingCart, color: "text-emerald-500", bg: "bg-emerald-50" },
-  { id: 4, label: "Conversion Rate", value: "6.8%", icon: History, color: "text-gold", bg: "bg-gold/10" },
-];
-
-const mockLocations = [
-  { city: "Lahore", count: 4210, percent: 45 },
-  { city: "Karachi", count: 3150, percent: 32 },
-  { city: "Islamabad", count: 1840, percent: 18 },
-  { city: "Faisalabad", count: 450, percent: 5 },
-];
+import { stats as mockStatsService, heroContent as mockHeroService } from "@/services/mockData";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [previewMode, setPreviewMode] = useState(false);
+  const [stats, setStats] = useState<any[]>([]);
 
   // === Controlled States for Content ===
-  const [heroHeading, setHeroHeading] = useState("Azzivone Snail Mucin Serum");
-  const [heroSubheading, setHeroSubheading] = useState("High-performance snail mucin serum designed for those who demand excellence.");
-  const [ctaText, setCtaText] = useState("Shop the Elite Collection");
+  const [heroHeading, setHeroHeading] = useState("");
+  const [heroSubheading, setHeroSubheading] = useState("");
+  const [ctaText, setCtaText] = useState("");
   const [productPrice, setProductPrice] = useState("2,499");
   const [benefits, setBenefits] = useState(["Deep hydration", "Scar healing", "Barrier repair"]);
+
+  useEffect(() => {
+    // Simulate API fetch from mock services
+    const fetchData = async () => {
+      // In a real app, this would be: fetch('/api/stats')
+      const statsData = mockStatsService.map(s => ({
+        ...s,
+        icon: s.id === 1 ? Eye : s.id === 2 ? ShoppingCart : s.id === 3 ? ShoppingCart : History,
+        color: s.id === 1 ? "text-blue-500" : s.id === 2 ? "text-purple-500" : s.id === 3 ? "text-emerald-500" : "text-gold",
+        bg: s.id === 1 ? "bg-blue-50" : s.id === 2 ? "bg-purple-50" : s.id === 3 ? "bg-emerald-50" : "bg-gold/10"
+      }));
+      setStats(statsData);
+      
+      setHeroHeading(mockHeroService.title);
+      setHeroSubheading(mockHeroService.subtitle);
+      setCtaText(mockHeroService.ctaText);
+    };
+
+    fetchData();
+  }, []);
 
   // === Placeholder Handlers for Future Backend Integration ===
   const handleSave = () => {
@@ -113,7 +120,7 @@ export default function AdminDashboard() {
             <div className="space-y-12">
               <h2 className="text-4xl font-display text-dark">Executive Dashboard</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {mockStats.map(stat => (
+                {stats.map(stat => (
                   <Card key={stat.id} className="border-gold/5 p-6">
                     <div className={`w-12 h-12 rounded-xl ${stat.bg} flex items-center justify-center mb-4`}>
                       <stat.icon className={`w-6 h-6 ${stat.color}`} />
