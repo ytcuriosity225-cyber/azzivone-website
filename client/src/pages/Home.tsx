@@ -57,6 +57,54 @@ const FloatingIcons = () => {
 };
 
 export default function Home() {
+  const [heroData, setHeroData] = useState({ title: "Glass-Glow Skin, engineered for people who don’t slow down", subtitle: "Experience the 96% pure difference. Repair, hydration, and refinement.", ctaText: "Order Now" });
+  const [productData, setProductData] = useState<any[]>([]);
+  const [reviewData, setReviewData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [heroRes, productsRes, reviewsRes] = await Promise.all([
+          fetch("/api/dashboard/hero"),
+          fetch("/api/dashboard/products"),
+          fetch("/api/dashboard/reviews")
+        ]);
+
+        if (heroRes.ok) setHeroData(await heroRes.json());
+        if (productsRes.ok) setProductData(await productsRes.json());
+        if (reviewsRes.ok) setReviewData(await reviewsRes.json());
+      } catch (err) {
+        console.error("Failed to fetch home data:", err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Use fetched data or fallback to original hardcoded values
+  const displayProducts = productData.length > 0 ? productData : [
+    {
+      id: 1,
+      name: "Snail Mucin Serum",
+      price: "3,500",
+      image: product4,
+      bullets: ["96% Pure Snail Mucin", "Deep 24h Hydration", "Repairs Acne Scars", "Cruelty-Free"]
+    },
+    {
+      id: 2,
+      name: "Coming Soon!",
+      price: "9,999",
+      image: product5,
+      bullets: ["Calms Redness", "Barrier Repair", "Vitamin B5 Rich", "All-Night Glow"]
+    }
+  ];
+
+  const displayReviews = reviewData.length > 0 ? reviewData : [
+    { type: 'video', thumbnail: product1 },
+    { type: 'video', thumbnail: product2 },
+    { type: 'video', thumbnail: product3 },
+    { type: 'video', thumbnail: product4 },
+  ];
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const } }
@@ -168,12 +216,12 @@ export default function Home() {
             variants={fadeInUp}
             className="font-display text-4xl md:text-7xl text-white leading-[1.1] mb-6 font-medium drop-shadow-2xl"
           >
-            Glass-Glow Skin, engineered for people who don’t slow down
+            {heroData.title}
           </motion.h1>
           <motion.div variants={fadeInUp}>
             <Link href="/product">
               <button className="gold-gradient text-white px-10 py-4 rounded-[6px] font-body font-bold text-lg hover:shadow-xl transition-all active:scale-95 uppercase tracking-widest">
-                View product
+                {heroData.ctaText}
               </button>
             </Link>
           </motion.div>
@@ -203,7 +251,7 @@ export default function Home() {
             variants={staggerContainer}
             className="hidden md:grid grid-cols-1 lg:grid-cols-2 gap-12"
           >
-            {products.map((p, idx) => (
+            {displayProducts.map((p, idx) => (
               <motion.div 
                 key={p.id}
                 variants={{
@@ -226,7 +274,7 @@ export default function Home() {
                 <div className="w-1/2">
                   <h3 className="font-display text-3xl text-dark mb-4">{p.name}</h3>
                   <ul className="space-y-3 mb-8">
-                    {p.bullets.map((b, i) => (
+                    {p.bullets && p.bullets.map((b: string, i: number) => (
                       <li key={i} className="flex items-center gap-2 text-dark/70 font-body text-sm">
                         <CheckCircle className="w-4 h-4 text-gold" /> {b}
                       </li>
@@ -243,7 +291,7 @@ export default function Home() {
 
           {/* Mobile Carousel */}
           <div className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 pb-4">
-            {products.map((p) => (
+            {displayProducts.map((p) => (
               <div key={p.id} className="min-w-[85vw] snap-center bg-[#FAFAF9] p-6 rounded-[6px]">
                 <img src={p.image} className="w-full aspect-[4/5] object-cover rounded-[6px] mb-6" alt={p.name} />
                 <h3 className="font-display text-2xl text-dark mb-4">{p.name}</h3>
@@ -266,9 +314,9 @@ export default function Home() {
           </div>
 
           <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
-            {reviews.map((video, index) => (
+            {displayReviews.map((video, index) => (
               <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
-                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Review" />
+                <img src={video.thumbnail || video.avatar} className="w-full h-full object-cover" alt="Review" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
                     <Play className="w-6 h-6 fill-white ml-1" />

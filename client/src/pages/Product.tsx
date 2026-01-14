@@ -102,6 +102,27 @@ const FloatingIcons = () => {
 
 export default function Product() {
   const [searchParams] = useState(new URLSearchParams(window.location.search));
+  const [displayReviews, setDisplayReviews] = useState<any[]>([]);
+  const [heroData, setHeroData] = useState<any>({ title: "Azzivone Snail Mucin Serum" });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [reviewsRes, heroRes] = await Promise.all([
+          fetch("/api/dashboard/reviews"),
+          fetch("/api/dashboard/hero")
+        ]);
+
+        if (reviewsRes.ok) setDisplayReviews(await reviewsRes.json());
+        if (heroRes.ok) setHeroData(await heroRes.json());
+      } catch (err) {
+        console.error("Failed to fetch product page data:", err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const reviewsList = displayReviews.length > 0 ? displayReviews : reviews;
   
   useEffect(() => {
     const section = searchParams.get('section');
@@ -261,7 +282,9 @@ export default function Product() {
             </div>
             
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-dark leading-[1.1] mb-8 font-medium">
-              Azzivone <span className="text-gold italic">Snail Mucin</span> Serum
+              {heroData.title.includes("Snail Mucin") ? (
+                <>Azzivone <span className="text-gold italic">Snail Mucin</span> Serum</>
+              ) : heroData.title}
             </h1>
             
             <p className="text-lg md:text-xl text-dark/70 mb-10 leading-relaxed font-body">
@@ -295,9 +318,9 @@ export default function Product() {
           </div>
 
           <div className="flex gap-4 md:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar">
-            {reviews.map((video, index) => (
+            {reviewsList.map((video, index) => (
               <div key={index} className="min-w-[70vw] md:min-w-[320px] aspect-[9/16] bg-white rounded-[6px] overflow-hidden snap-center relative group elegant-shadow border border-gold/5">
-                <img src={video.thumbnail} className="w-full h-full object-cover" alt="Review" />
+                <img src={video.thumbnail || video.avatar} className="w-full h-full object-cover" alt="Review" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-white shadow-xl active:scale-90 transition-transform">
                     <Play className="w-6 h-6 fill-white ml-1" />

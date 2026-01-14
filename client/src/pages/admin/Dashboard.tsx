@@ -28,18 +28,31 @@ export default function AdminDashboard() {
   useEffect(() => {
     // Simulate API fetch from mock services
     const fetchData = async () => {
-      // In a real app, this would be: fetch('/api/stats')
-      const statsData = mockStatsService.map(s => ({
-        ...s,
-        icon: s.id === 1 ? Eye : s.id === 2 ? ShoppingCart : s.id === 3 ? ShoppingCart : History,
-        color: s.id === 1 ? "text-blue-500" : s.id === 2 ? "text-purple-500" : s.id === 3 ? "text-emerald-500" : "text-gold",
-        bg: s.id === 1 ? "bg-blue-50" : s.id === 2 ? "bg-purple-50" : s.id === 3 ? "bg-emerald-50" : "bg-gold/10"
-      }));
-      setStats(statsData);
-      
-      setHeroHeading(mockHeroService.title);
-      setHeroSubheading(mockHeroService.subtitle);
-      setCtaText(mockHeroService.ctaText);
+      try {
+        // Stats fetch
+        const statsRes = await fetch("/api/dashboard/stats");
+        if (statsRes.ok) {
+          const statsJson = await statsRes.json();
+          const statsData = statsJson.map((s: any) => ({
+            ...s,
+            icon: s.id === 1 ? Eye : s.id === 2 ? ShoppingCart : s.id === 3 ? ShoppingCart : History,
+            color: s.id === 1 ? "text-blue-500" : s.id === 2 ? "text-purple-500" : s.id === 3 ? "text-emerald-500" : "text-gold",
+            bg: s.id === 1 ? "bg-blue-50" : s.id === 2 ? "bg-purple-50" : s.id === 3 ? "bg-emerald-50" : "bg-gold/10"
+          }));
+          setStats(statsData);
+        }
+
+        // Hero fetch
+        const heroRes = await fetch("/api/dashboard/hero");
+        if (heroRes.ok) {
+          const heroJson = await heroRes.json();
+          setHeroHeading(heroJson.title);
+          setHeroSubheading(heroJson.subtitle);
+          setCtaText(heroJson.ctaText);
+        }
+      } catch (err) {
+        console.error("Dashboard fetch error:", err);
+      }
     };
 
     fetchData();

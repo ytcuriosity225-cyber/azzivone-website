@@ -7,8 +7,69 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // put application routes here
-  // prefix all routes with /api
+  // Mock data for initial development
+  const mockStats = [
+    { id: 1, label: "Total Revenue", value: "Rs. 1,250,000", change: "+12.5%", trendingUp: true },
+    { id: 2, label: "Active Orders", value: "45", change: "+5.2%", trendingUp: true },
+    { id: 3, label: "Customer Base", value: "8,942", change: "+18.3%", trendingUp: true },
+    { id: 4, label: "Avg. Order Value", value: "Rs. 3,850", change: "-2.1%", trendingUp: false },
+  ];
+
+  const mockProducts = [
+    {
+      id: 1,
+      name: "Snail Mucin Serum",
+      price: 3500,
+      inventory: 124,
+      sales: 856,
+      status: "In Stock",
+      image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=600",
+      bullets: ["96% Pure Snail Mucin", "Deep 24h Hydration", "Repairs Acne Scars", "Cruelty-Free"]
+    },
+    {
+      id: 2,
+      name: "Ceramide Barrier Cream",
+      price: 4200,
+      inventory: 0,
+      sales: 432,
+      status: "Out of Stock",
+      image: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?auto=format&fit=crop&q=80&w=600",
+      bullets: ["Calms Redness", "Barrier Repair", "Vitamin B5 Rich", "All-Night Glow"]
+    }
+  ];
+
+  const mockHero = {
+    title: "Glass-Glow Skin, engineered for people who don’t slow down",
+    subtitle: "Experience the 96% pure difference. Repair, hydration, and refinement.",
+    ctaText: "Order Now",
+    videoUrl: "",
+    logoUrl: ""
+  };
+
+  const mockReviews = [
+    {
+      id: 1,
+      user: "Sarah K.",
+      rating: 5,
+      comment: "Absolutely love the texture! My skin has never looked more radiant.",
+      date: "2025-12-15",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
+    },
+    {
+      id: 2,
+      user: "Ahmed R.",
+      rating: 4,
+      comment: "Great product, noticed a difference in my acne scars within a week.",
+      date: "2025-12-20",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ahmed"
+    }
+  ];
+
+  // API Routes
+  app.get("/api/dashboard/stats", (_req, res) => res.json(mockStats));
+  app.get("/api/dashboard/products", (_req, res) => res.json(mockProducts));
+  app.get("/api/dashboard/hero", (_req, res) => res.json(mockHero));
+  app.get("/api/dashboard/reviews", (_req, res) => res.json(mockReviews));
 
   app.post("/api/orders", async (req, res) => {
     try {
