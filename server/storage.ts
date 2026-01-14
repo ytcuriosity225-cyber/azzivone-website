@@ -66,7 +66,12 @@ export class MemStorage implements IStorage {
     
     initialProducts.forEach(p => {
       const id = randomUUID();
-      this.products.set(id, { ...p, id, sales: p.sales || "0" });
+      this.products.set(id, { 
+        ...p, 
+        id, 
+        sales: p.sales || "0",
+        bullets: p.bullets ?? null
+      });
     });
   }
 
@@ -110,7 +115,12 @@ export class MemStorage implements IStorage {
   }
 
   async updateHero(hero: InsertHero): Promise<Hero> {
-    this.hero = { ...hero, id: "1" };
+    this.hero = { 
+      ...hero, 
+      id: "1",
+      videoUrl: hero.videoUrl ?? null,
+      logoUrl: hero.logoUrl ?? null
+    };
     return this.hero;
   }
 
@@ -120,7 +130,12 @@ export class MemStorage implements IStorage {
 
   async createProduct(insertProduct: InsertProduct): Promise<Product> {
     const id = randomUUID();
-    const product: Product = { ...insertProduct, id, sales: insertProduct.sales || "0" };
+    const product: Product = { 
+      ...insertProduct, 
+      id, 
+      sales: insertProduct.sales || "0",
+      bullets: insertProduct.bullets ?? null
+    };
     this.products.set(id, product);
     return product;
   }
@@ -128,7 +143,12 @@ export class MemStorage implements IStorage {
   async updateProduct(id: string, insertProduct: InsertProduct): Promise<Product> {
     const existing = this.products.get(id);
     if (!existing) throw new Error("Product not found");
-    const updated: Product = { ...insertProduct, id, sales: insertProduct.sales || existing.sales };
+    const updated: Product = { 
+      ...insertProduct, 
+      id, 
+      sales: insertProduct.sales || existing.sales,
+      bullets: insertProduct.bullets ?? null
+    };
     this.products.set(id, updated);
     return updated;
   }

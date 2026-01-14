@@ -102,25 +102,25 @@ const FloatingIcons = () => {
 
 export default function Product() {
   const [searchParams] = useState(new URLSearchParams(window.location.search));
-  const [displayReviews, setDisplayReviews] = useState<any[]>([]);
-  const [heroData, setHeroData] = useState<any>({ title: "Azzivone Snail Mucin Serum" });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [reviewsRes, heroRes] = await Promise.all([
-          fetch("/api/dashboard/reviews"),
-          fetch("/api/dashboard/hero")
-        ]);
+  const { data: productsData = [] } = useQuery<Product[]>({
+    queryKey: ["/api/dashboard/products"],
+  });
 
-        if (reviewsRes.ok) setDisplayReviews(await reviewsRes.json());
-        if (heroRes.ok) setHeroData(await heroRes.json());
-      } catch (err) {
-        console.error("Failed to fetch product page data:", err);
-      }
-    };
-    fetchData();
-  }, []);
+  const { data: heroData } = useQuery<Hero>({
+    queryKey: ["/api/dashboard/hero"],
+  });
+
+  const { data: displayReviews = [] } = useQuery<any[]>({
+    queryKey: ["/api/dashboard/reviews"],
+  });
+
+  const mainProduct = productsData.find(p => p.name.includes("Serum")) || {
+    name: "Azzivone Snail Mucin Serum",
+    price: "3,500",
+    status: "In Stock",
+    bullets: ["96% Pure Snail Mucin", "Deep 24h Hydration", "Repairs Acne Scars", "Cruelty-Free"]
+  };
 
   const reviewsList = displayReviews.length > 0 ? displayReviews : reviews;
   
@@ -282,15 +282,13 @@ export default function Product() {
             </div>
             
             <h1 className="font-display text-5xl md:text-7xl lg:text-8xl text-dark leading-[1.1] mb-8 font-medium">
-              {heroData.title.includes("Snail Mucin") ? (
+              {heroData?.title?.includes("Snail Mucin") ? (
                 <>Azzivone <span className="text-gold italic">Snail Mucin</span> Serum</>
-              ) : heroData.title}
+              ) : (heroData?.title || mainProduct.name)}
             </h1>
             
             <p className="text-lg md:text-xl text-dark/70 mb-10 leading-relaxed font-body">
-             Glass-Glow Skin, Engineered for High-Performance Lives.
-
-              Repair, hydration, and refinement — without slowing you down.
+              {heroData?.subtitle || "Glass-Glow Skin, Engineered for High-Performance Lives."}
             </p>
 
             <div className="flex flex-col items-center gap-6">
