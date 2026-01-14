@@ -1,6 +1,11 @@
-// Mock data for the admin dashboard
-// This file is modular and can be replaced with real API calls later.
+/**
+ * Mock API Data for React Admin Dashboard
+ * This file provides placeholder data for statistics, products, hero section, and reviews.
+ * Each object follows a GET/POST structure simulation.
+ */
 
+// 1. /api/dashboard/stats
+// GET/POST data for dashboard overview statistics
 export const stats = [
   { id: 1, label: "Total Revenue", value: "Rs. 1,250,000", change: "+12.5%", trendingUp: true },
   { id: 2, label: "Active Orders", value: "45", change: "+5.2%", trendingUp: true },
@@ -8,6 +13,8 @@ export const stats = [
   { id: 4, label: "Avg. Order Value", value: "Rs. 3,850", change: "-2.1%", trendingUp: false },
 ];
 
+// 2. /api/dashboard/products
+// GET/POST structure for product inventory and catalog
 export const products = [
   {
     id: 1,
@@ -16,7 +23,8 @@ export const products = [
     inventory: 124,
     sales: 856,
     status: "In Stock",
-    image: "/src/assets/4_1768257083474.png"
+    image: "/src/assets/4_1768257083474.png",
+    bullets: ["96% Pure Snail Mucin", "Deep 24h Hydration", "Repairs Acne Scars", "Cruelty-Free"]
   },
   {
     id: 2,
@@ -25,19 +33,13 @@ export const products = [
     inventory: 0,
     sales: 432,
     status: "Out of Stock",
-    image: "/src/assets/WhatsApp_Image_2026-01-12_at_2.29.15_PM_(1)_1768257023865.jpeg"
-  },
-  {
-    id: 3,
-    name: "Glow Essence Toner",
-    price: 2800,
-    inventory: 45,
-    sales: 120,
-    status: "Low Stock",
-    image: "/src/assets/WhatsApp_Image_2026-01-12_at_2.29.14_PM_1768257023864.jpeg"
+    image: "/src/assets/WhatsApp_Image_2026-01-12_at_2.29.15_PM_(1)_1768257023865.jpeg",
+    bullets: ["Calms Redness", "Barrier Repair", "Vitamin B5 Rich", "All-Night Glow"]
   }
 ];
 
+// 3. /api/dashboard/hero
+// GET/POST structure for hero section content updates
 export const heroContent = {
   title: "Glass-Glow Skin, engineered for people who don’t slow down",
   subtitle: "Experience the 96% pure difference. Repair, hydration, and refinement.",
@@ -46,6 +48,8 @@ export const heroContent = {
   logoUrl: "/src/assets/logo_1768257103773.png"
 };
 
+// 4. /api/dashboard/reviews
+// GET/POST structure for customer feedback and ratings
 export const reviews = [
   {
     id: 1,
